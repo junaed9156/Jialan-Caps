@@ -1,53 +1,48 @@
 # Jialan Caps & Closures
 
-A responsive, buildless product catalogue for Jialan / Suzhou Maohan Metal Products Co., Ltd.
+Product website for Jialan / Suzhou Maohan Metal Products Co., Ltd: perfume caps, collars, pumps, bottles and cosmetic closures, with real-time 3D.
 
 Live website: https://jialan-caps.expert-siren-8808.chatgpt.site
 
-## 3D studio
+## What is on the site
 
-Explore cylinder, bead-rolled and spherical cap forms with rotating 3D geometry, three metallic finishes, drag rotation, a keyboard-accessible viewing-angle slider, and a lift-the-cap animation. The renderer uses WebGL where available and a built-in canvas software renderer elsewhere. It needs no external libraries. Motion can be paused, reduced-motion preferences are respected, and rendering pauses outside the viewport.
+- **3D hero** — a glass bottle with perfume receives its gold WL100 cap with a magnetic snap; caps float around it over flowing silk. Click a floating cap to open it in the studio.
+- **"Built to click" scroll story** — scrolling lifts the cap, separates cap, pump, collar and bottle with labelled dimensions, tours the finishes and laser-engraves a logo.
+- **3D studio** — eight cap families built to catalogue dimensions, 13 finishes plus hardwood, collar colour, a live logo preview (laser, gold foil, white or black print), lift and bottle views, and "Enquire about this design".
+- **Collection** — 37 catalogue products with every finish as an HD photograph (4x AI-enlarged from the PDF), plus 59 products from the Alibaba store (bottles, sets, closures, collars, store caps) with listing price and minimum order.
+- Shortlist and WhatsApp enquiry drafts; nothing is sent or stored by the site.
 
-These are illustrative form studies. Exact specifications and real finish photographs remain in the product catalogue; confirm the finished product with a physical sample. Prices are not displayed.
+The 3D scenes load only on devices with WebGL and respect "Pause motion" and reduced-motion settings. Without WebGL the catalogue photographs are shown instead.
 
-## Run
-
-Serve `dist/` using any static HTTP server. For example:
+## Run locally
 
 ```sh
-python3 -m http.server 8000 --directory dist
+python3 -m http.server 8000 --directory dist   # or: npm run serve
 ```
 
-Open http://localhost:8000. No installation or build is required. The website works on static hosts, including subdirectory deployments, because its asset paths are relative.
+Open http://localhost:8000. `dist/` is the complete website; asset paths are relative, so it works in a subdirectory too.
 
-## Contents
+## Update from a new catalogue PDF
 
-- `dist/index.html` — website structure and contact information
-- `dist/styles.css` — responsive layouts, motion and reduced-motion support
-- `dist/studio.js` and `dist/studio.css` — interactive 3D geometry, finishes, assembly animation and motion controls
-- `dist/products.js` — product specifications and catalogue page references
-- `dist/app.js` — filtering, actual finish photographs, accessible dialogs, optional local shortlist persistence and WhatsApp enquiry drafts
-- `dist/assets/` — photographs extracted from the supplied catalogue and the downloadable 41-page catalogue
-- `scripts/extract_catalogue.py` — reproducible photograph extraction from the original catalogue
+```sh
+pip install --break-system-packages pymupdf pillow numpy scipy ncnn
+python3 scripts/build_catalogue.py new-catalogue.pdf --report   # what is new or missing
+python3 scripts/build_catalogue.py new-catalogue.pdf            # rebuild data + HD photos
+```
+
+The script reads every specification card (photo, model, size, neck, weight, finishes) from the PDF, matches it to `catalogue/catalogue.json`, enlarges new photos with Real-ESRGAN, and writes `dist/products.js`. New models appear automatically; give them names and categories in `catalogue/catalogue.json`. Store products live in `catalogue/store.json`. Full steps: `CLAUDE.md`.
+
+> নতুন PDF পেলে: PDF-টা Claude-কে দিয়ে বলুন "এই নতুন catalogue দিয়ে website update করো"। Claude `CLAUDE.md` অনুযায়ী নতুন product যোগ করবে, ছবি HD করবে আর GitHub-এ push করবে।
+
+## Edit the 3D scenes
+
+```sh
+npm install
+npm run build:3d      # bundles src/3d/*.js into dist/js/
+```
 
 ## Content sources
 
-The primary source is the English Jialan catalogue dated 30 October 2026, supplied by the owner. All product photographs come from it. Each product’s specification button opens its corresponding PDF page. Some source headings conflict with labels inside photographs; those cases have explicit notes in product details.
+The English Jialan catalogue dated 30 October 2026 (supplied by the owner) is the source for catalogue products; each product links to its PDF page, and notes explain where the PDF contradicts itself. Store products, prices and minimum orders come from https://maohan.m.en.alibaba.com/ (checked 2 November 2026) and link to their listings; set `"showPrices": false` in `catalogue/store.json` to hide prices. The site does not show testimonials, ratings, certifications or factory statistics.
 
-The supplier storefront is https://maohan.m.en.alibaba.com/. Public supplier listings informed the packaging range and customisation language. The site does not reproduce third-party testimonials, ratings, unverified factory statistics or certification claims.
-
-The contact number comes from the catalogue: WhatsApp +86 13812950775; WeChat 13812950775.
-
-## Enquiries
-
-Visitors can shortlist a specific product and finish. The enquiry form creates a WhatsApp draft for the supplier. The visitor reviews and sends it in WhatsApp. The site has no email-delivery backend and does not pretend that a form submission has been delivered. Contact form details are not stored. The shortlist is saved only in the visitor’s browser where available.
-
-## Update
-
-Edit product data in `dist/products.js` and marketing content in `dist/index.html`. To regenerate the photograph sprite from the original PDF, install PyMuPDF, Pillow, NumPy and SciPy and run:
-
-```sh
-python3 scripts/extract_catalogue.py /path/to/original-catalogue.pdf
-```
-
-The photograph sprite maps each finish to an actual source image. Update sprite coordinates with data changes. Preserve the project ID in `.openai/hosting.json` for future Sites deployments.
+Contact (from the catalogue): WhatsApp +86 13812950775; WeChat 13812950775. Preserve the project ID in `.openai/hosting.json` for future Sites deployments.

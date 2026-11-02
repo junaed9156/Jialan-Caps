@@ -1,10 +1,10 @@
 'use strict';
 (() => {
-  const {products, categories, columns, rows} = window.JIALAN;
+  const {products, categories} = window.JIALAN;
   const byId = new Map(products.map(p => [p.id, p]));
   const $ = id => document.getElementById(id);
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const catalogue = 'assets/jialan-catalogue-2026.pdf';
+  const catalogue = window.JIALAN.pdf || 'assets/jialan-catalogue-2026.pdf';
   const state = {category:'all',query:'',neck:'all',expanded:false,variants:new Map(),detail:null,draft:''};
   let toastTimer;
   let shortlist = [];
@@ -13,18 +13,35 @@
     if (Array.isArray(saved)) shortlist = saved.filter(item => item && byId.has(item.id) && Number.isInteger(item.variant) && item.variant >= 0 && item.variant < byId.get(item.id).finishes.length).slice(0,80);
   } catch { /* Browsing and enquiries continue when browser storage is unavailable. */ }
 
-  document.documentElement.style.setProperty('--sprite-cols',columns);
-  document.documentElement.style.setProperty('--sprite-rows',rows);
   $('total-products').textContent = products.length;
   $('year').textContent = new Date().getFullYear();
 
-  function spriteStyle(index) { return `--x:${index % columns};--y:${Math.floor(index / columns)}`; }
-  function paintPhoto(element,p,variant=0) {
-    const index=p.images[variant] ?? p.images[0];
-    element.style.setProperty('--x',index % columns);
-    element.style.setProperty('--y',Math.floor(index / columns));
-    element.setAttribute('aria-label',`${p.model}, ${p.finishes[variant]}`);
+  // HD photographs: catalogue photos are 400/800 px WebP; store photos come from Alibaba's image CDN.
+  const isStore = p => p.source === 'store';
+  function photoSources(p, variant) {
+    const img = p.images[variant] ?? p.images[0];
+    if (isStore(p)) {
+      const base = `https://sc04.alicdn.com/kf/${img}`;
+      if (/\.png$/i.test(img)) return {src: base, srcset: ''};
+      return {src: `${base}_480x480.jpg_.webp`, srcset: `${base}_480x480.jpg_.webp 480w, ${base}_960x960.jpg_.webp 960w`, original: base};
+    }
+    return {src: `${img}-400.webp`, srcset: `${img}-400.webp 400w, ${img}-800.webp 800w`};
   }
+  function photoHTML(p, variant, sizes = '(max-width: 760px) 46vw, 23vw', eager = false) {
+    const s = photoSources(p, variant);
+    return `<img src="${s.src}"${s.srcset ? ` srcset="${s.srcset}" sizes="${sizes}"` : ''}${s.original ? ` data-original="${s.original}"` : ''} alt="${escape(p.model + ', ' + p.finishes[variant])}" ${eager ? '' : 'loading="lazy" '}decoding="async">`;
+  }
+  // If a resized store image is unavailable, fall back to the original upload.
+  document.addEventListener('error', e => {
+    const img = e.target;
+    if (img.tagName === 'IMG' && img.dataset.original && img.src !== img.dataset.original) { img.removeAttribute('srcset'); img.src = img.dataset.original; }
+  }, true);
+  function paintPhoto(element, p, variant = 0, sizes) {
+    element.classList.toggle('is-store', isStore(p));
+    element.innerHTML = photoHTML(p, variant, sizes, true);
+    element.setAttribute('aria-label', `${p.model}, ${p.finishes[variant]}`);
+  }
+  const moqText = p => `MOQ ${Number(p.moq).toLocaleString('en')}`;
   function variantOf(p) { return state.variants.get(p.id) ?? p.defaultVariant ?? 0; }
   function keyOf(id,variant) { return `${id}:${variant}`; }
   function isSelected(id,variant) { return shortlist.some(x=>x.id===id && x.variant===variant); }
@@ -47,15 +64,19 @@
     return 'linear-gradient(115deg,#b6a467,#e1cf9b,#92b1ad)';
   }
   function swatch(p,i,active=false,detail=false) {
+    if (isStore(p)) {
+      const s = photoSources(p, i);
+      return `<button class="swatch thumb" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"><img src="${s.src}" alt="" loading="lazy" decoding="async"></button>`;
+    }
     return `<button class="swatch" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} style="--swatch:${swatchColour(p.finishes[i])}" aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"></button>`;
   }
   function card(p) {
     const v=variantOf(p),selected=isSelected(p.id,v);
-    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${p.badge}</span>`:''}<span class="product-photo" style="${spriteStyle(p.images[v])}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}"></span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom"><div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span></div></div></article>`;
+    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${p.badge}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">On our Alibaba store</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
   }
   function filteredProducts() {
     const q=state.query.trim().toLowerCase();
-    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,...p.finishes].join(' ').toLowerCase().includes(q)));
+    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,p.listing||'',...p.finishes].join(' ').toLowerCase().includes(q)));
   }
   function renderProducts() {
     const all=filteredProducts();
@@ -101,7 +122,7 @@
       const p=byId.get(item.id);return `<li><span>${escape(p.model)} · ${escape(p.finishes[item.variant])}</span><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
     }).join('');
     $('shortlist-items').innerHTML=shortlist.map(item=>{
-      const p=byId.get(item.id);return `<li><div class="mini-photo"><div class="product-photo" style="${spriteStyle(p.images[item.variant])}" role="img" aria-label="${escape(p.model)}"></div></div><div class="mini-info"><strong>${escape(p.model)}</strong><span>${escape(p.finishes[item.variant])} · ${escape(p.neck)}</span></div><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
+      const p=byId.get(item.id);return `<li><div class="mini-photo"><div class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model)}">${photoHTML(p,item.variant,'70px')}</div></div><div class="mini-info"><strong>${escape(p.model)}</strong><span>${escape(p.finishes[item.variant])} · ${escape(p.neck)}</span></div><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
     }).join('');
     $('enquiry-fallback').hidden=true;
   }
@@ -117,14 +138,19 @@
     const p=byId.get(id);if(!p)return;state.detail=id;
     $('detail-category').textContent=categories[p.category];$('detail-model').textContent=p.model;
     $('detail-title').textContent=p.name;$('detail-description').textContent=p.description;
-    $('detail-specs').innerHTML=[['Model',p.model],['Material',p.material],['Dimensions',p.size+(p.size.match(/^\d/)?' mm':'')],['Neck fitting',p.neck],['Catalogue weight',p.weight]].map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
-    $('detail-note').textContent=p.note||'Confirm bottle-neck compatibility and your preferred collar combination when enquiring.';
-    $('detail-sheet').href=`${catalogue}#page=${p.page}`;
+    const rows=isStore(p)
+      ?[...(window.JIALAN.showPrices!==false?[['Listing price',`${p.price} per piece`]]:[]),['Minimum order',`${Number(p.moq).toLocaleString('en')} pieces`],['Neck fitting',p.neck],['Category',categories[p.category]],['Source',`Alibaba store, checked ${window.JIALAN.storeChecked||''}`]]
+      :[['Model',p.model],['Material',p.material],['Dimensions',p.size+(p.size.match(/^\d/)?' mm':'')],['Neck fitting',p.neck],['Catalogue weight',p.weight]];
+    $('detail-specs').innerHTML=rows.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
+    $('detail-note').textContent=p.note||(isStore(p)?'Prices and minimum orders are from the Alibaba listing and can change. Ask us for a quotation for your quantity and customisation.':'Confirm bottle-neck compatibility and your preferred collar combination when enquiring.');
+    $('detail-sheet').href=isStore(p)?p.url:`${catalogue}#page=${p.page}`;
+    $('detail-sheet').innerHTML=isStore(p)?'View on Alibaba ↗':'Specification sheet ↗';
+    document.querySelector('.detail-finishes>span').textContent=isStore(p)?'PRODUCT PHOTOS':'EXPLORE FINISHES';
     renderDetailVariant();updateDetailButton();showDialog($('product-dialog'));
   }
   function renderDetailVariant() {
     const p=byId.get(state.detail),v=variantOf(p);
-    paintPhoto($('detail-photo'),p,v);$('detail-finish-name').textContent=p.finishes[v];
+    paintPhoto($('detail-photo'),p,v,'(max-width: 760px) 90vw, 400px');$('detail-finish-name').textContent=isStore(p)?p.listing:p.finishes[v];
     $('detail-picture-label').textContent=`${p.model} / ${p.finishes[v]}`;
     $('detail-swatches').innerHTML=p.finishes.map((_,i)=>swatch(p,i,i===v,true)).join('');
     updateDetailButton();
@@ -169,15 +195,32 @@
     const lines=['Hello Jialan, I would like to discuss a packaging enquiry.','',`Name: ${name}`,`Email: ${email}`];
     if(String(data.get('company')||'').trim())lines.push(`Company: ${String(data.get('company')).trim()}`);
     if(data.get('quantity'))lines.push(`Quantity: ${data.get('quantity')} pieces`);
-    if(shortlist.length){lines.push('','Selected pieces:');shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
+    if(shortlist.length){lines.push('','Selected pieces:');shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name} (${p.url})`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
     lines.push('','Project:',message);state.draft=lines.join('\n');
     const url=`https://wa.me/8613812950775?text=${encodeURIComponent(state.draft)}`;
     $('whatsapp-link').href=url;$('enquiry-fallback').hidden=false;
     window.open(url,'_blank','noopener,noreferrer');
   });
-  const finishStudies=[{id:'wl100',variant:1,material:'ANODIZED ALUMINIUM'},{id:'wl100',variant:0,material:'ANODIZED ALUMINIUM'},{id:'wl100',variant:5,material:'ANODIZED ALUMINIUM'},{id:'jlm31',variant:0,material:'HARDWOOD'}];
-  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);paintPhoto($('finish-photo'),p,study.variant);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
+  const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD'}];
+  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;paintPhoto($('finish-photo'),p,Math.max(0,p.finishes.indexOf(study.finish)),'(max-width: 760px) 80vw, 40vw');$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
   document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>chooseFinish(Number(b.dataset.finish))));
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('animations-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
+  // Motion: one control pauses every animation, CSS and 3D alike.
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+  const motionButton=$('motion-toggle');
+  function setMotion(paused){
+    document.body.classList.toggle('motion-paused',paused);
+    if(motionButton){motionButton.setAttribute('aria-pressed',String(paused));motionButton.innerHTML=`${paused?'Play':'Pause'} motion <span aria-hidden="true">${paused?'▷':'Ⅱ'}</span>`;}
+    document.dispatchEvent(new CustomEvent('jialan:motion',{detail:{paused}}));
+  }
+  motionButton?.addEventListener('click',()=>setMotion(!document.body.classList.contains('motion-paused')));
+  reducedMotion.addEventListener('change',()=>setMotion(reducedMotion.matches));
+  setMotion(reducedMotion.matches);
+  // Photo fallback for the hero scene: a light parallax when 3D is unavailable.
+  const heroScene=document.querySelector('.hero-scene');
+  if(heroScene&&matchMedia('(hover: hover)').matches){
+    heroScene.addEventListener('pointermove',e=>{if(document.body.classList.contains('motion-paused')||heroScene.classList.contains('is-3d'))return;const r=heroScene.getBoundingClientRect();heroScene.style.setProperty('--scene-x',((e.clientX-r.left)/r.width-.5)*2);heroScene.style.setProperty('--scene-y',((e.clientY-r.top)/r.height-.5)*2);},{passive:true});
+    heroScene.addEventListener('pointerleave',()=>{heroScene.style.setProperty('--scene-x',0);heroScene.style.setProperty('--scene-y',0);});
+  }
   renderProducts();renderShortlist();chooseFinish(0);
 })();

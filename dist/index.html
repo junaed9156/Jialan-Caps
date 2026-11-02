@@ -14,9 +14,10 @@
   <link rel="preload" href="assets/hero-gold.webp" as="image">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="studio.css">
+  <link rel="stylesheet" href="scenes.css">
   <script src="products.js" defer></script>
   <script src="app.js" defer></script>
-  <script src="studio.js" defer></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -37,44 +38,62 @@
       </div>
     </section>
     <div class="capability-strip"><div><span class="strip-number">01</span><span>Magnetic cap assemblies</span></div><div><span class="strip-number">02</span><span>Aluminium, ABS & hardwood</span></div><div><span class="strip-number">03</span><span>Colour, size & logo options</span></div><div><span class="strip-number">04</span><span>Caps, collars & pumps</span></div></div>
+<section class="anatomy" id="anatomy" aria-labelledby="anatomy-title">
+      <div class="anatomy-sticky">
+        <div class="anatomy-stage"><img class="anatomy-fallback" src="assets/collection.webp" width="1600" height="542" alt="Jialan magnetic caps with matching perfume bottles" loading="lazy"></div>
+        <div class="anatomy-copy">
+          <div class="eyebrow"><span class="tiny-line"></span>THE ANATOMY OF A MAGNETIC CLOSURE</div>
+          <h2 id="anatomy-title">Built to<br><em>click.</em></h2>
+          <ol class="anatomy-steps">
+            <li data-step="0" class="is-active"><span>01</span><div><h3>One quiet click.</h3><p>The cap seats on its shoulder collar with a magnetic hold. No thread, no twist.</p></div></li>
+            <li data-step="1"><span>02</span><div><h3>Lift, and it lets go.</h3><p>A gentle pull releases the magnet and reveals the spray pump beneath.</p></div></li>
+            <li data-step="2"><span>03</span><div><h3>Every layer, made to fit.</h3><p>Cap, shoulder collar and crimp pump, matched to FEA13 or FEA15 bottle necks.</p></div></li>
+            <li data-step="3"><span>04</span><div><h3>Any finish you imagine.</h3><p>Glossy, matte, brushed, coated or hardwood. <strong class="anatomy-finish">Glossy gold</strong></p></div></li>
+            <li data-step="4"><span>05</span><div><h3>Your mark, engraved.</h3><p>Laser-carved or screen-printed logos make the cap unmistakably yours.</p></div></li>
+          </ol>
+          <div class="anatomy-progress" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="anatomy-labels" aria-hidden="true">
+          <span data-label="cap"><b>Magnetic cap</b><small>Anodized aluminium · Ø27.5 × 28.6 mm</small></span>
+          <span data-label="pump"><b>Crimp pump</b><small>FEA13 / FEA15</small></span>
+          <span data-label="collar"><b>Shoulder collar</b><small>Ø24.6 mm · single step</small></span>
+          <span data-label="bottle"><b>Your bottle</b><small>Glass, in any shape</small></span>
+        </div>
+      </div>
+    </section>
     <section class="studio section" id="studio" aria-labelledby="studio-title">
       <div class="studio-copy reveal">
         <div class="eyebrow"><span class="tiny-line"></span>THE INTERACTIVE STUDIO</div>
-        <h2 id="studio-title">A new<br><em>perspective.</em></h2>
-        <p>Turn it. Lift it. Make it your own.<br>Explore the interplay of form, light and finish in three dimensions.</p>
+        <h2 id="studio-title">Design it.<br><em>See it.</em></h2>
+        <p>Choose a silhouette, a finish and a collar, then put your own logo on it. Turn it, lift it, and send the design with your enquiry.</p>
         <div class="studio-form-label">01 / CHOOSE A SILHOUETTE</div>
-        <div class="studio-shapes" role="group" aria-label="3D cap shape">
-          <button type="button" data-shape="cylinder" aria-pressed="true"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8M8 28c0-5 20-5 20 0"/></svg><span>Signature<small>WL100</small></span></button>
-          <button type="button" data-shape="ribbed" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8M8 13c0 5 20 5 20 0M8 18c0 5 20 5 20 0M8 23c0 5 20 5 20 0"/></svg><span>Textured<small>KY100</small></span></button>
-          <button type="button" data-shape="sphere" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="16" r="12"/><path d="M12 27v4h12v-4M14 5c-8 8-8 14 0 22"/></svg><span>Sculptural<small>JLQ36</small></span></button>
-        </div>
-        <div class="studio-form-label">02 / SET THE TONE <span id="studio-finish-name">Polished gold</span></div>
-        <div class="studio-swatches" role="group" aria-label="3D cap finish">
-          <button type="button" data-metal="gold" aria-pressed="true" aria-label="3D polished gold" style="--metal:linear-gradient(120deg,#795320,#f4d292,#a27c39)"><i></i><span>Gold</span></button>
-          <button type="button" data-metal="silver" aria-pressed="false" aria-label="3D polished silver" style="--metal:linear-gradient(120deg,#697c7b,#edf2ed,#8a9d99)"><i></i><span>Silver</span></button>
-          <button type="button" data-metal="black" aria-pressed="false" aria-label="3D glossy black" style="--metal:linear-gradient(120deg,#101c1c,#65716a,#15211d)"><i></i><span>Black</span></button>
-        </div>
-        <a id="studio-specs" class="text-link" href="assets/jialan-catalogue-2026.pdf#page=4" target="_blank" rel="noopener">View WL100 specifications <span aria-hidden="true">↗</span></a>
+        <div class="studio-shapes" role="group" aria-label="Cap family"><button type="button" data-studio-cap="wl100" aria-pressed="true"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8"/></svg><span>Signature<small>WL100</small></span></button><button type="button" data-studio-cap="wll100" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="6" rx="9" ry="3.5"/><path d="M9 6v24c0 5 18 5 18 0V6"/></svg><span>Extended<small>WLL100</small></span></button><button type="button" data-studio-cap="ky100" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8M8 14c0 5 20 5 20 0M8 20c0 5 20 5 20 0"/></svg><span>Bead-rolled<small>KY100</small></span></button><button type="button" data-studio-cap="jlg29" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8M10 12l14 14M16 11l10 10M10 19l8 8M26 12 12 26M20 11 10 21M26 19l-8 8"/></svg><span>Diamond knurl<small>JLG29</small></span></button><button type="button" data-studio-cap="jlq36" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="16" r="12"/><path d="M12 27v4h12v-4M14 5c-8 8-8 14 0 22"/></svg><span>Sphere<small>JLQ36</small></span></button><button type="button" data-studio-cap="jlw37" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M6 30V18a12 12 0 0 1 24 0v12zM6 30h24"/></svg><span>Dome<small>JLW37</small></span></button><button type="button" data-studio-cap="jlf33" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><rect x="6" y="9" width="24" height="20" rx="5"/><path d="M11 9l4-4h15l-4 4M30 5v18l-4 4"/></svg><span>Soft square<small>JLF33</small></span></button><button type="button" data-studio-cap="jlm31" aria-pressed="false"><svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="8" rx="10" ry="4"/><path d="M8 8v20c0 6 20 6 20 0V8M13 13v16M18 13v17M23 13v16"/></svg><span>Hardwood<small>JLM31</small></span></button></div>
+        <div class="studio-form-label">02 / SET THE TONE <span id="studio-finish-name">Glossy gold</span></div>
+        <div class="studio-swatches" id="studio-finishes" role="group" aria-label="Cap finish"></div>
+        <div class="studio-collar" role="group" aria-label="Shoulder collar"><span>COLLAR</span><button type="button" data-studio-collar="match" aria-pressed="true">Matched</button><button type="button" data-studio-collar="glossy-gold" aria-pressed="false">Gold</button><button type="button" data-studio-collar="glossy-silver" aria-pressed="false">Silver</button><button type="button" data-studio-collar="glossy-black" aria-pressed="false">Black</button></div>
+        <div class="studio-form-label">03 / MAKE IT YOURS</div>
+        <label class="studio-logo"><span class="sr-only">Your logo text</span><input id="studio-logo" type="text" maxlength="16" placeholder="Type your brand name" autocomplete="off" spellcheck="false"></label>
+        <div class="studio-logo-styles" role="group" aria-label="Logo decoration"><button type="button" data-logo-style="laser" aria-pressed="true">Laser engraved</button><button type="button" data-logo-style="gold" aria-pressed="false">Gold foil</button><button type="button" data-logo-style="white" aria-pressed="false">White print</button><button type="button" data-logo-style="black" aria-pressed="false">Black print</button></div>
+        <div class="studio-actions"><button type="button" class="button dark" id="studio-enquire">Enquire about this design <span aria-hidden="true">↗</span></button><a id="studio-specs" class="text-link" href="assets/jialan-catalogue-2026.pdf#page=4" target="_blank" rel="noopener">View WL100 specifications <span aria-hidden="true">↗</span></a></div>
       </div>
       <div class="studio-view" id="studio-view">
-        <div class="studio-grid" aria-hidden="true"></div><div class="studio-halo" aria-hidden="true"></div><div class="studio-shadow" aria-hidden="true"></div>
-        <div class="studio-topline"><span><i class="status-dot"></i> LIVE FORM STUDY</span><span id="studio-model">WL100 / 01</span></div>
-        <div class="studio-render" id="studio-render"><img id="studio-fallback" src="assets/hero-gold.webp" width="290" height="360" alt="WL100 polished gold cap from the catalogue"><canvas id="cap-canvas" role="img" aria-label="Interactive gold cylindrical cap and collar in 3D. Use the controls below to rotate or separate the assembly." hidden></canvas></div>
-        <span class="studio-dimension studio-dimension-left" aria-hidden="true">FORM / FINISH / FEEL</span><span class="studio-dimension studio-dimension-right" aria-hidden="true">JIALAN — DESIGN IN DETAIL</span>
-        <div class="studio-caption"><strong id="studio-caption">The signature cylinder</strong><span id="studio-hint">Drag to explore · Scroll the page as usual</span></div>
-        <div class="studio-toolbar" id="studio-toolbar" hidden>
+        <div class="studio-topline"><span><i class="status-dot"></i> LIVE 3D STUDIO</span><span id="studio-model">WL100 / 01</span></div>
+        <div class="studio-render" id="studio-render"><img id="studio-fallback" src="assets/hero-gold.webp" width="290" height="360" alt="WL100 glossy gold cap from the catalogue"></div>
+        <div class="studio-caption"><strong id="studio-caption">Signature cylinder</strong><span id="studio-hint">Drag to turn · Scroll the page as usual</span></div>
+        <div class="studio-toolbar" id="studio-toolbar">
           <button type="button" id="studio-explode" aria-pressed="false"><span aria-hidden="true">↕</span><span id="studio-explode-label">Lift the cap</span></button>
+          <button type="button" id="studio-bottle" aria-pressed="false"><span aria-hidden="true">◫</span><span id="studio-bottle-label">Show on bottle</span></button>
           <button type="button" id="studio-spin" aria-pressed="true"><span id="studio-spin-icon" aria-hidden="true">Ⅱ</span><span id="studio-spin-label">Pause rotation</span></button>
           <button type="button" id="studio-reset" aria-label="Reset 3D view"><span aria-hidden="true">↺</span><span>Reset</span></button>
         </div>
-        <label class="studio-angle" id="studio-angle-control" hidden><span>Viewing angle</span><input id="studio-angle" type="range" min="0" max="360" value="25" aria-label="3D viewing angle in degrees"><output id="studio-angle-value" for="studio-angle">25°</output></label>
-        <p class="studio-note">Illustrative form & finish preview. Confirm exact details with the catalogue and a physical sample.</p>
-        <p id="studio-status" class="sr-only" role="status" aria-live="polite">Signature cylinder in polished gold.</p>
+        <label class="studio-angle" id="studio-angle-control"><span>Viewing angle</span><input id="studio-angle" type="range" min="0" max="360" value="29" aria-label="3D viewing angle in degrees"><output id="studio-angle-value" for="studio-angle">29°</output></label>
+        <p class="studio-note">Illustrative 3D preview built to catalogue dimensions. Confirm details with the catalogue and a physical sample.</p>
+        <p id="studio-status" class="sr-only" role="status" aria-live="polite"></p>
       </div>
     </section>
     <section class="collection section" id="collection" aria-labelledby="collection-title">
       <div class="section-heading reveal"><div><div class="eyebrow">01 / THE COLLECTION</div><h2 id="collection-title">Find your<br><em>signature.</em></h2></div><div class="heading-aside"><p>From the quiet confidence of a cylinder to the character of a sphere. Explore the form that feels like your brand.</p><a href="assets/jialan-catalogue-2026.pdf" class="text-link" target="_blank" rel="noopener">Full technical catalogue <span aria-hidden="true">↗</span></a></div></div>
-      <div class="catalogue-controls"><div class="filters" id="category-filters" role="group" aria-label="Filter products by shape"><button data-category="all" class="filter active" aria-pressed="true">All pieces <span id="total-products"></span></button><button class="filter" data-category="cylinder" aria-pressed="false">Cylindrical</button><button class="filter" data-category="ribbed" aria-pressed="false">Textured</button><button class="filter" data-category="sculptural" aria-pressed="false">Sculptural</button><button class="filter" data-category="wood" aria-pressed="false">Hardwood</button><button class="filter" data-category="accessories" aria-pressed="false">Accessories</button></div><div class="search-row"><label class="search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search model, material or finish</span><input id="product-search" type="search" placeholder="Find a model, material or finish…" autocomplete="off"></label><label class="neck-filter"><span>Neck size</span><select id="neck-filter"><option value="all">All fittings</option><option value="FEA15">FEA15</option><option value="FEA13">FEA13</option></select></label><span class="result-count" id="result-count" aria-live="polite"></span></div></div>
+      <div class="catalogue-controls"><div class="filters" id="category-filters" role="group" aria-label="Filter products by shape"><button data-category="all" class="filter active" aria-pressed="true">All pieces <span id="total-products"></span></button><button class="filter" data-category="cylinder" aria-pressed="false">Cylindrical</button><button class="filter" data-category="ribbed" aria-pressed="false">Textured</button><button class="filter" data-category="sculptural" aria-pressed="false">Sculptural</button><button class="filter" data-category="wood" aria-pressed="false">Hardwood</button><button class="filter" data-category="bottles" aria-pressed="false">Glass bottles</button><button class="filter" data-category="closures" aria-pressed="false">Lids &amp; closures</button><button class="filter" data-category="accessories" aria-pressed="false">Accessories</button></div><div class="search-row"><label class="search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search model, material or finish</span><input id="product-search" type="search" placeholder="Find a model, material or finish…" autocomplete="off"></label><label class="neck-filter"><span>Neck size</span><select id="neck-filter"><option value="all">All fittings</option><option value="FEA15">FEA15</option><option value="FEA13">FEA13</option></select></label><span class="result-count" id="result-count" aria-live="polite"></span></div></div>
       <div class="product-grid" id="product-grid"></div><div class="no-results" id="no-results" hidden><h3>No pieces found.</h3><p>Try another model, material or neck size.</p><button id="reset-filters" class="button outline">Reset filters <span aria-hidden="true">↗</span></button></div><div class="collection-footer"><span id="shown-count"></span><button id="show-all" class="button outline">Explore all pieces <span aria-hidden="true">↓</span></button><a href="#contact" class="text-link">Looking for something specific? <span aria-hidden="true">↗</span></a></div>
     </section>
     <section class="craft" id="craft" aria-labelledby="craft-title"><div class="craft-intro reveal"><div class="eyebrow light">02 / MATERIALS & FINISHES</div><h2 id="craft-title">One form.<br><em>Endless expression.</em></h2><p>The right finish changes everything. Explore real catalogue finishes, from polished metal to the warmth of hardwood.</p><a href="#contact" class="text-link light-link">Discuss your finish <span aria-hidden="true">↗</span></a></div><div class="finish-explorer"><div class="finish-view"><span id="finish-material">ANODIZED ALUMINIUM</span><div class="finish-product"><div class="product-photo" id="finish-photo" role="img" aria-label="Glossy gold anodized aluminium cap"></div></div><div class="finish-view-bottom"><span id="finish-code">WL100</span><span>COLOUR & TEXTURE STUDY</span></div></div><div class="finish-options" role="group" aria-label="Explore material finishes"><button class="finish-choice selected" data-finish="0" aria-pressed="true"><i style="--swatch:linear-gradient(120deg,#8d661e,#f2d38a,#ad7f23)"></i><span>Polished gold</span></button><button class="finish-choice" data-finish="1" aria-pressed="false"><i style="--swatch:linear-gradient(120deg,#171d1d,#4d5350,#151a19)"></i><span>Glossy black</span></button><button class="finish-choice" data-finish="2" aria-pressed="false"><i style="--swatch:linear-gradient(120deg,#7a9092,#e1eceb,#9eafad)"></i><span>Soft silver</span></button><button class="finish-choice" data-finish="3" aria-pressed="false"><i style="--swatch:linear-gradient(100deg,#34211b,#75503a,#392c22)"></i><span>Natural wood</span></button></div></div></section>

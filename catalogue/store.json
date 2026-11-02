@@ -1,0 +1,910 @@
+{
+  "_readme": "Products from the Alibaba storefront that are not in the PDF catalogue. `title` is the listing title; `name`/`detail` are the website wording. Prices and minimum orders were copied from the listings on 2 November 2026. Images are served from Alibaba's image CDN (sc04.alicdn.com/kf/<key>). Refresh with the steps in CLAUDE.md.",
+  "storefront": "https://maohan.m.en.alibaba.com/",
+  "checked": "2 November 2026",
+  "showPrices": true,
+  "products": [
+    {
+      "id": "1601080781366",
+      "category": "bottles",
+      "name": "Round luxury perfume bottle",
+      "detail": "30 / 50 / 100 ml glass with pump sprayer, custom colour and logo",
+      "title": "Design Luxury Round 30ml 50ml 100ml Empty Perfume Bottle Pump Sprayer Glass Women Shaped Custom Color Custom Logo",
+      "price": "0.63-0.65",
+      "moq": "10000",
+      "images": [
+        "H789cc10a01934dc4a964642936e0b97fU.jpg",
+        "Hd7462b3d1fd04db19247d15ac767bab1K.jpg",
+        "H0f2cfefdcc914f398426e2c100bd181am.jpg",
+        "H1ff42b101cb84ae1bb251943fb1f544fr.png"
+      ]
+    },
+    {
+      "id": "1601082169506",
+      "category": "bottles",
+      "name": "Refillable round spray bottle",
+      "detail": "30 / 50 / 100 ml round glass with aluminium pump and magnetic cap",
+      "title": "Custom Aluminum Perfume Refillable Pump Sprayer Spray Bottle Round Glass 30ml 50ml 100ml Magnetic Cap Custom Color",
+      "price": "0.26-0.28",
+      "moq": "10000",
+      "images": [
+        "H9340aaf8f62740c2aa0aacf9895d3b25Y.jpg",
+        "H00d0f764b71742cea8567836bbef36b4w.jpg",
+        "Hc8a186b3a10a4f70a698702f5bc09036x.jpg",
+        "Haa7ceab5700a4599a0a5d4bcc1f4246dh.jpg"
+      ]
+    },
+    {
+      "id": "1601082154667",
+      "category": "bottles",
+      "name": "Round fine-mist bottle",
+      "detail": "20 / 30 / 60 ml round glass with fine-mist spray cap",
+      "title": "Custom Aluminum 20ml 60ml 30ml Round Glass Perfume Bottle with Fine Spray Mist Cap for Nail Polish Oil",
+      "price": "0.32",
+      "moq": "10000",
+      "images": [
+        "H231e112490464974b3ef28c06f41705dj.jpg",
+        "Hbad7816d32684c7f999c5b0ba154b9b4d.jpg",
+        "H0e3d0b86cad54edea76143b3b6f8f719L.jpg",
+        "H0f86dd8a229a454d832d818d953a0743T.jpg"
+      ]
+    },
+    {
+      "id": "1601087167924",
+      "category": "bottles",
+      "name": "Flat circle perfume bottle",
+      "detail": "30 / 50 / 100 ml flat round glass with pump sprayer",
+      "title": "Custom Logo Design Luxury Glass Perfume Bottle 30ml/50ml/100ml Flat Circle Shape with Pump Sprayer Sealing",
+      "price": "0.29",
+      "moq": "10000",
+      "images": [
+        "Hbe7b1fbb5890413fac8f16b2b75125085.jpg",
+        "Hf0082835056446bbbcec9462a264f9b0n.jpg",
+        "H0e8003af58154c60b08a5ff8c6829fc7z.jpg",
+        "Hbc35f9ffe7a0490fa7fea98d4f533c09M.jpg"
+      ]
+    },
+    {
+      "id": "1601101880210",
+      "category": "bottles",
+      "name": "Mini sample atomizers",
+      "detail": "2 – 15 ml clear glass testers with pump sprayer",
+      "title": "Luxury Mini Clear Glass Perfume Bottles for Oil 2ml 3ml 5ml 10ml 15ml Wholesale Sample Atomizer Tester Pump Sprayer Packaging",
+      "price": "0.13",
+      "moq": "10000",
+      "images": [
+        "H84fbfdea711d4b6084258b77f67dde32e.png",
+        "Hdf5c3e753dec40f3ab48b51e783f1b43W.png",
+        "H7dd502a377cf45068382e524261439cfg.png",
+        "Hdb1adf07695344b7ba9bc76d19946f539.png"
+      ]
+    },
+    {
+      "id": "1601109280821",
+      "category": "bottles",
+      "name": "Spherical glass bottle",
+      "detail": "30 / 50 / 75 ml sphere with 15 mm bayonet pump",
+      "title": "Creative Fashion Spherical Glass Perfume Bottle 30ml 50ml 75ml 15 Bayonet Cosmetic Dispenser with Pump Sprayer",
+      "price": "0.33",
+      "moq": "10000",
+      "images": [
+        "H16c836c4fc5346c980be239a19c8c034W.png",
+        "Hcd99ee03c62d406b999ceace069cf6102.png",
+        "H37a2508fd65d4093baa2fdcdf31a41596.png",
+        "H2b0132501c9e4c43838cf49112f88f87g.png"
+      ]
+    },
+    {
+      "id": "1601114622052",
+      "category": "bottles",
+      "name": "Travel atomizer bottle",
+      "detail": "30 / 50 ml clear glass, refillable and sealed",
+      "title": "Portable 30ML 50ML Clear Glass Atomizer Bottle Pump Sprayer Separated Travel Makeup and Perfume Container Refillable Sealed",
+      "price": "0.70-0.72",
+      "moq": "10000",
+      "images": [
+        "H48054d6660144622b67e231f0bd84e6aT.png",
+        "Hfabc533f70ff4a27ba39be685dcd957fx.png",
+        "Ha805dfdcc24247c0a30c79d019997bc8i.png",
+        "H5fbe0e8fa3ee45aa9d6aa617cbb17bb2s.png"
+      ]
+    },
+    {
+      "id": "1601170746762",
+      "category": "bottles",
+      "name": "Clear travel spray bottle",
+      "detail": "50 ml clear glass for perfume or essential oils",
+      "title": "Customizable 50ml Luxury Clear Glass Essential Oil Container Perfume Bottles Empty Travel Spray Bottle with Pump Sayer",
+      "price": "0.78",
+      "moq": "10000",
+      "images": [
+        "Hf6b98e39cadb4855a5247eceb1ca6700M.jpg",
+        "He4cf0d4459814299a706d402760b2c6e2.jpg",
+        "H6104fbde93794ccb8fee367b11978f82m.png",
+        "H1d797f15c9ed411493a723cbfbdc3423f.png"
+      ]
+    },
+    {
+      "id": "1601175253810",
+      "category": "bottles",
+      "name": "Fancy square mini bottle",
+      "detail": "18 ml square glass spray bottle, refillable",
+      "title": "18ml Clear Fancy Square Glass Perfume Spray Bottle Mini Empty Customize Bottle with Round for Ball Refillable for Nail Polish",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "H95dc526828e74e3fb137ae46cd7faf34i.png",
+        "H0d19ee9af561425183b19c529b2c28f2B.png",
+        "H38dfda6622c149dd9e98e54158a7718d6.png",
+        "Ha287dd4f1b884bc2b45ff74d0ca08528S.png"
+      ]
+    },
+    {
+      "id": "1601175445403",
+      "category": "bottles",
+      "name": "Heavy square bottle, leather cap",
+      "detail": "100 ml thick-base square glass with leather-finish cap",
+      "title": "High Quality 100ml Square Heavy Glass Spray Fragrance Bottle with Leather Cap Pump Sprayer for Nail Polish Oil and Perfume Use",
+      "price": "0.58-0.74",
+      "moq": "10000",
+      "images": [
+        "Hab493a7b75664d50b9aeca30fc3fc110x.jpg",
+        "Hd02d230f3b70417987b3971e7a710746b.jpg",
+        "H3bc9092c592d47e6ba969eeb9c80c28cH.jpg",
+        "Hbc28cf19a273447ebe73ac32df9443c02.jpg"
+      ]
+    },
+    {
+      "id": "1601175338720",
+      "category": "bottles",
+      "name": "Acid-etched bottle, magnetic cap",
+      "detail": "50 ml frosted glass atomizer with magnetic cap",
+      "title": "Custom Round Luxury Perfume Atomizer Bottle 50ml Square with Magnetic Cap Acid Etch Pump Sprayer",
+      "price": "0.43-0.63",
+      "moq": "10000",
+      "images": [
+        "Heebc96015c114061820bb505c39a2b9eE.png",
+        "H1340ab4fb00b4952973c150d6a1a0cd6O.png",
+        "Hc8de8ec436ba48eeb424af80e45f39cfy.png",
+        "H9e44ae2d1b6843268d47c984a3402d98E.png"
+      ]
+    },
+    {
+      "id": "1601196750750",
+      "category": "bottles",
+      "name": "Frosted pocket sprayer",
+      "detail": "2 – 5 ml plastic sample bottles with pump",
+      "title": "Transparent Frosted Mini Pocket Perfume Spray Bottle 2ml 3ml 4ml 5ml Plastic with Pump Sayer Sample Mini Perfume Bottle",
+      "price": "0.04-0.08",
+      "moq": "10000",
+      "images": [
+        "H7088c8cee937482c9e6bd08403de7cc4A.jpg",
+        "H9e94e112bdb44969bc92ed922c818cd8z.jpg",
+        "Hf852efdd15804b198c8d6bf6d464fce33.jpg",
+        "H3cd7397868c24af6ace65f59e75f47efX.jpg"
+      ]
+    },
+    {
+      "id": "1601347819571",
+      "category": "bottles",
+      "name": "Portable glass perfume bottle",
+      "detail": "30 / 50 ml glass with sealed pump sprayer",
+      "title": "High-End 30ml 50ml Glass Perfume Bottle with Pump Sprayer Portable Delicate Sealed for Nail Polish Oil",
+      "price": "0.56",
+      "moq": "10000",
+      "images": [
+        "Hfe7167b2761c43dfba253793e021b614X.jpg",
+        "H3f1e1f7da6f6474684fc73f165f0c8e1v.jpg",
+        "H89ad84223b874f1a8c225ca7ac2eb3f8S.jpg",
+        "H0282cbd5aa0941bca0382bfc7bf96548N.jpg"
+      ]
+    },
+    {
+      "id": "1601347918413",
+      "category": "bottles",
+      "name": "Etched bottle with engraved cap",
+      "detail": "Acid-etched glass, magnetic cap assembly, engraved logo",
+      "title": "Customizable Perfume Glass Bottle Pump Sprayer Acid Etched Surface Portable Design Magnetic Cap Assembly Engraving Logo Custom",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "Hc7529cd678bf4db190cd4f745b21e92dG.jpg",
+        "H721b64cf01054431a5b687a3f213f3816.jpg",
+        "H1ed73d9fb3554dff9417642f8924282dT.jpg",
+        "Ha1cd42f2ca48411f984a6ce217f47b1eY.jpg"
+      ]
+    },
+    {
+      "id": "1601348072199",
+      "category": "bottles",
+      "name": "Walnut-shaped spray bottle",
+      "detail": "30 / 50 ml large-capacity glass with pump",
+      "title": "High-End Portable 30ml 50ML Glass Spray Bottle Large Capacity Empty Walnut Bottle with Pump Sealer",
+      "price": "0.70-0.72",
+      "moq": "10000",
+      "images": [
+        "Hf6a816c44c434ad4acb2b97fb6f01203W.jpg",
+        "H4a7d5ed3e5134ab083ecf4b38e7676f7G.jpg",
+        "Hbe3d0f3a2ec54f1aa76ec5dcd52bb3b1w.jpg",
+        "H76fde8a7d0304c20baa9f3b6a5634892f.jpg"
+      ]
+    },
+    {
+      "id": "1601351947551",
+      "category": "bottles",
+      "name": "Blue gradient flat bottle",
+      "detail": "50 / 100 ml flat glass with acid-etched surface",
+      "title": "Exquisite 50ml 100ml Flat Glass Perfume Bottles Dark Blue Gradient with Acid Etch Surface for Cosmetics",
+      "price": "0.62",
+      "moq": "10000",
+      "images": [
+        "H8a0d62c0fff242b585f49cf894abf863i.jpg",
+        "H2e49e5ca5b9547719fbb8c2c1cdc0ce5n.jpg",
+        "H61a4c2472ad74b609f679ec5cb84fa2e4.jpg",
+        "Hb6d5b6a909c2484f942cefae82df3a68R.jpg"
+      ]
+    },
+    {
+      "id": "1601353339886",
+      "category": "bottles",
+      "name": "Press-type travel bottle",
+      "detail": "30 ml large-capacity glass with pump sprayer",
+      "title": "Portable High-Grade 30ML Glass Perfume Bottle Large-Capacity Pressing Type with Pump Sprayer for Travel Cosmetics",
+      "price": "0.52",
+      "moq": "10000",
+      "images": [
+        "Hf385baf71cf44c08be1bfb8c6b3270c5u.jpg",
+        "Hff7e13d1aa2146da8b67ce1b102ada313.jpg",
+        "H339f402a2993477688ddf2e86178dd9al.jpg",
+        "H1d5a396733ba4191a4c3c171f502090fn.jpg"
+      ]
+    },
+    {
+      "id": "1601353948803",
+      "category": "bottles",
+      "name": "Black frosted square bottle",
+      "detail": "50 ml bayonet bottle with pump",
+      "title": "New 50ml Black Frosted Square Cosmetic Empty Bayonet Bottle Nail Polish Oil Perfume Spray Bottle with Pump Sealer",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "H30d1abef519a4dbc92c7a42bba3ff272R.jpg",
+        "H1020b2ae23b54b77b067578c3dd95938Y.jpg",
+        "H75f46750c8614cdb86435746b674ca67u.jpg",
+        "H6ca008777c8840cabd77fd5896827f5b6.jpg"
+      ]
+    },
+    {
+      "id": "1601354051263",
+      "category": "bottles",
+      "name": "Crystal white bottle",
+      "detail": "Bayonet glass bottle with magnetic cap, custom colour",
+      "title": "Crystal White Glass Perfume Bottle Magnetic Cap with Pump Sprayer Custom Color High-grade Bayonet Cosmetic Bottle",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "H5ecc1d4d4d0e4b508da160dddb527cb5S.jpg",
+        "Hebaa4c0b20bc4b29b3aac8d5bd5b5af8f.jpg",
+        "H10d0a1dfd1e84248ab529f76c43c6164I.jpg",
+        "Hcebb6e668a9948fe8545ea37fb2afb2do.jpg"
+      ]
+    },
+    {
+      "id": "1601364260272",
+      "category": "bottles",
+      "name": "Petal hexagonal bottle",
+      "detail": "100 ml hexagonal glass, 15 mm pump",
+      "title": "Creative Simplicity 15# Petal-Shaped Glass Perfume Bottle 100ml New Hexagonal Design with Pump Sprayer for Nail Polish Oil",
+      "price": "0.61-0.65",
+      "moq": "10000",
+      "images": [
+        "H87a004f219664d05b6564978e2cb546dI.jpg",
+        "Hc90a940fee014f24a3957008095ffd18B.jpg",
+        "Hb6fca512c0fa457ca960e1925d2eacdd5.jpg",
+        "H01e64de5e6b847cdb3f2309f68f90aa9G.jpg"
+      ]
+    },
+    {
+      "id": "1601570257728",
+      "category": "bottles",
+      "name": "Essential oil dropper bottles",
+      "detail": "5 – 100 ml glass with screw caps and droppers",
+      "badge": "STORE BESTSELLER",
+      "title": "Custom Empty Essential Oil Screw Caps Dropper Glass Bottles in 5ML 10ML 15ML 50ML 100ML Sizes",
+      "price": "0.01",
+      "moq": "5000",
+      "images": [
+        "H1a6ee664e989432eb1ea3234c3e02a8aD.png",
+        "Hc0dc4b45e3664f8eb0fb23555817a056l.png",
+        "H0829410295c8401eb2d5e6ddf3f340bcH.jpg",
+        "H4399151faa4740cf96bf8fef12c289ace.jpg"
+      ]
+    },
+    {
+      "id": "1601570490417",
+      "category": "bottles",
+      "name": "Bottle set with magnetic cap",
+      "detail": "Glass bottle, magnetic cap and mist-blocking spray head",
+      "badge": "COMPLETE SET",
+      "title": "Glass Perfume Bottle Set with Magnetic Cap Lids Bottle Caps & Closures Includes Mist-Blocking Spray Head",
+      "price": "0.94",
+      "moq": "5000",
+      "images": [
+        "Hd8056bfb722640ba86ac9b10bff009a6L.jpg",
+        "Hbb54f4e562444244b0254a36611091abt.jpg",
+        "Hd968ee72b8d140739fee933468307661A.jpg",
+        "Hac28626ea3aa47f091cf7a6d41447e96k.jpg"
+      ]
+    },
+    {
+      "id": "1601575406729",
+      "category": "bottles",
+      "name": "Magnetic glass bottle set",
+      "detail": "Bottle, cap and mist-blocking spray head together",
+      "badge": "COMPLETE SET",
+      "title": "Magnetic Glass Perfume Bottle Set with Mist-Blocking Spray Head Includes Cap Lids & Closures",
+      "price": "0.91-0.94",
+      "moq": "5000",
+      "images": [
+        "H890df221aaca4328a72d4de8b33a82d87.jpg",
+        "H7c1d8eef0c8e41f49541321f477106f0C.jpg",
+        "H2e0b043fea1a4de58c23347d79015e07h.jpg",
+        "H56e0ca7a456748eb83b55fe743d56ce29.jpg"
+      ]
+    },
+    {
+      "id": "1601575376783",
+      "category": "bottles",
+      "model": "BC-3",
+      "name": "BC-3 bottle set",
+      "detail": "Magnetic glass bottle set, custom colour, shape and size",
+      "badge": "COMPLETE SET",
+      "title": "Maohan BC-3 Magnetic Glass Perfume Bottle Set Mist-Blocking Spray Head Customized Color/Shape/Size Includes Cap Lids Closures",
+      "price": "0.94",
+      "moq": "5000",
+      "images": [
+        "H09db992e1c9543b3b30ac718d692979d1.jpg",
+        "Hdac456d43929422b915bf4ec580d4c55x.jpg",
+        "Hf0ccf719848946f388e0e0b5f1717680j.jpg",
+        "Hd2b8cbcf2e5344afb78a812533d36f016.jpg"
+      ]
+    },
+    {
+      "id": "1601205996050",
+      "category": "closures",
+      "name": "Crown zinc-alloy cap",
+      "detail": "Decorative crown design for 50 ml bottles",
+      "title": "Factory Custom Luxury 50ml Perfume Bottle Cap with Crown Design Zinc Alloy Perfume Lids Cover High-End Bottle Closures",
+      "price": "0.24",
+      "moq": "5000",
+      "images": [
+        "H9388b23333d943ae86d9ea35a7eb3bdbD.jpg",
+        "H98a498b7f5454f1797b085be5252349dm.jpg",
+        "H580bda50c84d46e3bceae9b2e9eddb0dK.jpg",
+        "Ha123b992b3904819998c5e40d1577272L.jpg"
+      ]
+    },
+    {
+      "id": "1601203461083",
+      "category": "closures",
+      "name": "Cylinder cap with logo",
+      "detail": "Plastic perfume cap with custom logo",
+      "title": "Custom Logo New Design Cylinder Perfume Bottle Cap Luxury Wholesale Plastic Lid for Cosmetics",
+      "price": "0.14-0.24",
+      "moq": "5000",
+      "images": [
+        "H81e5dc1961864330aa4c96518aa2ccb5J.jpg",
+        "Hf08864b679d14cb98db56b6284b3d727S.jpg",
+        "H17926b59c0ed43b58eabe9d2134e6562z.jpg",
+        "H758dce95d938476f92a74af5c6731759z.jpg"
+      ]
+    },
+    {
+      "id": "1601207402639",
+      "category": "closures",
+      "name": "Black plastic caps",
+      "detail": "Perfume caps in various shapes and sizes",
+      "title": "Factory Custom Black Plastic Perfume Bottle Cap Luxury Design with Various Shapes and Sizes for Lids Bottle Caps & Closures",
+      "price": "0.20",
+      "moq": "5000",
+      "images": [
+        "Hdb1f7fa0a4564e8e99ec27dcf74b4e02r.jpg",
+        "H3b4449ce0ab24a179eb3ed6a34f69188j.jpg",
+        "H205ddd21bbba401080bd002334e13201W.jpg",
+        "H1ea05260cb2d4921992d80528b2d254aq.jpg"
+      ]
+    },
+    {
+      "id": "1601202751632",
+      "category": "closures",
+      "name": "Leak-proof 15 mm cap",
+      "detail": "Aluminium-plastic fragrance cap, silver or gold",
+      "title": "High Quality Custom Luxury 15mm Leak Proof Aluminum Plastic Fragrance Cap Perfume Bottle Lid Silver Gold",
+      "price": "0.08",
+      "moq": "5000",
+      "images": [
+        "Hbf19129e6305461c972c3b6a4caba25f3.jpg",
+        "H3d2c2098a45641a8aa83e684b688c2784.jpg",
+        "Hecf08458c7724c7795fad9e96b82fedfc.jpg",
+        "Hc9b8058d30c24562b48c4bd4832298dfL.jpg"
+      ]
+    },
+    {
+      "id": "1601147083269",
+      "category": "closures",
+      "name": "Scribe-thread screw cap",
+      "detail": "Aluminium screw lid in gold, black or silver",
+      "title": "Customized Gold Black Silver Colored Scribe Thread Aluminium Perfume Bottle Cap with Metal Screw Lid Lids & Closures",
+      "price": "0.09",
+      "moq": "5000",
+      "images": [
+        "H6bbcc10f49544da8bba87a5537e1b9e8N.jpg",
+        "H2cfbc69fbaec4eff92a30ad82d399123J.jpg",
+        "H82ba54f4e4b8420699073a223cf2df67V.jpg",
+        "H982433affb374a7ba24db9d18dad5badh.jpg"
+      ]
+    },
+    {
+      "id": "1601451949761",
+      "category": "closures",
+      "name": "Brushed aluminium lid",
+      "detail": "Scribe metal lid in gold, black or silver",
+      "title": "Customized Gold Black Silver Brushed Aluminum Scribe Metal Lid Perfume Cap Bottle Closure",
+      "price": "0.10",
+      "moq": "5000",
+      "images": [
+        "H4198ad901e1741edbfbd2777128f28e1y.jpg",
+        "Heb8c08bbbf04465794b3a10d943c8b76h.jpg",
+        "Hf8a83f644c574ac6a87408d82081acc4X.jpg",
+        "H2dc1894aed0641428d8fafa32ca9618bO.jpg"
+      ]
+    },
+    {
+      "id": "1601453596462",
+      "category": "closures",
+      "name": "Brushed lid for cream jars",
+      "detail": "Gold and black scribe metal lid for face cream",
+      "title": "Customized Gold & Black Scribe Metal Lid Brushed Aluminium Perfume Cap for Face Cream Bottle Closures",
+      "price": "0.10",
+      "moq": "5000",
+      "images": [
+        "H50c23d99dfdd459999e10eabdad87febp.jpg",
+        "H70130d2c49b2434789ee38a74781936cA.jpg",
+        "H8ebfc7c93ff149098a696fa1838cdce8k.jpg",
+        "Hb349a2c763cf4744be53d10b22f85f0b4.jpg"
+      ]
+    },
+    {
+      "id": "1601365395825",
+      "category": "closures",
+      "name": "Aluminium cosmetic cover",
+      "detail": "Bottle cover in custom colour and shape",
+      "title": "Customized Aluminum Cosmetic Bottle Cover for Bottles Wholesale High Quality Custom Color & Shape",
+      "price": "0.16",
+      "moq": "5000",
+      "images": [
+        "Hbd90360449334e3586b46d087c3ec84aR.jpg",
+        "Hdd0e9833803144da9f10b38976be361eW.jpg",
+        "Hb1160705d29645b1b05b3ce874cb7ae6j.jpg",
+        "H2054d316dcc548bf95cbde6e8ecd646aq.jpg"
+      ]
+    },
+    {
+      "id": "1601094587451",
+      "category": "accessories",
+      "name": "Magnetic cap and crimp collar",
+      "detail": "FEA13 / 15 / 18 mm, gold or silver",
+      "neck": "FEA13 / FEA15",
+      "title": "Customized Gold Silver FEA 13mm 15mm 18mm Aluminum Magnetic Cap and Collar for Crimp Pump and Perfume Bottle Cap",
+      "price": "0.02-0.04",
+      "moq": "5000",
+      "images": [
+        "H29810d00a1e647aba3e59702ec66a569m.jpg",
+        "H91c39e3d7d4549e7b1a19bb1ea8a118eS.jpg",
+        "H7f360d57056a417b982fbef1d916abe6b.jpg",
+        "Hff2d045a954045d2833996097d973361Y.jpg"
+      ]
+    },
+    {
+      "id": "1601147041398",
+      "category": "accessories",
+      "name": "13 mm crimp collar",
+      "detail": "Aluminium collar for fine-mist pumps, golden or silver",
+      "neck": "FEA13",
+      "title": "13mm Aluminum Perfume Bottle Cap Fine Mist Sprayer Pump Crimp Golden Silver Customized Color Size High Quality Bottles Maohan",
+      "price": "0.04",
+      "moq": "5000",
+      "images": [
+        "He7fe73c0ec044e85a1f2ba1dd31b72eb3.jpg",
+        "H91cc6622ccd745d78ee71903021e6e41B.jpg",
+        "H82c5e903a463446991f099d488c5220bm.jpg",
+        "H92c1aa6c6b584ba8bb3679ea791c007dP.jpg"
+      ]
+    },
+    {
+      "id": "1601146965680",
+      "category": "accessories",
+      "model": "BC-3",
+      "name": "BC-3 pump crimp",
+      "detail": "Aluminium magnetic pump crimp, golden or silver",
+      "title": "Maohan BC-3 Customizable Aluminum Pump Crimp Magnetic Perfume Bottle Caps & Closures with Golden/Silver Finish High Quality",
+      "price": "0.03",
+      "moq": "10000",
+      "images": [
+        "H8f3c170bb3734bec89bddd1e9cb80280W.jpg",
+        "H440a9fa364d94f25a0147d2e3d8a8da6e.jpg",
+        "H6ab118c5c3154cd5876e20af80918683O.jpg",
+        "Hefe8b5ff883a49deafd07b140fd1387dz.jpg"
+      ]
+    },
+    {
+      "id": "1601153670084",
+      "category": "accessories",
+      "name": "Bayonet nozzle collar",
+      "detail": "FEA13 / 15 / 18 customised collar for glass bottles",
+      "neck": "FEA13 / FEA15",
+      "title": "FEA13 15 18 Customized Collar Perfume Bottle Magnetic Cap Cover Bayonet Nozzle Spray Handmade Lids Closures for Glass Bottles",
+      "price": "0.05",
+      "moq": "5000",
+      "images": [
+        "Hf69762b98075482b91647610496c9948r.jpg",
+        "Hc037099a7f634923b5f4f08d8eaae86ew.jpg",
+        "H1f1e53d2f8de4007b173497ea4d58d33v.jpg",
+        "H971721518bf044d9a7b67915bb50d5c7R.jpg"
+      ]
+    },
+    {
+      "id": "1601205993076",
+      "category": "accessories",
+      "name": "Metal magnetic collar",
+      "detail": "13 / 15 / 18 mm aluminium pump crimp, golden or silver",
+      "neck": "FEA13 / FEA15",
+      "title": "Custom 13mm 15mm 18mm Metal Magnetic Collar for Perfume Lids Bottle Caps & Closures in Golden Silver Aluminum Pump Crimp",
+      "price": "0.05",
+      "moq": "5000",
+      "images": [
+        "He0975b7f722140a59fc078f3ab6200a0v.jpg",
+        "Hfa16aae001d1482d84a0a6709790c8339.jpg",
+        "Hd2839f4d8eab41978b320e9c47ac7273r.jpg",
+        "H9470e0a3d7c241e3b539e1f6d15a851bJ.jpg"
+      ]
+    },
+    {
+      "id": "1601392484237",
+      "category": "accessories",
+      "name": "Aluminium shoulder collar",
+      "detail": "Bottle cap ring for spray bottles",
+      "title": "Customized Aluminum Shoulder Collar for Perfume Bottles Bottle Cap Ring Capping Spray Feature Product Lids Bottle Caps Closures",
+      "price": "0.08",
+      "moq": "10000",
+      "images": [
+        "H2d8accf190064192b66d2580856ae7f0s.jpg"
+      ]
+    },
+    {
+      "id": "1601146941829",
+      "category": "accessories",
+      "name": "Aluminium-plastic collar",
+      "detail": "Shoulder collar ring for cosmetic crimp sprayers",
+      "title": "Customized Aluminium-Plastic Shoulder Collar Perfume Bottle Cap Ring Capping Cosmetic Crimp with Spray",
+      "price": "0.10",
+      "moq": "1000",
+      "images": [
+        "Hb4efd8e5a23b4725abcbcf7f1a080f9dR.jpg",
+        "H1954e0d860284c06a499b9b457a33470a.jpg",
+        "H56f1a2393e3d4545b4e0533f742eaaf6l.jpg",
+        "H9481c5067fa94563987d6d5ab67ee668w.jpg"
+      ]
+    },
+    {
+      "id": "1601175520157",
+      "category": "accessories",
+      "name": "Leak-proof pump collar",
+      "detail": "FEA13 / 15 cylinder collar, silver, gold or black, custom logo",
+      "neck": "FEA13 / FEA15",
+      "title": "Custom Fea 13mm 15mm Leak Proof Perfume Pump Collar Cylinder Round Silver Gold Black Aluminum Perfume Bottle Cap Custom Logo",
+      "price": "0.11",
+      "moq": "5000",
+      "images": [
+        "Hce86f35b1fc04f86b866e841ec700182m.png",
+        "Hd0c1201484524f5e8065df611ddf197fq.jpg",
+        "Hca3e5e7475d3454598b680c82f2e3c1cn.png",
+        "H49b722cbcbf343d9874e3c8d154bff80F.png"
+      ]
+    },
+    {
+      "id": "1601452198173",
+      "category": "cylinder",
+      "name": "Leak-proof magnetic cap set",
+      "detail": "FEA15 aluminium magnetic cap with collar",
+      "neck": "FEA15",
+      "title": "FEA15 Customized Magnetic Leak Proof Magnetic Cap of Perfume Bottle Magnetic Aluminium Caps Set Luxury Aluminum Factory",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "H292c2005766c4bfb9f18131a966a612eN.jpg",
+        "H58cc3af252c842f9882e7fb0e9b79b13w.jpg",
+        "H4d30269198fc4d16a8bdaf4929d5b061y.jpg",
+        "H1723943263814fd7944b1fd9ad451b19h.jpg"
+      ]
+    },
+    {
+      "id": "1601295650462",
+      "category": "cylinder",
+      "name": "Single-step magnetic cover",
+      "detail": "Anodized cap with single-step shoulder and middle sleeve",
+      "badge": "STORE BESTSELLER",
+      "title": "Customizable Magnet Cover Anodized Aluminum Perfume Bottle Cap Single Step Shoulder Sleeve Middle Sleeve Lid Bottle Closures",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "H7cae970c385c48ebb1c2d9e4d02a92bdx.jpg",
+        "Hd0f2c3ba85854841af64a15a7ab3ef51N.jpg",
+        "H5e70a855517c45b88e64497311e502c09.jpg",
+        "H776e7b1b92f94748822e1eb2e2420b2et.jpg"
+      ]
+    },
+    {
+      "id": "1601295931698",
+      "category": "cylinder",
+      "name": "27.5 × 28 straight magnetic cap",
+      "detail": "Aluminium-plastic magnetic cap, customisable logo",
+      "badge": "STORE BESTSELLER",
+      "title": "Maohan High Grad27.5*28 Magnetic Straight Aluminum Plastic Customizable Logo Cosmetic Packaging Pump Sprayer Perfume Bottle Cap",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "Hfc84abea05694edebc1c69f4d8486f1aw.jpg",
+        "H900379fd7c10494895392a4e2c8a702eH.jpg",
+        "Hf63289faa1a24e26b9fda06df2115aeab.jpg",
+        "H96556fc76def4cbf922ba00ddb4807a1K.jpg"
+      ]
+    },
+    {
+      "id": "1601000868320",
+      "category": "cylinder",
+      "name": "27.5 × 28 magnetic ring assembly",
+      "detail": "Aluminium-plastic magnetic lid with anodized cap",
+      "title": "Factory Wholesale Custom Creative Aluminum Plastic 27.5*28 Magnetic Ring Assy Perfume Bottle Cap Magnetic Lid Anodized Cap",
+      "price": "0.50",
+      "moq": "5000",
+      "images": [
+        "H9deb29984fe74732bf9d330334597e23H.jpg",
+        "Ha59e7cb7efda46dd9ea8d1f9f6f3f8a9d.jpg",
+        "H28b221be5cdf4b838471d173f77f1038C.jpg",
+        "H5ad3bc5c3122437eae346bbbe0ed4aabo.jpg"
+      ]
+    },
+    {
+      "id": "1601452048346",
+      "category": "cylinder",
+      "name": "31 × 31 magnetic cap assembly",
+      "detail": "Aluminium-plastic lid with magnetic ring",
+      "title": "Factory Wholesale Custom Creative 31*31 Aluminum Plastic Perfume Lid Bottle Cap Magnetic Cap Assy Magnetic Ring Lids Closures",
+      "price": "0.55",
+      "moq": "5000",
+      "images": [
+        "Heda1ef57bd164adaa00e7f5ad2d12fdeJ.jpg",
+        "H6831091896b94fd8b933bfe71600f564a.jpg",
+        "H302593c9a23249f59893271563332e56i.jpg",
+        "H6988207cbddf4189912086ba63ed701cN.jpg"
+      ]
+    },
+    {
+      "id": "1601012307809",
+      "category": "cylinder",
+      "name": "25 × 25 magnetic cap assembly",
+      "detail": "Straight round magnetic cap for pump sprayers",
+      "title": "High Grade 25*25 Magnetic Assy Straight Round Cosmetic Packaging Pump Sprayer Perfume Bottle Cap Lids & Closures",
+      "price": "0.50",
+      "moq": "5000",
+      "images": [
+        "Hfad39a6711084d5c8a49586ec4d98edcI.jpg",
+        "H7278230b5307490a99ace274b9725c40l.jpg",
+        "H58d0b40c96b24d6a8d618083b3deb32fF.jpg",
+        "Hd45b0475c86d4fd9b517200e3d158613Y.jpg"
+      ]
+    },
+    {
+      "id": "1601536084592",
+      "category": "sculptural",
+      "name": "Big-side sphere cap",
+      "detail": "Electro-aluminium magnetic sphere with middle sleeve",
+      "title": "Customized Spherical Shape Electrochemical Aluminum Magnetic Cover Big Side Sphere Perfume Bottle Lid Middle Sleeve Bottle Cap",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "H345b2843f23b4d6a916707a7abb482e5o.jpg",
+        "Hd84dec25a74e4666b6cccd47f56ad4ab8.jpg",
+        "Ha39752ce56b8487781b57dc74290298ay.jpg",
+        "H0361ff91cf1d421a848347ca877b2aa9a.jpg"
+      ]
+    },
+    {
+      "id": "1601580193742",
+      "category": "sculptural",
+      "name": "Spherical middle-sleeve cap",
+      "detail": "Electro-aluminium magnetic sphere, big side",
+      "title": "Customized Spherical Shape Electrochemical Aluminum Perfume Magnetic Bottle Cap Lid Middle Sleeve Big Side Cap Lids Closures",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "Hbe636765dba74a3092b63269365a0779k.jpg",
+        "H1cb9e1fc923d478ea20379829a04afc8J.jpg",
+        "H3ca1f397feb4465493a9ba1fc6acdce7d.jpg",
+        "H561a818cf5804e17a36dfac24796d9ael.jpg"
+      ]
+    },
+    {
+      "id": "1601584877312",
+      "category": "cylinder",
+      "name": "Big-side magnetic closure",
+      "detail": "Electro-aluminium lid with middle sleeve",
+      "title": "Customized Electrochemical Aluminum Lids Middle Sleeve Perfume Bottle Cover Big Side Magnet Closure Bottle Caps Lids Product",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "H760bcee71f9742f38dab74e82864549aL.jpg",
+        "H3eccd12e82244400a59b3391b2a897bfH.jpg",
+        "H2a45bdad80b34e9982cfe52bbc325b7fw.jpg",
+        "H1b391215161c4ef2b0c08de99ac42cf01.jpg"
+      ]
+    },
+    {
+      "id": "1601565562868",
+      "category": "wood",
+      "name": "Raw hardwood magnetic cap",
+      "detail": "Customisable solid wood perfume cap",
+      "title": "Customizable Hardwood Wooden Magnetic Cap Manufacturer for Lids Bottle Caps & Closures Perfume Bottle Cap Raw Wood",
+      "price": "0.70",
+      "moq": "5000",
+      "images": [
+        "H441a58bfade84fdf8082ab32f7b18e8an.jpg",
+        "H8d8c2eacfd244b30a0cdde3008e5dd093.jpg",
+        "Hb147b19bcb1d4f878251d3e22494f03dd.jpg",
+        "Hb7fa43e4bbd44086904eab8f67bea7bbI.jpg"
+      ]
+    },
+    {
+      "id": "1601536766018",
+      "category": "wood",
+      "name": "Wooden spherical cap",
+      "detail": "Spherical magnetic cap in natural wood",
+      "title": "Manufacturer Customizable Spherical Magnetic Cap Wooden Spherical Perfume Magnetic Cap for Bottle Usage",
+      "price": "0.70-0.72",
+      "moq": "10000",
+      "images": [
+        "H046966c4c15240a88b1d943a7e49caa1n.jpg",
+        "Haad7d6941c704d47b1cf998ff4e3c3d6R.jpg",
+        "H840206227048453da4ae7f4572b84f40k.jpg",
+        "Hcc984a8d089c4dd9ac3d681048cbed12Y.jpg"
+      ]
+    },
+    {
+      "id": "1601362605356",
+      "category": "cylinder",
+      "name": "Large-edge bright black cap",
+      "detail": "Electro-aluminium magnetic cap with shoulder",
+      "title": "Large Edge Magnet Cover with Shoulder Bright Black New Bottle Cap Electrochemical Aluminum Perfume Cap, New Magnetic Cap",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "H3d06f6e0dd5b4a8a9c53dd18eed8fc83u.jpg",
+        "H051a7133de4f4fe1b81aa8f90f4e4250T.jpg",
+        "H4b373bcf4df34830980b4ac642a28439q.jpg",
+        "H90dcca80d74e4648add24b9b1e4b5aefk.jpg"
+      ]
+    },
+    {
+      "id": "1601561057419",
+      "category": "cylinder",
+      "name": "Large-edge magnetic cap",
+      "detail": "In stock for 15 / 13 mm necks, customisable",
+      "neck": "FEA13 / FEA15",
+      "title": "In-Stock Large-Edge Magnetic Perfume Cap 15/13-Port Magnetic Cap with Customization Support Bottle Lids & Closures",
+      "price": "0.53-0.55",
+      "moq": "10000",
+      "images": [
+        "H33b580dd5d5c411e963a1fbc84099b6fj.jpg",
+        "He6b0a3d8803b487297768c6c25046bffZ.jpg",
+        "Hafd720ed394f486bb0d35677e6e594a8y.jpg",
+        "H91a603a11ca548129ef009587e82f671F.jpg"
+      ]
+    },
+    {
+      "id": "1601988296838",
+      "category": "sculptural",
+      "name": "Square black anodized cap",
+      "detail": "Square magnetic cap with anodized shoulder collar",
+      "title": "Anodized Magnetic Perfume Bottle Caps Perfume Bottle Cap Anodized Shoulder Collar square Black Caps",
+      "price": "0.78",
+      "moq": "5000",
+      "images": [
+        "H9a27a2714c194b08a84b9a791a23dd87C.jpg",
+        "H91bfe2a5b2874629ba05553837c0b332L.jpg",
+        "Ha8fb4ec514f546ec8e86f515e3fd49ceZ.jpg",
+        "H583c507a6aa346449e79337d64b8a7658.jpg"
+      ]
+    },
+    {
+      "id": "1601569205597",
+      "category": "cylinder",
+      "name": "White aluminium magnetic ring",
+      "detail": "Custom-made magnetic ring cap component",
+      "title": "White Aluminum Magnetic Ring Component Custom-made Factory Wholesale for Perfume Bottle Cap",
+      "price": "0.63-0.65",
+      "moq": "10000",
+      "images": [
+        "H64bab3b671b9478cb1a929ee3faeee12z.png",
+        "H1cc826b86f8f40a5b21e9be4ee12c732O.jpg",
+        "H199b9d96d1df4016b18f8dcaa4735fa6e.jpg",
+        "Ha8ac60f96b4843aaa7d4bb32d5e19fcdi.jpg"
+      ]
+    },
+    {
+      "id": "1601723006809",
+      "category": "sculptural",
+      "model": "MHQ36",
+      "name": "MHQ36 spherical cap",
+      "detail": "Electro-aluminium sphere with glass, custom colour and logo",
+      "title": "Maohan MHQ36 Customized Spherical Electrochemical Aluminum Glass+Cap Magnet Perfume Bottle Lid Custom Color Custom Logo Custom",
+      "price": "0.56-0.58",
+      "moq": "10000",
+      "images": [
+        "Hb89e825c303447e68e73388f4ed0d91bS.jpg",
+        "H6bfcaa38e09a4d6c836dbcc4bf77eec20.jpg",
+        "H5031faaaed6648aa8063cded5df5a9daO.jpg",
+        "Hbcbb742434ce4a7089d84675f97742f12.jpg"
+      ]
+    },
+    {
+      "id": "1601425561228",
+      "category": "cylinder",
+      "model": "WRQ",
+      "name": "WRQ big-side magnetic cover",
+      "detail": "Electro-aluminium cover with middle sleeve",
+      "title": "WRQ Customized Electrochemical Aluminum Magnetic Cover Big Side Perfume Bottle Lid Middle Sleeve Bottle Cap",
+      "price": "0.63-0.65",
+      "moq": "10000",
+      "images": [
+        "H76c5fa85a2374c3493ed338c680915398.jpg",
+        "H718e85fbf6ae4f5c9583b0f17f963dd6a.jpg",
+        "Hb01b4b2465484e6f968cdffe2360ead8D.jpg",
+        "H6dbfb3c7b9fc4fd9957dd09b84e27c5ar.jpg"
+      ]
+    },
+    {
+      "id": "1601900262058",
+      "category": "cylinder",
+      "model": "WL100",
+      "name": "WL100 brushed magnetic cap",
+      "detail": "Brushed aluminium for FEA15 spray atomizers",
+      "neck": "FEA15",
+      "title": "WL100 Durable Brushed Magnetic Aluminum Smart Lid Magnetic Perfume Bottle Cap for FEA15 Perfume Spray Atomizer",
+      "price": "0.63-0.65",
+      "moq": "10000",
+      "images": [
+        "Hf78515bfe94e4a77928b7bd0a6effc1aL.jpg",
+        "H49d3bb2a37c2437ab929788de3b5a08fJ.jpg",
+        "H20c076cc3c324899aaa27a27935a2d07w.jpg",
+        "H3bd5557f6a2b4bda9fc36754d34eb750T.jpg"
+      ]
+    },
+    {
+      "id": "1601521989489",
+      "category": "sculptural",
+      "name": "Spherical cap with logo printing",
+      "detail": "Electro-aluminium sphere, 15 mm, custom logo",
+      "neck": "FEA15",
+      "title": "Customized Spherical Electrochemical Aluminum Plastic Perfume Bottle Cap Lid Custom Logo Printing Maohan Brand Model 15# High",
+      "price": "0.58",
+      "moq": "5000",
+      "images": [
+        "H0b582bb3d2564de4bc6a56a1ff38ee37C.jpg",
+        "H5765532c652648b89864ccfca9763accT.jpg",
+        "H3128826de8f54bb49dc485e3786f0b19R.jpg",
+        "Hb7c09ed914d84e898672cdc82a5a5c33w.jpg"
+      ]
+    }
+  ]
+}

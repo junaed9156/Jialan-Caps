@@ -1,0 +1,15 @@
+{
+  "name": "jialan-caps",
+  "private": true,
+  "description": "Jialan catalogue website. The 3D scenes in src/3d are bundled into dist/js.",
+  "type": "module",
+  "scripts": {
+    "build:3d": "rm -rf dist/js && esbuild src/3d/main.js --bundle --splitting --format=esm --minify --target=es2020 --outdir=dist/js --chunk-names=chunk-[hash] --legal-comments=none",
+    "watch:3d": "npm run build:3d -- --watch",
+    "serve": "python3 -m http.server 8000 --directory dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "three": "^0.187.0"
+  }
+}
