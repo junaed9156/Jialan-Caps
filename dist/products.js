@@ -41,16 +41,16 @@ window.JIALAN = {
     "Blue coating"
    ],
    "images": [
-    "assets/p/fd87d7e60dd3ee0c",
-    "assets/p/21fc44a4f4e3fd71",
-    "assets/p/984187246ac59206",
-    "assets/p/b5837b1c8e419efa",
-    "assets/p/2a026568b1d9b023",
-    "assets/p/474573dd47bd632d",
-    "assets/p/6fbb863d0d7ea6f5",
-    "assets/p/f13be5f4fb8ed0d1",
-    "assets/p/16aff0ba621d5a40",
-    "assets/p/18bedfeaab025928"
+    "assets/p/172643629eca7752",
+    "assets/p/459bb3f4c52092d6",
+    "assets/p/6b979d899a2d5252",
+    "assets/p/a216c253079cfdd9",
+    "assets/p/54b44811e86bde17",
+    "assets/p/fe70de8dbe99000e",
+    "assets/p/61504f23d8a09e1d",
+    "assets/p/cc3f36ef8ebf84d3",
+    "assets/p/95904ee69b542ebd",
+    "assets/p/cdc1708a4c6b44a9"
    ],
    "defaultVariant": 1
   },
@@ -77,14 +77,14 @@ window.JIALAN = {
     "Matte blue"
    ],
    "images": [
-    "assets/p/cd1020a63ecfc74c",
-    "assets/p/4e5198d952999335",
-    "assets/p/708e604237294802",
-    "assets/p/c53bcf95bf461c86",
-    "assets/p/16a0faffa178937e",
-    "assets/p/ba68ff00be9cd766",
-    "assets/p/cb2a8087e4280595",
-    "assets/p/f2586fac6dff23ad"
+    "assets/p/52a8136af3c326d5",
+    "assets/p/83ea9fb9da702ca8",
+    "assets/p/9e41fe1b5959d2a8",
+    "assets/p/16da311db5f2faa8",
+    "assets/p/8f7a8b8943212067",
+    "assets/p/efdb2a84d522760a",
+    "assets/p/44cd82866cb3118b",
+    "assets/p/deb9ec4156229627"
    ],
    "defaultVariant": 1
   },
@@ -106,9 +106,9 @@ window.JIALAN = {
     "Black wood"
    ],
    "images": [
-    "assets/p/b96dd5a2c3e6cd9d",
-    "assets/p/14f80a452fccc7f8",
-    "assets/p/dd0e0be501ed40b7"
+    "assets/p/5ee3aa9ee10d0557",
+    "assets/p/363c724fb623b03b",
+    "assets/p/4cece47e01f9b521"
    ]
   },
   {
@@ -136,16 +136,16 @@ window.JIALAN = {
     "White coating"
    ],
    "images": [
-    "assets/p/7f743b9b80b4ae95",
-    "assets/p/40a0482822c11f86",
-    "assets/p/ebb20d2e716b8202",
-    "assets/p/298fc49756d8e8e8",
-    "assets/p/3840472cd4b50a36",
-    "assets/p/ed3caa02839ce77b",
-    "assets/p/9af6c6252116ddd6",
-    "assets/p/33452d41de27bb9a",
-    "assets/p/4a3e3787ab2c206f",
-    "assets/p/81e88be7fcb4e294"
+    "assets/p/1dc8e4450ca9043b",
+    "assets/p/54957cad21de9497",
+    "assets/p/681cd3ff04bb478d",
+    "assets/p/4e0ff726c0470915",
+    "assets/p/2d5babd74debef8a",
+    "assets/p/c641192e94a7d8a8",
+    "assets/p/a4aaf9b050025460",
+    "assets/p/d1cda35e210d0f31",
+    "assets/p/d2f9c00d1349bfdc",
+    "assets/p/36c4b1beda4339da"
    ],
    "defaultVariant": 1
   },
@@ -189,12 +189,12 @@ window.JIALAN = {
     "Matte silver"
    ],
    "images": [
-    "assets/p/507f6365f33153a1",
-    "assets/p/6f2ed7119aa85bb0",
-    "assets/p/84f97982b4fed047",
-    "assets/p/9205b2e6416e5efb",
-    "assets/p/e1fad3411bf33c9c",
-    "assets/p/677a861ee0756410"
+    "assets/p/8bc5d9ba429476d3",
+    "assets/p/ff7edef2d6970fac",
+    "assets/p/1f977fbdadf7ba9d",
+    "assets/p/fe108ad909b593ae",
+    "assets/p/b4acd24a3e85610b",
+    "assets/p/4479d668168408b9"
    ]
   },
   {
@@ -214,9 +214,9 @@ window.JIALAN = {
     "Glossy silver"
    ],
    "images": [
-    "assets/p/cc9de7b16a425376",
-    "assets/p/3cf2c57eed0887e1",
-    "assets/p/3bec3b4f549fa9bd"
+    "assets/p/b1244172b2c14741",
+    "assets/p/4f24249e1f90e95d",
+    "assets/p/d7992f9fa4bb623f"
    ],
    "defaultVariant": 1
   },
@@ -240,12 +240,12 @@ window.JIALAN = {
     "Matte white"
    ],
    "images": [
-    "assets/p/a9af350ce4c26849",
-    "assets/p/ff781be1cbe9228a",
-    "assets/p/712cf8f8692f8c0c",
-    "assets/p/6df27e4a31851d52",
-    "assets/p/e1560b0a2a565162",
-    "assets/p/6322e9676d694116"
+    "assets/p/dea5603247602859",
+    "assets/p/83820f6ac7b4246a",
+    "assets/p/c8ed338e70733337",
+    "assets/p/aec8e3f451708aed",
+    "assets/p/ca8f138feaae6d77",
+    "assets/p/767f664967a25caf"
    ]
   },
   {
@@ -272,16 +272,16 @@ window.JIALAN = {
     "Matte dark grey"
    ],
    "images": [
-    "assets/p/5a0e7e8d78b1a1cb",
-    "assets/p/a582ff94d5a72ad4",
-    "assets/p/43d6386976c729ee",
-    "assets/p/10b7bd7fe058b10c",
-    "assets/p/994d0e28dde18127",
-    "assets/p/aa47a567cf78a4c8",
-    "assets/p/1c12ca02987f8d59",
-    "assets/p/d46abc6481ded03c",
-    "assets/p/f3acaab8dfd79ae1",
-    "assets/p/3e9ddb9e2c646285"
+    "assets/p/345a20226af38ffc",
+    "assets/p/c6fcc811a804e381",
+    "assets/p/6bab001916c14516",
+    "assets/p/3908ddb0ef6210ab",
+    "assets/p/78b12c0fc7485d92",
+    "assets/p/d364c8d22842c070",
+    "assets/p/25120c2d9fff0684",
+    "assets/p/cd336e0ec7dd33e5",
+    "assets/p/3b7490d0796086f8",
+    "assets/p/ca54ae97afc6617e"
    ]
   },
   {
@@ -301,9 +301,9 @@ window.JIALAN = {
     "Matte red"
    ],
    "images": [
-    "assets/p/19aad957183399a5",
-    "assets/p/491a5949f7823a32",
-    "assets/p/f6a43f4a48e5049f"
+    "assets/p/29a854b63868b1d1",
+    "assets/p/ce71d45de5461793",
+    "assets/p/7f00f49abe9a0349"
    ]
   },
   {
@@ -330,16 +330,16 @@ window.JIALAN = {
     "White coating"
    ],
    "images": [
-    "assets/p/91e8155d66d916c5",
-    "assets/p/5660655f4f9fb1ae",
-    "assets/p/0385bfa6d41fe84d",
-    "assets/p/66d1cc83e6e09514",
-    "assets/p/44fcc55da77017d9",
-    "assets/p/a283b67ce500eb58",
-    "assets/p/0e7730b4b7578a29",
-    "assets/p/98ebeef80208e0b8",
-    "assets/p/9b200bdcaf74ca63",
-    "assets/p/9c2ae24c2a3b1b4c"
+    "assets/p/21931ad2ec73540f",
+    "assets/p/40cc5bdeb30c1a3f",
+    "assets/p/f20ff29da2fdd088",
+    "assets/p/babffc0cdbbbdcff",
+    "assets/p/45a5fc3087615744",
+    "assets/p/95aeca61e301cdf5",
+    "assets/p/697cf90a84d79dbb",
+    "assets/p/c1129bab6fb8e8b6",
+    "assets/p/f383248d91b5f784",
+    "assets/p/e778f45da2462ac6"
    ]
   },
   {
@@ -358,8 +358,8 @@ window.JIALAN = {
     "Matte black"
    ],
    "images": [
-    "assets/p/73b7ff4b7d2094f7",
-    "assets/p/19803512345532e0"
+    "assets/p/3c89e573375a7da5",
+    "assets/p/f0a316961a6af43c"
    ]
   },
   {
@@ -378,8 +378,8 @@ window.JIALAN = {
     "Matte black"
    ],
    "images": [
-    "assets/p/c80fa2cdbc1d5a55",
-    "assets/p/deaab226f04e02a5"
+    "assets/p/cd7155b17ae7c028",
+    "assets/p/8d5916ad7daa7903"
    ]
   },
   {
@@ -404,14 +404,14 @@ window.JIALAN = {
     "Matte dark grey"
    ],
    "images": [
-    "assets/p/7f743b9b80b4ae95",
-    "assets/p/ebb20d2e716b8202",
-    "assets/p/298fc49756d8e8e8",
-    "assets/p/ed3caa02839ce77b",
-    "assets/p/9af6c6252116ddd6",
-    "assets/p/088b6cc3338eb858",
-    "assets/p/33452d41de27bb9a",
-    "assets/p/4a3e3787ab2c206f"
+    "assets/p/1dc8e4450ca9043b",
+    "assets/p/681cd3ff04bb478d",
+    "assets/p/4e0ff726c0470915",
+    "assets/p/c641192e94a7d8a8",
+    "assets/p/a4aaf9b050025460",
+    "assets/p/fd4910089ced3cda",
+    "assets/p/d1cda35e210d0f31",
+    "assets/p/d2f9c00d1349bfdc"
    ]
   },
   {
@@ -432,9 +432,9 @@ window.JIALAN = {
     "Glossy silver"
    ],
    "images": [
-    "assets/p/4a189846807a30f8",
-    "assets/p/a119b7961a1ad662",
-    "assets/p/c5c78ac6b7c56d04"
+    "assets/p/0b6eedfc9267111c",
+    "assets/p/111422302b4b660c",
+    "assets/p/34fcd840304f43e8"
    ]
   },
   {
@@ -457,12 +457,12 @@ window.JIALAN = {
     "Matte silver"
    ],
    "images": [
-    "assets/p/cb79f74f8f7e3ecd",
-    "assets/p/5c68d1aa2598d0d6",
-    "assets/p/6fe3f5f0b0c60f59",
-    "assets/p/06042056f54274cb",
-    "assets/p/53887443b93cdd83",
-    "assets/p/98276c0190de9024"
+    "assets/p/957fc4f9d12acc09",
+    "assets/p/e30b45ce0a8adf9e",
+    "assets/p/4968f2db798c13a6",
+    "assets/p/93e7d8f4ae91e5c8",
+    "assets/p/a39fe0dcb1a1f42c",
+    "assets/p/c5df149438540e80"
    ]
   },
   {
@@ -487,14 +487,14 @@ window.JIALAN = {
     "Coffee coating"
    ],
    "images": [
-    "assets/p/a38fea5966028b0c",
-    "assets/p/40a0482822c11f86",
-    "assets/p/ebb20d2e716b8202",
-    "assets/p/014f06e40916f562",
-    "assets/p/3840472cd4b50a36",
-    "assets/p/ed3caa02839ce77b",
-    "assets/p/4cd6881d283620d8",
-    "assets/p/707388bb12da7d12"
+    "assets/p/c14524c0e2a0cc56",
+    "assets/p/54957cad21de9497",
+    "assets/p/681cd3ff04bb478d",
+    "assets/p/4e01233f6e221abc",
+    "assets/p/2d5babd74debef8a",
+    "assets/p/c641192e94a7d8a8",
+    "assets/p/045c8d0a47ace944",
+    "assets/p/9ba1e3d52be8136a"
    ]
   },
   {
@@ -517,12 +517,12 @@ window.JIALAN = {
     "Matte silver"
    ],
    "images": [
-    "assets/p/29de865b8b76df8c",
-    "assets/p/62dd65bf0cb5f2c6",
-    "assets/p/095f1c6f5fe3388b",
-    "assets/p/7312ef3117990753",
-    "assets/p/b25ba1578b449079",
-    "assets/p/eda1e9cd741680dd"
+    "assets/p/f8b9d7ae06fec0f6",
+    "assets/p/6d57923305fb3cb0",
+    "assets/p/a7a1c1902b1109b7",
+    "assets/p/f5274d8e18516ec3",
+    "assets/p/027e6c2b2ac70ff6",
+    "assets/p/4596f49edbd4c8df"
    ]
   },
   {
@@ -544,11 +544,11 @@ window.JIALAN = {
     "Matte gold"
    ],
    "images": [
-    "assets/p/df97b7138e260f45",
-    "assets/p/62dd65bf0cb5f2c6",
-    "assets/p/095f1c6f5fe3388b",
-    "assets/p/7312ef3117990753",
-    "assets/p/b25ba1578b449079"
+    "assets/p/3436cff050df2003",
+    "assets/p/5923afab81789217",
+    "assets/p/258327c73d4611a0",
+    "assets/p/8ab24edd8627a79a",
+    "assets/p/17d4230c290ac049"
    ]
   },
   {
@@ -571,12 +571,12 @@ window.JIALAN = {
     "Matte silver"
    ],
    "images": [
-    "assets/p/f4219d0ee8e3d5f6",
-    "assets/p/7a744d734b22b522",
-    "assets/p/8316a05fc38fbecc",
-    "assets/p/e99b4aa612b334f7",
-    "assets/p/9e299b70503efb47",
-    "assets/p/f1f63a45bfd462be"
+    "assets/p/78446a6f3394849c",
+    "assets/p/a00c7e9e1a584ef1",
+    "assets/p/ce63ba82f2e45c76",
+    "assets/p/9bd9e9e391740264",
+    "assets/p/cd78f63a9001e6ee",
+    "assets/p/c81ed2f2901aa020"
    ]
   },
   {
@@ -597,9 +597,9 @@ window.JIALAN = {
     "Glossy silver"
    ],
    "images": [
-    "assets/p/4e5d2e23e0c447c1",
-    "assets/p/951114666e022f9a",
-    "assets/p/78989249e2914a69"
+    "assets/p/3c8b84700e853e46",
+    "assets/p/fe510d435e21276e",
+    "assets/p/f3dcf32e9e43ffd1"
    ]
   },
   {
@@ -620,9 +620,9 @@ window.JIALAN = {
     "Glossy coffee"
    ],
    "images": [
-    "assets/p/96bf72f2ec7445ef",
-    "assets/p/1f5420343b2aa822",
-    "assets/p/de02edd4e8ae7745"
+    "assets/p/8689fdb73e073ed8",
+    "assets/p/97282047292ff3b4",
+    "assets/p/a59154945a572d8f"
    ]
   },
   {
@@ -680,9 +680,9 @@ window.JIALAN = {
     "Black wood"
    ],
    "images": [
-    "assets/p/8cba942f72d9dfaf",
-    "assets/p/fb435c6ac3ed8a28",
-    "assets/p/d0fdabed9e7ac83e"
+    "assets/p/eec51d7644137ccc",
+    "assets/p/3a462413d9778749",
+    "assets/p/f5a43a18bb3a4421"
    ]
   },
   {
@@ -701,7 +701,7 @@ window.JIALAN = {
     "Black wood"
    ],
    "images": [
-    "assets/p/ef8381e68ccda161"
+    "assets/p/71ebce77c7535180"
    ]
   },
   {
@@ -720,7 +720,7 @@ window.JIALAN = {
     "Black wood"
    ],
    "images": [
-    "assets/p/3b6a8509d9d97271"
+    "assets/p/b233a221f567dc62"
    ]
   },
   {
@@ -739,8 +739,8 @@ window.JIALAN = {
     "Glossy gold"
    ],
    "images": [
-    "assets/p/58c3b356fd2546bc",
-    "assets/p/f88f2de3e8ec502e"
+    "assets/p/4d6200754d0a0cb7",
+    "assets/p/37c807273dc4226e"
    ]
   },
   {
@@ -759,8 +759,8 @@ window.JIALAN = {
     "Glossy gold"
    ],
    "images": [
-    "assets/p/46f595ee0697f877",
-    "assets/p/5612b83ee9980b63"
+    "assets/p/5cc4c284d77d133a",
+    "assets/p/b35da4115d66ec1b"
    ]
   },
   {
@@ -779,8 +779,8 @@ window.JIALAN = {
     "Glossy gold"
    ],
    "images": [
-    "assets/p/1995ceca4ece8aff",
-    "assets/p/7d38273ae8beada9"
+    "assets/p/8df2940ab79e39a5",
+    "assets/p/b29f9980a8e5d104"
    ]
   },
   {
@@ -808,16 +808,16 @@ window.JIALAN = {
     "JL30 · Hydrographics"
    ],
    "images": [
-    "assets/p/0322c00580d19cc8",
-    "assets/p/f059389c20e5334d",
-    "assets/p/4be1c4b2072d00bf",
-    "assets/p/d844dac2f5ab502c",
-    "assets/p/15da700622a66dfe",
-    "assets/p/3d2f2327c737347f",
-    "assets/p/b20432de1d668d09",
-    "assets/p/c45e94b9facdb9ea",
-    "assets/p/0593bec7d6e12cb0",
-    "assets/p/485b179725866f15"
+    "assets/p/2b2da25dbc5f7423",
+    "assets/p/033c3eb930879488",
+    "assets/p/6a6927b21586f9e4",
+    "assets/p/0bb66ed06d28f92b",
+    "assets/p/760fbe5bc86577aa",
+    "assets/p/9fcc123c22a961e5",
+    "assets/p/50495545a7c3f681",
+    "assets/p/492a505af9e505df",
+    "assets/p/c3e4be97c8e50a86",
+    "assets/p/a9a4640cf95e1c10"
    ]
   },
   {
