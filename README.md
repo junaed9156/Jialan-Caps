@@ -2,6 +2,14 @@
 
 A responsive, buildless product catalogue for Jialan / Suzhou Maohan Metal Products Co., Ltd.
 
+Live website: https://jialan-caps.expert-siren-8808.chatgpt.site
+
+## 3D studio
+
+Explore cylinder, bead-rolled and spherical cap forms with rotating 3D geometry, three metallic finishes, drag rotation, a keyboard-accessible viewing-angle slider, and a lift-the-cap animation. The renderer uses WebGL where available and a built-in canvas software renderer elsewhere. It needs no external libraries. Motion can be paused, reduced-motion preferences are respected, and rendering pauses outside the viewport.
+
+These are illustrative form studies. Exact specifications and real finish photographs remain in the product catalogue; confirm the finished product with a physical sample. Prices are not displayed.
+
 ## Run
 
 Serve `dist/` using any static HTTP server. For example:
@@ -16,6 +24,7 @@ Open http://localhost:8000. No installation or build is required. The website wo
 
 - `dist/index.html` — website structure and contact information
 - `dist/styles.css` — responsive layouts, motion and reduced-motion support
+- `dist/studio.js` and `dist/studio.css` — interactive 3D geometry, finishes, assembly animation and motion controls
 - `dist/products.js` — product specifications and catalogue page references
 - `dist/app.js` — filtering, actual finish photographs, accessible dialogs, optional local shortlist persistence and WhatsApp enquiry drafts
 - `dist/assets/` — photographs extracted from the supplied catalogue and the downloadable 41-page catalogue
@@ -35,7 +44,7 @@ Visitors can shortlist a specific product and finish. The enquiry form creates a
 
 ## Update
 
-Edit product data in `dist/products.js` and marketing content in `dist/index.html`. To regenerate the photograph sprite from the original PDF, install PyMuPDF and Pillow and run:
+Edit product data in `dist/products.js` and marketing content in `dist/index.html`. To regenerate the photograph sprite from the original PDF, install PyMuPDF, Pillow, NumPy and SciPy and run:
 
 ```sh
 python3 scripts/extract_catalogue.py /path/to/original-catalogue.pdf
