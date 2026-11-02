@@ -29,33 +29,71 @@ MODEL_DIR = CACHE / 'realesrgan'
 MODEL_ZIP = 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-ubuntu.zip'
 
 
-def photograph(im: Image.Image, box=None, threshold=244, coloured_background=False) -> Image.Image:
-    """Isolate the main connected photographic object inside `box`.
-
-    Keeps the source photograph's own pixels and whitens separate dimension
-    arrows and text around it. Nothing about the product is generated.
-    """
-    im = im.crop(box or (0, 0, im.width, im.height))
-    a = np.asarray(im)
+def _isolate(a, threshold, coloured_background, strong, focus=None):
     if coloured_background:
         corners = np.array([a[0, 0], a[0, -1], a[-1, 0], a[-1, -1]], dtype=float)
         background = np.median(corners, axis=0)
         mask = np.sqrt(np.sum((a.astype(float) - background) ** 2, axis=2)) > 37
     else:
         mask = np.min(a, axis=2) < threshold
-    mask = ndimage.binary_opening(mask, structure=np.ones((3, 3)))
-    labels, count = ndimage.label(mask)
+    # A wider opening cuts the thin dimension lines and labels that touch the photo.
+    core = ndimage.binary_opening(mask, structure=np.ones((7, 7) if strong else (3, 3)))
+    labels, count = ndimage.label(core)
+    if not count:
+        return None
     sizes = np.bincount(labels.ravel())
     sizes[0] = 0
-    if not count or sizes.max() < 200:
-        return im
+    if focus is not None:
+        # Prefer the object inside the configured box over a neighbouring photo.
+        y0, y1, x0, x1 = focus
+        inside = np.bincount(labels[y0:y1, x0:x1].ravel(), minlength=len(sizes))
+        inside[0] = 0
+        if inside.max() > 200:
+            sizes = inside
+    if sizes.max() < 200:
+        return None
     component = labels == sizes.argmax()
-    component = ndimage.binary_fill_holes(ndimage.binary_dilation(component))
+    if strong:
+        component = ndimage.binary_dilation(component, iterations=4) & ndimage.binary_dilation(mask)
+    return ndimage.binary_fill_holes(ndimage.binary_dilation(component))
+
+
+def photograph(im: Image.Image, box=None, threshold=244, coloured_background=False, margin=0) -> Image.Image:
+    """Isolate the main connected photographic object inside `box`.
+
+    Keeps the source photograph's own pixels and whitens separate dimension
+    arrows and text around it. Nothing about the product is generated.
+    With `margin`, the box is widened, and widened again on any side where the
+    product still touches the edge, so a badly placed box cannot clip it.
+    """
+    box = box or (0, 0, im.width, im.height)
+    if not margin:
+        a = np.asarray(im.crop(box))
+        component = _isolate(a, threshold, coloured_background, False)
+    else:
+        grown = [max(0, box[0] - margin), max(0, box[1] - margin), min(im.width, box[2] + margin), min(im.height, box[3] + margin)]
+        for _ in range(8):
+            a = np.asarray(im.crop(tuple(grown)))
+            focus = (box[1] - grown[1], box[3] - grown[1], box[0] - grown[0], box[2] - grown[0])
+            component = _isolate(a, threshold, coloured_background, True, focus)
+            if component is None:
+                break
+            ys, xs = np.where(component)
+            edges = [xs.min() <= 2 and grown[0] > 0, ys.min() <= 2 and grown[1] > 0,
+                     xs.max() >= a.shape[1] - 3 and grown[2] < im.width, ys.max() >= a.shape[0] - 3 and grown[3] < im.height]
+            if not any(edges):
+                break
+            step = 40
+            grown = [max(0, grown[0] - step * edges[0]), max(0, grown[1] - step * edges[1]),
+                     min(im.width, grown[2] + step * edges[2]), min(im.height, grown[3] + step * edges[3])]
+    if component is None:
+        return im.crop(box)
     ys, xs = np.where(component)
     out = np.full_like(a, 255)
     out[component] = a[component]
+    h, w = a.shape[:2]
     return Image.fromarray(out).crop((max(0, int(xs.min()) - 3), max(0, int(ys.min()) - 3),
-                                      min(im.width, int(xs.max()) + 4), min(im.height, int(ys.max()) + 4)))
+                                      min(w, int(xs.max()) + 4), min(h, int(ys.max()) + 4)))
 
 
 def auto_photograph(im: Image.Image) -> Image.Image:

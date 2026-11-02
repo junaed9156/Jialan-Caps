@@ -98,3 +98,4 @@ html:not(.webgl) .anatomy-labels{display:none}
 .finish-product .product-photo>img{padding:4%}
 .detail-visual>.product-photo:not(.is-store)>img{padding:6%}
 .card-badge{background:#f6f4edcc}
+@media(max-width:760px){.anatomy-labels small{width:128px;white-space:normal;line-height:1.5}}

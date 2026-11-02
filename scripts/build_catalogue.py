@@ -301,7 +301,7 @@ def main():
         variants, seen_photos, seen_labels = [], set(), set()
         for card in e['_cards']:
             src = source_image(doc, card['xref'])
-            photo = hp.photograph(src, tuple(c['crop'])) if c.get('crop') else hp.auto_photograph(src)
+            photo = hp.photograph(src, tuple(c['crop']), margin=60) if c.get('crop') else hp.auto_photograph(src)
             key = hp.content_hash(photo)
             label = finish_label(card, photo, c)
             if key in seen_photos or label in seen_labels:
@@ -336,7 +336,7 @@ def main():
     for ed in cfg.get('editorial', []):
         im = page_image(doc, ed['page'], ed['image'])
         if ed.get('box'):
-            im = hp.photograph(im, tuple(ed['box']))
+            im = hp.photograph(im, tuple(ed['box']), margin=60)
         if ed.get('hd'):
             big = hp.enlarge(im)
             big.thumbnail((900, 900), Image.Resampling.LANCZOS)

@@ -120,12 +120,13 @@ export function mount(section) {
     const wide = camera.aspect > 1.1;
     // On wide screens the product sits right of the copy column.
     const W = stage.clientWidth, H = stage.clientHeight;
-    camera.setViewOffset(W, H, wide ? -W * 0.17 : 0, wide ? 0 : H * 0.12, W, H);
+    camera.setViewOffset(W, H, wide ? -W * 0.17 : W * 0.1, wide ? 0 : H * 0.1, W, H);
 
     const [yaw, pitch, dist0, ty] = cameraAt(p);
-    const dist = dist0 * (wide ? 1 : Math.max(1, 1.05 / camera.aspect));
+    const dist = dist0 * (wide ? 1 : Math.max(1, 0.62 / camera.aspect));
     camera.position.set(Math.sin(yaw) * Math.cos(pitch) * dist, ty + Math.sin(pitch) * dist, Math.cos(yaw) * Math.cos(pitch) * dist);
     camera.lookAt(0, ty, 0);
+    camera.updateMatrixWorld();
 
     // 1. Lift: the magnet lets go.
     const liftIn = ease.inOutCubic(range(p, 0.14, 0.28));

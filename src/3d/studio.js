@@ -269,7 +269,7 @@ export function mount(view) {
     if (!framed) { view3.ty = wantTy; view3.dist = wantDist; framed = true; }
     view3.ty = damp(view3.ty, wantTy, 4, dt);
     view3.dist = damp(view3.dist, wantDist, 4, dt);
-    const d = view3.dist;
+    const d = view3.dist * Math.max(1, 0.95 / camera.aspect);
     target.set(0, view3.ty, 0);
     camera.position.set(Math.sin(0.0) * d, view3.ty + Math.sin(view3.pitch) * d, Math.cos(view3.pitch) * d);
     camera.lookAt(target);
