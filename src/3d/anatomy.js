@@ -37,12 +37,12 @@ export function mount(section) {
   const scene = new THREE.Scene();
   scene.environment = studioEnvironment(renderer, { warmth: 0.6, light: true });
   const camera = new THREE.PerspectiveCamera(30, 1, 0.3, 300);
-  scene.add(backdrop('#fbfaf5', '#dfe4d9', { z: -40, size: 260, center: [0.5, 0.58] }));
+  scene.add(backdrop('#f8ecdc', '#c7dcd6', { z: -40, size: 260, center: [0.58, 0.6] }));
   const key = new THREE.DirectionalLight(0xfff5e6, 1.6);
   key.position.set(-8, 14, 10);
   scene.add(key, new THREE.HemisphereLight(0xffffff, 0xd8dccf, 1.0));
 
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0xe8eae1, roughness: 0.95, envMapIntensity: 0.3 });
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0xf1e2cf, roughness: 0.9, envMapIntensity: 0.3 });
   const floor = new THREE.Mesh(new THREE.CylinderGeometry(7.5, 7.5, 0.6, 128), floorMat);
   floor.position.y = -0.3;
   scene.add(floor);

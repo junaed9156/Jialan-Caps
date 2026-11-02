@@ -17,7 +17,7 @@ export function mount(sceneEl) {
   scene.environment = studioEnvironment(renderer, { warmth: 0.65, light: true });
   const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 200);
 
-  scene.add(backdrop('#f6f3ea', '#d3dccf', { z: -26, size: 160, center: [0.46, 0.6] }));
+  scene.add(backdrop('#f7efe1', '#c6d8cd', { z: -26, size: 160, center: [0.46, 0.6] }));
   const hemi = new THREE.HemisphereLight(0xffffff, 0xd4d5cb, 1.1);
   const key = new THREE.DirectionalLight(0xfff6e8, 2.0);
   key.position.set(-8, 14, 12);
