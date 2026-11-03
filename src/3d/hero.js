@@ -46,7 +46,7 @@ export function mount(stage, sequence) {
   const ink = paper.getContext('2d');
   ink.fillStyle = '#e8dfca'; ink.fillRect(0, 0, 512, 232);
   ink.fillStyle = '#203441'; ink.textAlign = 'center';
-  ink.font = '56px Georgia, serif'; ink.fillText('J I A L A N', 256, 127);
+  ink.font = '56px Georgia, serif'; ink.fillText('M A O   H A N', 256, 127);
   ink.fillStyle = '#ac8c58'; ink.fillRect(205, 158, 102, 3);
   const labelMap = new THREE.CanvasTexture(paper);
   labelMap.colorSpace = THREE.SRGBColorSpace;
@@ -54,7 +54,7 @@ export function mount(stage, sequence) {
     new THREE.MeshStandardMaterial({ map: labelMap, roughness: 0.9 }));
   label.position.set(0, 2.34, 1.39);
   bottle.stack.add(label);
-  const mark = logoDecal(bottle.capMesh, CAPS.wl100, 'JL',
+  const mark = logoDecal(bottle.capMesh, CAPS.wl100, 'MH',
     new THREE.MeshStandardMaterial({ color: '#50361d', metalness: 0.48, roughness: 0.36 }),
     { scale: 0.75 });
   if (mark) bottle.capMesh.add(mark);
@@ -74,7 +74,7 @@ export function mount(stage, sequence) {
     const turntable = new THREE.Group();
     const mesh = new THREE.Mesh(def.build(), finishMaterial(finish, { knurled: !!def.knurled, side: THREE.DoubleSide }));
     mesh.position.y = -def.H / 2;
-    const badge = logoDecal(mesh, def, 'JL',
+    const badge = logoDecal(mesh, def, 'MH',
       new THREE.MeshStandardMaterial({ color: cap === 'jlf33' ? '#d9bd86' : '#344655', metalness: 0.55, roughness: 0.32 }));
     if (badge) mesh.add(badge);
     turntable.add(mesh);

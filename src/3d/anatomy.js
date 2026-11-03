@@ -73,7 +73,7 @@ export function mount(section) {
   const cut = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0);
   // Laser removes the anodized colour, leaving bright matte aluminium.
   const engraveMat = new THREE.MeshPhysicalMaterial({ color: 0xf6f3ec, metalness: 0.15, roughness: 0.62, clippingPlanes: [cut] });
-  const decal = logoDecal(asm.capMesh, CAPS.wl100, 'JIALAN', engraveMat, { scale: 1.3 });
+  const decal = logoDecal(asm.capMesh, CAPS.wl100, 'MAO HAN', engraveMat, { scale: 1.3 });
   if (decal) asm.capMesh.add(decal);
   const beamMat = new THREE.MeshBasicMaterial({ color: 0xffb46b, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
   const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 8), beamMat);

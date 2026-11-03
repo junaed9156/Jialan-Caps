@@ -106,11 +106,11 @@ export function mount(view) {
     swatchBox.querySelectorAll('[data-studio-finish]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.studioFinish === state.finish)));
     document.querySelectorAll('[data-studio-collar]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.studioCollar === state.collar)));
     document.querySelectorAll('[data-logo-style]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.logoStyle === state.logoStyle)));
-    $('studio-model').textContent = `${def.model} / ${String(Object.keys(CAPS).indexOf(state.cap) + 1).padStart(2, '0')}`;
+    $('studio-model').textContent = def.model;
     $('studio-caption').textContent = def.name;
     $('studio-finish-name').textContent = FINISHES[state.finish].label;
     $('studio-specs').innerHTML = `View ${def.model} specifications <span aria-hidden="true">↗</span>`;
-    $('studio-specs').href = `assets/jialan-catalogue-2026.pdf#page=${page}`;
+    $('studio-specs').href = `assets/maohan-catalogue-2026.pdf#page=${page}`;
     $('studio-specs').dataset.product = pid;
     canvas.setAttribute('aria-label', `3D preview: ${def.model} ${def.name.toLowerCase()} in ${FINISHES[state.finish].label.toLowerCase()}${state.logo ? `, with “${state.logo}” ${LOGO_STYLES[state.logoStyle].label.toLowerCase()}` : ''}.`);
     $('studio-status').textContent = canvas.getAttribute('aria-label');
@@ -142,12 +142,16 @@ export function mount(view) {
   shapeButtons.forEach(b => b.addEventListener('click', () => setCap(b.dataset.studioCap)));
   swatchBox.addEventListener('click', e => { const b = e.target.closest('[data-studio-finish]'); if (b) setFinish(b.dataset.studioFinish); });
   document.querySelectorAll('[data-studio-collar]').forEach(b => b.addEventListener('click', () => { state.collar = b.dataset.studioCollar; asm.setFinish(state.finish, collarKey()); rebuildMirror(); updateText(); wake(); }));
-  document.querySelectorAll('[data-logo-style]').forEach(b => b.addEventListener('click', () => { state.logoStyle = b.dataset.logoStyle; buildDecal(); updateText(); wake(); }));
+  document.querySelectorAll('[data-logo-style]').forEach(b => b.addEventListener('click', () => { state.logoStyle = b.dataset.logoStyle; buildDecal(); updateText(); showFront(); }));
+  function showFront() {
+    if (!state.logo.trim()) { wake(); return; }
+    state.auto = false; view3.vy = 0; faceFront = true; updateSpin(); wake();
+  }
   let logoTimer;
   $('studio-logo').addEventListener('input', e => {
     state.logo = e.target.value.slice(0, 16);
     clearTimeout(logoTimer);
-    logoTimer = setTimeout(() => { buildDecal(); updateText(); wake(); }, 120);
+    logoTimer = setTimeout(() => { buildDecal(); updateText(); showFront(); }, 120);
   });
   $('studio-explode').addEventListener('click', () => {
     state.lifted = !state.lifted;
@@ -222,7 +226,7 @@ export function mount(view) {
   canvas.addEventListener('pointercancel', release);
 
   /* ---------- render loop ---------- */
-  let raf = 0, last = 0, clock = 0, liftStart = -10, lift = 0, pop = 0, framed = false;
+  let raf = 0, last = 0, clock = 0, liftStart = -10, lift = 0, pop = 0, framed = false, faceFront = false;
   const visibleNow = whenVisible(view, v => v && wake());
   function wake() { if (!raf) raf = requestAnimationFrame(tick); }
   const target = new THREE.Vector3();
@@ -241,7 +245,12 @@ export function mount(view) {
     const moving = motionAllowed();
 
     // Spin with inertia after a drag, or the slow showroom turn.
-    if (!drag?.active) {
+    if (faceFront && !drag?.active) {
+      // Turn the shortest way to the front so a new logo is readable.
+      const front = Math.round(view3.yaw / (Math.PI * 2)) * Math.PI * 2;
+      view3.yaw = damp(view3.yaw, front, 5, dt);
+      if (Math.abs(view3.yaw - front) < 0.002) { view3.yaw = front; faceFront = false; }
+    } else if (!drag?.active) {
       if (Math.abs(view3.vy) > 0.01) { view3.yaw += view3.vy * dt; view3.vy *= Math.pow(0.04, dt); }
       else if (state.auto && moving) view3.yaw += dt * 0.25;
     }
@@ -265,11 +274,16 @@ export function mount(view) {
     // Camera frames the closure alone or the whole bottle.
     const top = asm.height() + lift * 2.4;
     const bottom = state.bottle ? 0 : asm.base - 0.1;
-    const wantTy = (top + bottom) / 2, wantDist = (top - bottom) * (state.bottle ? 3.0 : 3.5) + 7.5;
+    // Fit the product inside the render box (between the top line and the caption) on any screen size.
+    const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+    const boxH = Math.max(120, rr.height), boxW = Math.max(160, pr.width);
+    const objH = (top - bottom) * (state.bottle ? 1.42 : 1.3), objW = (state.bottle ? 4.6 : CAPS[state.cap].R * 2.3 + 0.6) * 1.35;
+    const wantTy = (top + bottom) / 2;
+    const wantDist = Math.max(objH * (pr.height / boxH) / (2 * tanHalf), objW * (pr.height / boxW) / (2 * tanHalf)) / Math.cos(view3.pitch);
     if (!framed) { view3.ty = wantTy; view3.dist = wantDist; framed = true; }
     view3.ty = damp(view3.ty, wantTy, 4, dt);
     view3.dist = damp(view3.dist, wantDist, 4, dt);
-    const d = view3.dist * Math.max(1, 0.95 / camera.aspect);
+    const d = view3.dist;
     target.set(0, view3.ty, 0);
     camera.position.set(Math.sin(0.0) * d, view3.ty + Math.sin(view3.pitch) * d, Math.cos(view3.pitch) * d);
     camera.lookAt(target);
@@ -289,8 +303,8 @@ export function mount(view) {
 
     renderer.render(scene, camera);
     if (!view.classList.contains('is-3d')) { view.classList.add('is-3d'); updateText(); }
-    const busy = drag?.active || Math.abs(view3.vy) > 0.01 || (state.auto && moving) || since < 1.2 || pop > 0.01 ||
-      Math.abs(view3.ty - (top + bottom) / 2) > 0.005;
+    const busy = faceFront || drag?.active || Math.abs(view3.vy) > 0.01 || (state.auto && moving) || since < 1.2 || pop > 0.01 ||
+      Math.abs(view3.ty - wantTy) > 0.005 || Math.abs(view3.dist - wantDist) > 0.01;
     if (busy) wake();
   }
 

@@ -16,7 +16,7 @@ function lazy(selector, load, margin = '400px 0px', context) {
   const el = document.querySelector(selector);
   if (!el) return;
   const start = () => load().then(m => m.mount(el, context)).catch(error => {
-    console.warn('Jialan 3D:', error);
+    console.warn('3D:', error);
     el.classList.add('is-3d-failed');
     el.classList.remove('is-3d');
   });
@@ -31,5 +31,5 @@ if (webglAvailable()) {
   document.documentElement.classList.add('webgl');
   lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence);
   lazy('#anatomy', () => import('./anatomy.js'), '800px 0px');
-  lazy('#studio-view', () => import('./studio.js'), '600px 0px');
+  lazy('#studio-view', () => import('./studio.js'), '1600px 0px');
 }

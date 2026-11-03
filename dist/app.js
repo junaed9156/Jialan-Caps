@@ -16,7 +16,7 @@
   $('total-products').textContent = products.length;
   $('year').textContent = new Date().getFullYear();
 
-  // HD photographs: catalogue photos are 400/800 px WebP; store photos come from Alibaba's image CDN.
+  // HD photographs: catalogue photos are 400/800 px WebP; extra range photos come from an image CDN.
   const isStore = p => p.source === 'store';
   function photoSources(p, variant) {
     const img = p.images[variant] ?? p.images[0];
@@ -72,11 +72,11 @@
   }
   function card(p) {
     const v=variantOf(p),selected=isSelected(p.id,v);
-    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${p.badge}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">On our Alibaba store</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
+    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${p.badge}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">Price on request</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
   }
   function filteredProducts() {
     const q=state.query.trim().toLowerCase();
-    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,p.listing||'',...p.finishes].join(' ').toLowerCase().includes(q)));
+    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,...p.finishes].join(' ').toLowerCase().includes(q)));
   }
   function renderProducts() {
     const all=filteredProducts();
@@ -139,18 +139,18 @@
     $('detail-category').textContent=categories[p.category];$('detail-model').textContent=p.model;
     $('detail-title').textContent=p.name;$('detail-description').textContent=p.description;
     const rows=isStore(p)
-      ?[...(window.JIALAN.showPrices!==false?[['Listing price',`${p.price} per piece`]]:[]),['Minimum order',`${Number(p.moq).toLocaleString('en')} pieces`],['Neck fitting',p.neck],['Category',categories[p.category]],['Source',`Alibaba store, checked ${window.JIALAN.storeChecked||''}`]]
+      ?[...(window.JIALAN.showPrices!==false?[['Listing price',`${p.price} per piece`]]:[]),['Minimum order',`${Number(p.moq).toLocaleString('en')} pieces`],['Neck fitting',p.neck],['Category',categories[p.category]]]
       :[['Model',p.model],['Material',p.material],['Dimensions',p.size+(p.size.match(/^\d/)?' mm':'')],['Neck fitting',p.neck],['Catalogue weight',p.weight]];
     $('detail-specs').innerHTML=rows.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
-    $('detail-note').textContent=p.note||(isStore(p)?'Prices and minimum orders are from the Alibaba listing and can change. Ask us for a quotation for your quantity and customisation.':'Confirm bottle-neck compatibility and your preferred collar combination when enquiring.');
-    $('detail-sheet').href=isStore(p)?p.url:`${catalogue}#page=${p.page}`;
-    $('detail-sheet').innerHTML=isStore(p)?'View on Alibaba ↗':'Specification sheet ↗';
+    $('detail-note').textContent=p.note||(isStore(p)?'Ask us for a quotation for your quantity, colours and logo.':'Confirm bottle-neck compatibility and your preferred collar combination when enquiring.');
+    $('detail-sheet').hidden=isStore(p);
+    if(!isStore(p)){$('detail-sheet').href=`${catalogue}#page=${p.page}`;$('detail-sheet').innerHTML='Specification sheet ↗';}
     document.querySelector('.detail-finishes>span').textContent=isStore(p)?'PRODUCT PHOTOS':'EXPLORE FINISHES';
     renderDetailVariant();updateDetailButton();showDialog($('product-dialog'));
   }
   function renderDetailVariant() {
     const p=byId.get(state.detail),v=variantOf(p);
-    paintPhoto($('detail-photo'),p,v,'(max-width: 760px) 90vw, 400px');$('detail-finish-name').textContent=isStore(p)?p.listing:p.finishes[v];
+    paintPhoto($('detail-photo'),p,v,'(max-width: 760px) 90vw, 400px');$('detail-finish-name').textContent=isStore(p)?'':p.finishes[v];
     $('detail-picture-label').textContent=`${p.model} / ${p.finishes[v]}`;
     $('detail-swatches').innerHTML=p.finishes.map((_,i)=>swatch(p,i,i===v,true)).join('');
     updateDetailButton();
@@ -188,18 +188,43 @@
   }
   $('copy-wechat').addEventListener('click',()=>copy('13812950775','WeChat ID copied: 13812950775'));
   $('copy-enquiry').addEventListener('click',()=>copy(state.draft,'Your enquiry draft has been copied.'));
-  $('enquiry-form').addEventListener('submit',event=>{
-    event.preventDefault();const data=new FormData(event.currentTarget);
-    const name=String(data.get('name')||'').trim(), email=String(data.get('email')||'').trim(),message=String(data.get('message')||'').trim();
-    if(!name||!email||!message){notify('Please add your name, email and project details.');return;}
-    const lines=['Hello Jialan, I would like to discuss a packaging enquiry.','',`Name: ${name}`,`Email: ${email}`];
+  // Enquiries go by email to the sales team (FormSubmit relays the form; no server of our own).
+  const SALES_EMAIL='helens@vip.163.com';
+  function draftFrom(data){
+    const name=String(data.get('name')||'').trim(), email=String(data.get('email')||'').trim(), message=String(data.get('message')||'').trim();
+    const lines=['Hello Mao Han, I would like to discuss a packaging enquiry.','',`Name: ${name}`,`Email: ${email}`];
     if(String(data.get('company')||'').trim())lines.push(`Company: ${String(data.get('company')).trim()}`);
     if(data.get('quantity'))lines.push(`Quantity: ${data.get('quantity')} pieces`);
-    if(shortlist.length){lines.push('','Selected pieces:');shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name} (${p.url})`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
-    lines.push('','Project:',message);state.draft=lines.join('\n');
-    const url=`https://wa.me/8613812950775?text=${encodeURIComponent(state.draft)}`;
-    $('whatsapp-link').href=url;$('enquiry-fallback').hidden=false;
-    window.open(url,'_blank','noopener,noreferrer');
+    if(shortlist.length){lines.push('','Selected pieces:');shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name}`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
+    lines.push('','Project:',message);
+    return {name,email,message,text:lines.join('\n')};
+  }
+  function refreshLinks(){
+    const d=draftFrom(new FormData($('enquiry-form')));state.draft=d.text;
+    $('whatsapp-link').href=`https://wa.me/8613812950775?text=${encodeURIComponent(d.text)}`;
+    $('mailto-link').href=`mailto:${SALES_EMAIL}?subject=${encodeURIComponent('Packaging enquiry from '+(d.name||'the website'))}&body=${encodeURIComponent(d.text)}`;
+  }
+  $('enquiry-form').addEventListener('input',refreshLinks);
+  $('whatsapp-link').addEventListener('click',refreshLinks);
+  $('enquiry-form').addEventListener('submit',async event=>{
+    event.preventDefault();const form=event.currentTarget,data=new FormData(form);
+    const d=draftFrom(data);
+    if(!d.name||!d.email||!d.message){notify('Please add your name, email and project details.');return;}
+    if(String(data.get('_honey')||''))return;
+    refreshLinks();
+    const button=$('enquiry-submit');button.disabled=true;button.firstChild.textContent='Sending… ';
+    let ok=false;
+    try{
+      const r=await fetch(`https://formsubmit.co/ajax/${SALES_EMAIL}`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+        body:JSON.stringify({_subject:`Packaging enquiry from ${d.name}`,_replyto:d.email,_template:'box',_captcha:'false',
+          name:d.name,email:d.email,company:String(data.get('company')||''),quantity:String(data.get('quantity')||''),message:d.text})});
+      const j=await r.json().catch(()=>({}));
+      ok=r.ok&&String(j.success)==='true';
+    }catch{ok=false;}
+    button.disabled=false;button.firstChild.textContent='Send enquiry ';
+    $('enquiry-fallback').hidden=false;
+    if(ok){$('enquiry-result').textContent='Thank you. Your enquiry has been sent to our sales team, and we will reply by email.';form.reset();refreshLinks();notify('Enquiry sent.');}
+    else $('enquiry-result').textContent='We could not send the form just now. Please email it directly or send it on WhatsApp.';
   });
   const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD'}];
   function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;paintPhoto($('finish-photo'),p,Math.max(0,p.finishes.indexOf(study.finish)),'(max-width: 760px) 80vw, 40vw');$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
