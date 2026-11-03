@@ -255,3 +255,25 @@ p, .heading-aside p, .about-description p, .personalise-copy > p, .studio-copy >
 .finish-choice { color: #dfe7e3; }
 .footer-bottom { color: #33424a; }
 .announcement { font-size: 12px; }
+
+/* ---------- Light golden tone everywhere (no pure white) ---------- */
+:root { --cream: #f7eedb; --paper: #faf2e1; --gold-wash: linear-gradient(180deg, #f9f0dc 0%, #f4e6c8 100%); }
+body { background: #f6ebd3; }
+.header, .mobile-nav { background: rgb(248 238 216 / 95%); }
+.capability-strip { background: linear-gradient(90deg, #efdcb4, #f6e9cc 50%, #efdcb4); }
+.collection { background: radial-gradient(ellipse at 12% 0%, #f0d9a8 0, transparent 45%), radial-gradient(ellipse at 92% 40%, #f3e1bb 0, transparent 50%), linear-gradient(180deg, #f8eed8, #f2e3c3); }
+.studio { background: linear-gradient(160deg, #f6e6c4 0%, #f9f0dc 55%, #f1e1bf 100%); }
+.personalise { background: linear-gradient(160deg, #f5e3c1, #faf1df 60%, #f2e2c2); }
+.about { background: linear-gradient(180deg, #f8eed9, #f1e1c0); }
+.anatomy { background: linear-gradient(180deg, #f8ecd3, #efdcb6); }
+.footer { background: linear-gradient(180deg, #efdcb4, #e6cf9f); }
+.product-card:nth-child(5n+1) .product-image-button { background: linear-gradient(150deg, #fbf3e2, #efdfbd); }
+.product-card:nth-child(5n+2) .product-image-button { background: linear-gradient(150deg, #faf0dc, #ecd6ab); }
+.product-card:nth-child(5n+3) .product-image-button { background: linear-gradient(150deg, #fcf5e6, #f1e2c4); }
+.product-card:nth-child(5n+4) .product-image-button { background: linear-gradient(150deg, #f9eed7, #e9d2a3); }
+.product-card:nth-child(5n)   .product-image-button { background: linear-gradient(150deg, #fbf2df, #eedcb6); }
+.detail-visual, dialog { background: linear-gradient(150deg, #faf1de, #f0e0bd); }
+.personalise-art { background: linear-gradient(140deg, #f6e5c3, #ead4a8); }
+.studio-shapes > button { background: #fdf6e7; }
+.card-badge { background: #fdf6e7f0; }
+.button.cream { background: #f6e7c6; }

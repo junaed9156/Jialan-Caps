@@ -37,7 +37,7 @@ export function mount(section) {
   const scene = new THREE.Scene();
   scene.environment = studioEnvironment(renderer, { warmth: 0.6, light: true });
   const camera = new THREE.PerspectiveCamera(30, 1, 0.3, 300);
-  scene.add(backdrop('#f7edda', '#bab9b3', { z: -40, size: 260, center: [0.58, 0.6] }));
+  scene.add(backdrop('#faf0d9', '#e2c99a', { z: -40, size: 260, center: [0.58, 0.6] }));
   const key = new THREE.DirectionalLight(0xfff5e6, 1.6);
   key.position.set(-8, 14, 10);
   scene.add(key, new THREE.HemisphereLight(0xffffff, 0xcad4da, 1.0));
