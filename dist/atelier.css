@@ -321,3 +321,12 @@ html.lang-zh h1, html.lang-zh h2, html.lang-zh .card-name strong, html.lang-zh .
   font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif; letter-spacing: 0; }
 html.lang-zh h1 em, html.lang-zh h2 em { font-style: normal; }
 html.lang-zh .eyebrow, html.lang-zh .card-badge, html.lang-zh .studio-form-label { letter-spacing: .08em; }
+
+/* Made personal: show the whole catalogue banner at its own proportions (no cropping). */
+.personalise-art { min-height: 0 !important; aspect-ratio: auto !important; background: none !important; display: block !important; overflow: visible !important; }
+.personalise-art img { width: 100% !important; max-width: 100% !important; height: auto !important; margin: 0 !important; object-fit: contain; border: 0; border-radius: 4px; box-shadow: 0 26px 50px -30px #5c4318aa; }
+.personalise-art .photo-label { position: static; display: block; margin-top: 16px; color: #3a2c1a; }
+/* Phones: the language switch lives in the menu, so the header keeps room for the logo. */
+@media (max-width: 700px) { .lang-switch.in-header { display: none; } .lang-switch.in-menu { display: inline-block; } }
+@media (min-width: 701px) { .lang-switch.in-menu { display: none; } }
+@media (max-width: 700px) { .header .brand > span { font-size: 18px; letter-spacing: .14em; white-space: nowrap; } .header .brand small { font-size: 10px; letter-spacing: .18em; } .header .brand-mark { width: 38px; height: auto; } }
