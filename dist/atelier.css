@@ -302,13 +302,14 @@ h1, h2 { color: inherit; }
 .hero p, .hero-copy > p, .studio-view p { color: #f1ece0 !important; }
 
 /* True product colours: photos are shown exactly as photographed, on white, never blended into a tint. */
-.product-photo > img, .finish-product .product-photo > img, .personalise-art img { mix-blend-mode: normal !important; }
+.product-photo, .product-photo > img, .finish-product .product-photo > img, .personalise-art img { mix-blend-mode: normal !important; }
 .product-grid .product-card .product-image-button { background: #fff !important; border: 1px solid #e3d5b8; box-shadow: 0 14px 28px -22px #5c431866; }
 .product-grid .product-card .product-image-button::before { display: none; }
 .detail-visual { background: #fff !important; }
 #shortlist-items .mini-photo { background: #fff !important; border: 1px solid #e3d5b8; }
-.finish-product { background: #fff; box-shadow: 0 24px 50px -24px #0009; }
-.finish-product .product-photo > img { padding: 6%; }
+.finish-product { background: none; box-shadow: none; }
+/* Cut-out photographs sit straight on the golden stage, in their real colours. */
+.finish-product .product-photo.is-cutout > img { padding: 9% 12% 7%; object-fit: contain; filter: drop-shadow(0 26px 22px rgba(60, 38, 10, .45)); }
 .personalise-art { background: #fff !important; }
 
 /* Language switch and Chinese typography. */
