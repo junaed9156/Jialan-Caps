@@ -206,3 +206,5 @@ h1 em, h2 em { color: #846140; }
 .whatsapp-float:focus-visible { outline: 3px solid #0d6b39; outline-offset: 3px; }
 @media (max-width: 760px) { .whatsapp-float { right: 14px; bottom: 14px; width: 54px; height: 54px; padding: 0; justify-content: center; } .whatsapp-float span { display: none; } }
 body:has(#shortlist-bar:not([hidden])) .whatsapp-float { bottom: 96px; }
+.contact-methods > .contact-address { flex-basis: 100%; }
+.contact-address strong { line-height: 1.6; font-size: 13px; }
