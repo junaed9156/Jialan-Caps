@@ -238,3 +238,9 @@ body { background: linear-gradient(180deg, #f3ece0, #eef0e9 50%, #ece6dc); }
 
 /* Studio side controls pick up the warm tone. */
 .studio-shapes > button { background: #fbf6ec99; }
+
+/* Bold navigation */
+.desktop-nav { gap: 30px; }
+.desktop-nav > a { font-size: 13px; font-weight: 700; letter-spacing: .01em; color: var(--ink); }
+.mobile-nav > a { font-weight: 700; font-size: 15px; }
+.header-actions .button.small { font-weight: 700; }
