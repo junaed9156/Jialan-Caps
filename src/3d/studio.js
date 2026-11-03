@@ -26,11 +26,11 @@ export function mount(view) {
   const scene = new THREE.Scene();
   scene.environment = studioEnvironment(renderer, { warmth: 0.55 });
   const camera = new THREE.PerspectiveCamera(26, 1, 0.3, 200);
-  const bd = backdrop('#41705d', '#0e2c26', { z: -40, size: 220, center: [0.5, 0.62] });
+  const bd = backdrop('#445c6d', '#0b1927', { z: -40, size: 220, center: [0.5, 0.62] });
   scene.add(bd);
   const key = new THREE.DirectionalLight(0xfff3e2, 1.4);
   key.position.set(-6, 10, 8);
-  scene.add(key, new THREE.HemisphereLight(0xdfe8d8, 0x0d241f, 0.5));
+  scene.add(key, new THREE.HemisphereLight(0xe0ebf3, 0x101f30, 0.5));
 
   /* ---------- objects ---------- */
   const state = { cap: 'wl100', finish: 'glossy-gold', collar: 'match', bottle: false, lifted: false, auto: true, logo: '', logoStyle: 'laser' };
@@ -43,14 +43,14 @@ export function mount(view) {
 
   // Floor: soft shadow plus a faded mirror image of the closure.
   const floorY = () => (state.bottle ? 0 : asm.base);
-  const shadow = contactShadow(5.5, 5.5, 0.55, 0x03120e);
+  const shadow = contactShadow(5.5, 5.5, 0.55, 0x081320);
   scene.add(shadow);
   const mirror = new THREE.Group();
   mirror.scale.y = -1;
   scene.add(mirror);
   const fade = new THREE.Mesh(new THREE.CircleGeometry(40, 64), new THREE.ShaderMaterial({
     transparent: true, depthWrite: false,
-    uniforms: { c: { value: new THREE.Color('#15372f') } },
+    uniforms: { c: { value: new THREE.Color('#1a2e3b') } },
     vertexShader: 'varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     // Opaque near the closure (fading its mirror image), clear toward the horizon so the floor melts into the backdrop.
     fragmentShader: 'uniform vec3 c; varying vec2 vP; void main(){ float d = length(vP); float a = mix(0.7, 1.0, smoothstep(0.0, 5.0, d)) * (1.0 - smoothstep(14.0, 38.0, d)); gl_FragColor = vec4(c, a);\n#include <colorspace_fragment>\n}',
@@ -243,7 +243,7 @@ export function mount(view) {
     // Spin with inertia after a drag, or the slow showroom turn.
     if (!drag?.active) {
       if (Math.abs(view3.vy) > 0.01) { view3.yaw += view3.vy * dt; view3.vy *= Math.pow(0.04, dt); }
-      else if (state.auto && moving) view3.yaw += dt * 0.35;
+      else if (state.auto && moving) view3.yaw += dt * 0.25;
     }
     asm.root.rotation.y = view3.yaw;
     asm.root.rotation.x = 0;

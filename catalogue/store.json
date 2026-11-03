@@ -2,7 +2,7 @@
   "_readme": "Products from the Alibaba storefront that are not in the PDF catalogue. `title` is the listing title; `name`/`detail` are the website wording. Prices and minimum orders were copied from the listings on 2 November 2026. Images are served from Alibaba's image CDN (sc04.alicdn.com/kf/<key>). Refresh with the steps in CLAUDE.md.",
   "storefront": "https://maohan.m.en.alibaba.com/",
   "checked": "2 November 2026",
-  "showPrices": true,
+  "showPrices": false,
   "products": [
     {
       "id": "1601080781366",

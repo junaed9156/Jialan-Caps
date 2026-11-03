@@ -6,10 +6,10 @@ Live website: https://jialan-caps.expert-siren-8808.chatgpt.site
 
 ## What is on the site
 
-- **3D hero** — a glass bottle with perfume receives its gold WL100 cap with a magnetic snap; caps float around it over flowing silk. Click a floating cap to open it in the studio.
+- **WL100 assembly study** — the gold cap turns, aligns and seats on a glass bottle while two separate cap forms rotate. Choose a phase, pause or replay. The illustrated version uses the same motion on devices without WebGL.
 - **"Built to click" scroll story** — scrolling lifts the cap, separates cap, pump, collar and bottle with labelled dimensions, tours the finishes and laser-engraves a logo.
 - **3D studio** — eight cap families built to catalogue dimensions, 13 finishes plus hardwood, collar colour, a live logo preview (laser, gold foil, white or black print), lift and bottle views, and "Enquire about this design".
-- **Collection** — 37 catalogue products with every finish as an HD photograph (4x AI-enlarged from the PDF), plus 59 products from the Alibaba store (bottles, sets, closures, collars, store caps) with listing price and minimum order.
+- **Collection** — 37 catalogue products with every finish as an HD photograph (4x AI-enlarged from the PDF), plus 59 products from the Alibaba store (bottles, sets, closures, collars, store caps) with minimum order information. Listing prices are hidden.
 - Shortlist and WhatsApp enquiry drafts; nothing is sent or stored by the site.
 
 The 3D scenes load only on devices with WebGL and respect "Pause motion" and reduced-motion settings. Without WebGL the catalogue photographs are shown instead.
@@ -43,6 +43,6 @@ npm run build:3d      # bundles src/3d/*.js into dist/js/
 
 ## Content sources
 
-The English Jialan catalogue dated 30 October 2026 (supplied by the owner) is the source for catalogue products; each product links to its PDF page, and notes explain where the PDF contradicts itself. Store products, prices and minimum orders come from https://maohan.m.en.alibaba.com/ (checked 2 November 2026) and link to their listings; set `"showPrices": false` in `catalogue/store.json` to hide prices. The site does not show testimonials, ratings, certifications or factory statistics.
+The English Jialan catalogue dated 30 October 2026 (supplied by the owner) is the source for catalogue products; each product links to its PDF page, and notes explain where the PDF contradicts itself. Store products, prices and minimum orders come from https://maohan.m.en.alibaba.com/ (checked 2 November 2026) and link to their listings; listing prices stay hidden through the `showPrices` setting in `catalogue/store.json`. The site does not show testimonials, ratings, certifications or factory statistics.
 
 Contact (from the catalogue): WhatsApp +86 13812950775; WeChat 13812950775. Preserve the project ID in `.openai/hosting.json` for future Sites deployments.

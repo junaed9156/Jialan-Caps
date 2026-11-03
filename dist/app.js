@@ -216,11 +216,5 @@
   motionButton?.addEventListener('click',()=>setMotion(!document.body.classList.contains('motion-paused')));
   reducedMotion.addEventListener('change',()=>setMotion(reducedMotion.matches));
   setMotion(reducedMotion.matches);
-  // Photo fallback for the hero scene: a light parallax when 3D is unavailable.
-  const heroScene=document.querySelector('.hero-scene');
-  if(heroScene&&matchMedia('(hover: hover)').matches){
-    heroScene.addEventListener('pointermove',e=>{if(document.body.classList.contains('motion-paused')||heroScene.classList.contains('is-3d'))return;const r=heroScene.getBoundingClientRect();heroScene.style.setProperty('--scene-x',((e.clientX-r.left)/r.width-.5)*2);heroScene.style.setProperty('--scene-y',((e.clientY-r.top)/r.height-.5)*2);},{passive:true});
-    heroScene.addEventListener('pointerleave',()=>{heroScene.style.setProperty('--scene-x',0);heroScene.style.setProperty('--scene-y',0);});
-  }
   renderProducts();renderShortlist();chooseFinish(0);
 })();

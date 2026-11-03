@@ -99,16 +99,3 @@ html:not(.webgl) .anatomy-labels{display:none}
 .detail-visual>.product-photo:not(.is-store)>img{padding:6%}
 .card-badge{background:#f6f4edcc}
 @media(max-width:760px){.anatomy-labels small{width:128px;white-space:normal;line-height:1.5}}
-/* Colour: soft pastel tiles instead of near-white, so product photos sit on colour */
-.product-card:nth-child(5n+1) .product-image-button{background:linear-gradient(160deg,#eef4ea,#d8e6d5)}
-.product-card:nth-child(5n+2) .product-image-button{background:linear-gradient(160deg,#f8ece5,#efd9cf)}
-.product-card:nth-child(5n+3) .product-image-button{background:linear-gradient(160deg,#ecf2f7,#d6e4ee)}
-.product-card:nth-child(5n+4) .product-image-button{background:linear-gradient(160deg,#f7f0e1,#ecdfc3)}
-.product-card:nth-child(5n) .product-image-button{background:linear-gradient(160deg,#f1eef6,#e0dbea)}
-.collection{background:radial-gradient(ellipse at 12% 0%,#efe5d3 0,transparent 42%),radial-gradient(ellipse at 95% 30%,#dde9e2 0,transparent 45%)}
-.detail-visual{background:linear-gradient(160deg,#f3ede0,#dfe8de)}
-.finish-view{background:linear-gradient(160deg,#f2e9da,#dbe6dc)}
-#shortlist-items .mini-photo{background:#ece7da}
-.anatomy{background:linear-gradient(180deg,#f6ecdf,#dbe7e1)}
-@media(max-width:760px){.anatomy-copy{background:linear-gradient(#dbe7e100,#e2ebe4 42%)}}
-.hero-scene{background:radial-gradient(ellipse at 50% 60%,#f6eee0 1%,#e2e8db 60%,#cddcd2 100%)}

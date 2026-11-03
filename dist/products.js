@@ -5,7 +5,7 @@ window.JIALAN = {
  "pdf": "assets/jialan-catalogue-2026.pdf",
  "storefront": "https://maohan.m.en.alibaba.com/",
  "storeChecked": "2 November 2026",
- "showPrices": true,
+ "showPrices": false,
  "categories": {
   "cylinder": "Cylindrical caps",
   "ribbed": "Textured caps",

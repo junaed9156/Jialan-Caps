@@ -62,7 +62,7 @@ Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run bui
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
 - `main.js` loads each scene lazily when its section nears the viewport, only if WebGL exists.
-  Without WebGL the catalogue photos remain (hero images, studio fallback, anatomy image).
+  The hero shares one assembly timeline across WebGL and the projected illustration. Without WebGL the studio and anatomy retain their catalogue photographs.
 - Motion: the hero's "Pause motion" button and `prefers-reduced-motion` stop all animation
   (`body.motion-paused`, event `jialan:motion`).
 - Visual checks: headless Chrome needs `--use-angle=swiftshader --enable-unsafe-swiftshader`.
