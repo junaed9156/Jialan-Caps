@@ -221,14 +221,37 @@
   $('copy-enquiry').addEventListener('click',()=>copy(state.draft,'Your enquiry draft has been copied.'));
   // Enquiries go by email to the sales team (FormSubmit relays the form; no server of our own).
   const SALES_EMAIL='helens@vip.163.com';
+  // Country list with calling codes; choosing a country fills in its code. Names follow the page language.
+  const countryField=$('enquiry-country'),dialCode=$('dial-code'),phoneField=$('enquiry-phone');
+  const codes=new Map((window.MAOHAN_COUNTRIES||[]).map(([iso,code])=>[iso,code]));
+  (()=>{
+    if(!countryField)return;
+    const lang=(window.I18N&&window.I18N.lang==='zh')?'zh-CN':'en';
+    let names=null;try{names=new Intl.DisplayNames([lang],{type:'region'});}catch{/* older browsers show the code */}
+    const rows=[...codes].map(([iso,code])=>{let n=iso;try{n=(names&&names.of(iso))||iso;}catch{/* unknown region */}return {iso,code,n};});
+    rows.sort((a,b)=>a.n.localeCompare(b.n,lang));
+    countryField.insertAdjacentHTML('beforeend',rows.map(r=>`<option value="${r.iso}">${escape(r.n)} (+${r.code})</option>`).join(''));
+    // Pre-select the visitor's country when the browser language names one (e.g. en-GB, zh-CN).
+    const guess=(navigator.languages||[navigator.language||'']).map(l=>(String(l).split('-')[1]||'').toUpperCase()).find(r=>codes.has(r));
+    if(guess)countryField.value=guess;
+    const show=()=>{const c=codes.get(countryField.value);dialCode.textContent=c?`+${c}`:'+';};
+    countryField.addEventListener('change',()=>{show();phoneField.focus();});show();
+  })();
+  function phoneFrom(data){
+    const raw=String(data.get('phone')||'').replace(/[^\d+ ()-]/g,'').trim();if(!raw)return '';
+    if(raw.startsWith('+'))return raw;
+    const c=codes.get(String(data.get('country')||''));return c?`+${c} ${raw.replace(/^0+/,'')}`:raw;
+  }
+  const countryName=data=>{const iso=String(data.get('country')||'');if(!iso)return '';const o=countryField&&countryField.selectedOptions[0];return o&&o.value===iso?o.textContent.replace(/\s*\(\+\d+\)$/,''):iso;};
   function draftFrom(data){
     const name=String(data.get('name')||'').trim(), email=String(data.get('email')||'').trim(), message=String(data.get('message')||'').trim();
     const lines=[T('Hello Mao Han, I would like to discuss a packaging enquiry.'),'',T(`Name: ${name}`),T(`Email: ${email}`)];
+    const phone=phoneFrom(data),country=countryName(data);if(phone)lines.push(T(`Phone: ${phone}`));if(country)lines.push(T(`Country: ${country}`));
     if(String(data.get('company')||'').trim())lines.push(T(`Company: ${String(data.get('company')).trim()}`));
     if(data.get('quantity'))lines.push(T(`Quantity: ${data.get('quantity')} pieces`));
     if(shortlist.length){lines.push('',T('Selected pieces:'));shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name}`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
     lines.push('',T('Project:'),message);
-    return {name,email,message,text:lines.join('\n')};
+    return {name,email,message,phone,country,text:lines.join('\n')};
   }
   function refreshLinks(){
     const d=draftFrom(new FormData($('enquiry-form')));state.draft=d.text;
@@ -248,7 +271,7 @@
     try{
       const r=await fetch(`https://formsubmit.co/ajax/${SALES_EMAIL}`,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
         body:JSON.stringify({_subject:`Packaging enquiry from ${d.name}`,_replyto:d.email,_template:'box',_captcha:'false',
-          name:d.name,email:d.email,company:String(data.get('company')||''),quantity:String(data.get('quantity')||''),message:d.text})});
+          name:d.name,email:d.email,company:String(data.get('company')||''),quantity:String(data.get('quantity')||''),phone:d.phone,country:d.country,message:d.text})});
       const j=await r.json().catch(()=>({}));
       ok=r.ok&&String(j.success)==='true';
     }catch{ok=false;}

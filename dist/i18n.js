@@ -28,7 +28,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'Contact us': '联系我们',
     'Contact us ↗': '联系我们 ↗',
     // Hero
-    'MAO HAN / JIANGSU': 'MAO HAN / 江苏',
+    'MAO HAN / JIANGSU': 'MAO HAN / 江苏', 'JIANGSU': '江苏',
     'The finishing': '画龙点睛的',
     'touch.': '一笔。',
     'Magnetic perfume caps and cosmetic closures, shaped in aluminium, ABS and hardwood.': '磁吸香水瓶盖与化妆品封口件，以铝、ABS 与实木精制而成。',
@@ -226,6 +226,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'Brand or company': '品牌或公司',
     'Email': '邮箱',
     'Order quantity': '订购数量',
+    'Country / region': '国家/地区', 'Select your country': '选择国家/地区', 'Phone / WhatsApp': '电话 / WhatsApp', 'Phone number': '电话号码',
     'e.g. 5,000': '例如 5,000',
     'YOUR SELECTED PIECES': '已选产品',
     'Clear shortlist': '清空清单',
@@ -249,8 +250,8 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'Enquire about your selection': '咨询已选产品',
     'Close shortlist': '关闭清单',
     'YOUR CURATED SELECTION': '你的精选',
-    'A few good': '几件好',
-    'details.': '细节。',
+    'A few good': '精挑',
+    'details.': '细选。',
     'Save pieces as you browse, then send the selection with your enquiry.': '浏览时收藏产品，询价时一并发送。',
     'Your shortlist is waiting for its first piece.': '你的清单还是空的。',
     'Explore the collection ↗': '浏览产品系列 ↗',
@@ -466,7 +467,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     [/^View (\S+) specifications$/, '查看 $1 规格'],
     [/^(.+) per piece$/, '$1 / 件'],
     [/^Quantity: (.+) pieces$/, '数量：$1 件'],
-    [/^Name: (.*)$/, '姓名：$1'], [/^Email: (.*)$/, '邮箱：$1'], [/^Company: (.*)$/, '公司：$1'],
+    [/^Name: (.*)$/, '姓名：$1'], [/^Phone: (.*)$/, '电话：$1'], [/^Country: (.*)$/, '国家/地区：$1'], [/^Email: (.*)$/, '邮箱：$1'], [/^Company: (.*)$/, '公司：$1'],
     [/^Packaging enquiry from (.+)$/, s => `包装询价 — ${s.replace(/^Packaging enquiry from /, '')}`],
   ];
   const DYNAMIC = [
@@ -491,7 +492,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
   const neutral = s => !/[a-z]{2}/.test(s) || /^[A-Z0-9][A-Z0-9 ./×–\-+]*$/.test(s) || /^[\w.+-]+@[\w.-]+$/.test(s);
   function tr(text) {
     if (lang !== 'zh' || text == null) return text;
-    const s = String(text).trim();
+    const s = String(text).replace(/\u00a0/g, ' ').trim();   // &nbsp; counts as a space
     if (!s) return text;
     if (ZH[s] !== undefined) return ZH[s];
     const lc = lower.get(s.toLowerCase());
@@ -528,7 +529,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
   function translateText(node) {
     if (node.parentNode && node.parentNode.nodeName === 'TEXTAREA') return;  // what a visitor typed
     const raw = node.nodeValue;
-    if (!raw || !/[A-Za-z]{2}/.test(raw)) return;
+    if (!raw || !/[A-Za-z]/.test(raw)) return;
     const out = tr(raw);
     if (out !== raw && typeof out === 'string') {
       const lead = raw.match(/^\s*/)[0], trail = raw.match(/\s*$/)[0];
@@ -538,7 +539,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
   function translateEl(el) {
     for (const a of ATTRS) {
       const v = el.getAttribute(a);
-      if (v && /[A-Za-z]{2}/.test(v)) { const out = tr(v); if (out !== v) el.setAttribute(a, out); }
+      if (v && /[A-Za-z]/.test(v)) { const out = tr(v); if (out !== v) el.setAttribute(a, out); }
     }
   }
   function walk(root) {
