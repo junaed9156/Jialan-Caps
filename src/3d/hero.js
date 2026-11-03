@@ -45,11 +45,18 @@ export function mount(stage, sequence) {
   paper.width = 512; paper.height = 232;
   const ink = paper.getContext('2d');
   ink.fillStyle = '#e8dfca'; ink.fillRect(0, 0, 512, 232);
-  ink.fillStyle = '#203441'; ink.textAlign = 'center';
-  ink.font = '56px Georgia, serif'; ink.fillText('M A O   H A N', 256, 127);
-  ink.fillStyle = '#ac8c58'; ink.fillRect(205, 158, 102, 3);
   const labelMap = new THREE.CanvasTexture(paper);
   labelMap.colorSpace = THREE.SRGBColorSpace;
+  labelMap.anisotropy = 8;
+  // The Mao Han logo printed on the label (drawn once the image has loaded).
+  const logo = new Image();
+  logo.onload = () => {
+    const h = 196, w = h * logo.naturalWidth / logo.naturalHeight;
+    ink.drawImage(logo, (512 - w) / 2, (232 - h) / 2, w, h);
+    labelMap.needsUpdate = true;
+    document.dispatchEvent(new CustomEvent('jialan:motion'));
+  };
+  logo.src = 'assets/maohan-logo.png';
   const label = new THREE.Mesh(new THREE.PlaneGeometry(2.65, 1.2),
     new THREE.MeshStandardMaterial({ map: labelMap, roughness: 0.9 }));
   label.position.set(0, 2.34, 1.39);
