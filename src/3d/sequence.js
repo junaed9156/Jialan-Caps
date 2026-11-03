@@ -68,12 +68,12 @@ export function mountSequence(stage) {
 
   function select(time) { t = time; draw(); wake(); }
   buttons.forEach((button, i) => button.addEventListener('click', () => select(phaseTimes[i])));
-  replay.addEventListener('click', () => {
+  replay?.addEventListener('click', () => {
     if (!playing() && !reduced.matches) document.getElementById('motion-toggle')?.click();
     select(0);
   });
   function preference() {
-    replay.hidden = reduced.matches;
+    if (replay) replay.hidden = reduced.matches;
     if (reduced.matches) t = DURATION;
     draw(); wake();
   }

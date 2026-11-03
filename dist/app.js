@@ -266,7 +266,7 @@
   const motionButton=$('motion-toggle');
   function setMotion(paused){
     document.body.classList.toggle('motion-paused',paused);
-    if(motionButton){motionButton.setAttribute('aria-pressed',String(paused));motionButton.innerHTML=`${paused?'Play':'Pause'} motion <span aria-hidden="true">${paused?'▷':'Ⅱ'}</span>`;}
+    if(motionButton){const label=T(paused?'Play motion':'Pause motion');motionButton.setAttribute('aria-pressed',String(paused));motionButton.setAttribute('aria-label',label);motionButton.title=label;motionButton.innerHTML=`<span aria-hidden="true">${paused?'▷':'Ⅱ'}</span>`;}
     document.dispatchEvent(new CustomEvent('jialan:motion',{detail:{paused}}));
   }
   motionButton?.addEventListener('click',()=>setMotion(!document.body.classList.contains('motion-paused')));
