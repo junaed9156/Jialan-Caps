@@ -577,6 +577,30 @@ export function logoDecal(capMesh, def, text, material, { font = 'Georgia, serif
   return m;
 }
 
+/* The red Mao Han mark as a decal (image, not text). Aspect 400:329. */
+let _markTex;
+export function markTexture() {
+  if (!_markTex) {
+    _markTex = new THREE.TextureLoader().load('assets/maohan-mark.png', () => document.dispatchEvent(new CustomEvent('jialan:motion')));
+    _markTex.colorSpace = THREE.SRGBColorSpace;
+    _markTex.anisotropy = 8;
+  }
+  return _markTex;
+}
+export function markDecal(capMesh, def, { scale = 1 } = {}) {
+  const local = new THREE.Mesh(capMesh.geometry, capMesh.material);
+  local.updateMatrixWorld(true);
+  const y = def.H * (def.square ? 0.5 : 0.55);
+  _probe.set(new THREE.Vector3(0, y, 20), new THREE.Vector3(0, 0, -1));
+  const hit = _probe.intersectObject(local, false)[0];
+  if (!hit) return null;
+  const w = def.R * (def.square ? 0.62 : 0.55) * scale, h = w * 329 / 400;
+  const geo = new DecalGeometry(local, hit.point, new THREE.Euler(), new THREE.Vector3(w, h, def.R * 1.2));
+  const material = new THREE.MeshStandardMaterial({ map: markTexture(), transparent: true, alphaTest: 0.4, roughness: 0.45, metalness: 0.1,
+    depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 });
+  return new THREE.Mesh(geo, material);
+}
+
 /* ---------- motion helpers ---------- */
 export const ease = {
   outCubic: t => 1 - Math.pow(1 - t, 3),

@@ -1,7 +1,7 @@
 /* WL100 assembly study. The centre bottle is fixed. Two mounted specimens turn independently. */
 import {
   THREE, CAPS, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial,
-  contactShadow, backdrop, logoDecal, motionAllowed,
+  contactShadow, backdrop, motionAllowed,
 } from './kit.js';
 
 export function mount(stage, sequence) {
@@ -51,20 +51,16 @@ export function mount(stage, sequence) {
   // The Mao Han logo printed on the label (drawn once the image has loaded).
   const logo = new Image();
   logo.onload = () => {
-    const h = 196, w = h * logo.naturalWidth / logo.naturalHeight;
+    const h = 170, w = h * logo.naturalWidth / logo.naturalHeight;
     ink.drawImage(logo, (512 - w) / 2, (232 - h) / 2, w, h);
     labelMap.needsUpdate = true;
     document.dispatchEvent(new CustomEvent('jialan:motion'));
   };
-  logo.src = 'assets/maohan-logo.png';
+  logo.src = 'assets/maohan-mark.png';
   const label = new THREE.Mesh(new THREE.PlaneGeometry(2.65, 1.2),
     new THREE.MeshStandardMaterial({ map: labelMap, roughness: 0.9 }));
   label.position.set(0, 2.34, 1.39);
   bottle.stack.add(label);
-  const mark = logoDecal(bottle.capMesh, CAPS.wl100, 'MH',
-    new THREE.MeshStandardMaterial({ color: '#50361d', metalness: 0.48, roughness: 0.36 }),
-    { scale: 0.75 });
-  if (mark) bottle.capMesh.add(mark);
   const shadow = contactShadow(5.8, 3.7, 0.52, 0x06121c);
   shadow.position.y = 0.016;
   scene.add(shadow);
@@ -81,9 +77,6 @@ export function mount(stage, sequence) {
     const turntable = new THREE.Group();
     const mesh = new THREE.Mesh(def.build(), finishMaterial(finish, { knurled: !!def.knurled, side: THREE.DoubleSide }));
     mesh.position.y = -def.H / 2;
-    const badge = logoDecal(mesh, def, 'MH',
-      new THREE.MeshStandardMaterial({ color: cap === 'jlf33' ? '#d9bd86' : '#344655', metalness: 0.55, roughness: 0.32 }));
-    if (badge) mesh.add(badge);
     turntable.add(mesh);
     pivot.add(turntable);
     scene.add(pivot);
