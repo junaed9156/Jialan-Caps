@@ -20,13 +20,13 @@ html:not(.webgl) .studio-3d-only,.studio-view.is-3d-failed~* .studio-3d-only{dis
 .studio-swatches button i{width:26px;height:26px}
 .studio-collar,.studio-logo-styles{display:flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:430px}
 .studio-collar{margin-top:16px}
-.studio-collar>span{font-size:12px;letter-spacing:.14em;margin-right:8px;color:var(--muted)}
-.studio-collar button,.studio-logo-styles button{border:1px solid var(--line);padding:8px 11px;font-size:13px;transition:background .2s,border-color .2s}
+.studio-collar>span{font-size:14px;letter-spacing:.14em;margin-right:8px;color:var(--muted)}
+.studio-collar button,.studio-logo-styles button{border:1px solid var(--line);padding:8px 11px;font-size:15px;transition:background .2s,border-color .2s}
 .studio-collar button:hover,.studio-logo-styles button:hover{background:#e9eade}
 .studio-collar [aria-pressed=true],.studio-logo-styles [aria-pressed=true]{border-color:#647a62;background:#e4e8da}
 .studio-logo{display:block;max-width:430px;margin-bottom:10px}
 .studio-logo input{width:100%;border:0;border-bottom:1px solid #aab3a3;background:transparent;padding:10px 0;font-family:Georgia,serif;font-size:20px;letter-spacing:.08em;color:var(--ink);outline-offset:4px}
-.studio-logo input::placeholder{color:#9aa39a;letter-spacing:.02em;font-size:16px}
+.studio-logo input::placeholder{color:#9aa39a;letter-spacing:.02em;font-size:18px}
 .studio-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:28px}
 .studio-actions #studio-specs{margin-top:0}
 .studio-toolbar button[aria-pressed=true]#studio-bottle{background:#c6d6b71c;border-color:#c6d6b770}
@@ -52,10 +52,10 @@ html:not(.webgl) .anatomy-copy{width:auto;padding:0}
 .anatomy-steps li.is-active{opacity:1}
 .anatomy-steps li:before{content:'';position:absolute;left:-1px;top:13px;bottom:13px;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .45s}
 .anatomy-steps li.is-active:before{transform:scaleY(1)}
-.anatomy-steps li>span{font-family:Georgia,serif;font-style:italic;color:#a39576;font-size:15px;padding-top:1px}
-.anatomy-steps h3{font-size:16px;font-weight:500;margin-bottom:5px}
-.anatomy-steps p{font-size:14px;line-height:1.7;color:var(--muted)}
-.anatomy-finish{display:block;margin-top:8px;font-weight:500;color:var(--ink);font-size:13px;letter-spacing:.04em}
+.anatomy-steps li>span{font-family:Georgia,serif;font-style:italic;color:#a39576;font-size:17px;padding-top:1px}
+.anatomy-steps h3{font-size:18px;font-weight:500;margin-bottom:5px}
+.anatomy-steps p{font-size:16px;line-height:1.7;color:var(--muted)}
+.anatomy-finish{display:block;margin-top:8px;font-weight:500;color:var(--ink);font-size:15px;letter-spacing:.04em}
 .anatomy-progress{display:none}
 .anatomy-labels{position:absolute;inset:0;pointer-events:none;z-index:1}
 html:not(.webgl) .anatomy-labels{display:none}
@@ -64,11 +64,11 @@ html:not(.webgl) .anatomy-labels{display:none}
 .anatomy-labels span:after{content:'';position:absolute;left:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--paper);border:1px solid #8a7958}
 .anatomy-labels b,.anatomy-labels small{display:block;margin-left:72px}
 .anatomy-labels b{font-family:Georgia,serif;font-weight:400;font-size:17px;letter-spacing:-.02em;margin-top:-12px}
-.anatomy-labels small{font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:4px}
+.anatomy-labels small{font-size:14px;letter-spacing:.06em;color:var(--muted);margin-top:4px}
 @media(max-width:760px){
   .anatomy-copy{position:absolute;left:0;right:0;bottom:0;width:auto;padding:70px 6% 26px;background:linear-gradient(#fbfaf600,var(--paper) 42%)}
   .anatomy-copy h2{display:none}
-  .anatomy-copy .eyebrow{font-size:12px;margin-bottom:14px}
+  .anatomy-copy .eyebrow{font-size:14px;margin-bottom:14px}
   .anatomy-steps{border:0}
   .anatomy-steps li{display:none;padding:0}
   .anatomy-steps li.is-active{display:flex}
@@ -76,7 +76,7 @@ html:not(.webgl) .anatomy-labels{display:none}
   .anatomy-steps h3{font-size:17px;font-family:Georgia,serif;font-weight:400}
   .anatomy-progress{display:block;position:absolute;right:6%;bottom:30px;width:2px;height:60px;background:var(--line)}
   .anatomy-progress i{display:block;height:100%;background:var(--gold);transform-origin:top;transform:scaleY(0)}
-  .anatomy-labels b{font-size:15px;margin-left:54px}.anatomy-labels small{font-size:12px;margin-left:54px}
+  .anatomy-labels b{font-size:17px;margin-left:54px}.anatomy-labels small{font-size:14px;margin-left:54px}
   .anatomy-labels span:before{width:42px}
   html:not(.webgl) .anatomy-sticky{display:block;padding:70px 6%}
 }
@@ -92,8 +92,8 @@ html:not(.webgl) .anatomy-labels{display:none}
 .swatch.thumb img{width:100%;height:100%;object-fit:cover}
 .swatch.thumb[aria-pressed=true]{outline:1px solid #738169;outline-offset:2px}
 .detail-finishes .swatch.thumb{width:52px;height:52px;border-width:1px}
-.card-price{font-size:13px;color:#5d685d}
-.card-price strong{font-size:14px;font-weight:500;color:var(--ink)}
+.card-price{font-size:15px;color:#5d685d}
+.card-price strong{font-size:16px;font-weight:500;color:var(--ink)}
 .product-image-button>.product-photo:not(.is-store)>img{padding:13% 12% 9%}
 .finish-product .product-photo>img{padding:4%}
 .detail-visual>.product-photo:not(.is-store)>img{padding:6%}
