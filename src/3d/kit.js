@@ -587,7 +587,42 @@ export function markTexture() {
   }
   return _markTex;
 }
-export function markDecal(capMesh, def, { scale = 1 } = {}) {
+/* The red Mao Han mark printed on the exact centre of a bottle's front face (no text, no paper). */
+export function bottleMark(bottle, { size = 0.26 } = {}) {
+  const glass = bottle.userData.glass;
+  glass.geometry.computeBoundingBox();
+  const box = glass.geometry.boundingBox.clone().translate(glass.position);
+  const h = (box.max.y - box.min.y) * size, w = h * 400 / 329;
+  const mark = new THREE.Mesh(new THREE.PlaneGeometry(w, h),
+    new THREE.MeshStandardMaterial({ map: markTexture(), transparent: true, alphaTest: 0.35, roughness: 0.4, depthWrite: false }));
+  mark.position.set((box.min.x + box.max.x) / 2, (box.min.y + box.max.y) / 2, box.max.z + 0.012);
+  mark.renderOrder = 2;
+  return mark;
+}
+
+/* The mark's silhouette in one colour (for laser engraving): alpha from the logo, colour from `color`. */
+let _markSil = null;
+export function markSilhouette(color = '#ffffff') {
+  if (_markSil) return _markSil;
+  const c = document.createElement('canvas');
+  c.width = 400; c.height = 329;
+  _markSil = new THREE.CanvasTexture(c);
+  _markSil.colorSpace = THREE.SRGBColorSpace;
+  _markSil.anisotropy = 8;
+  const img = new Image();
+  img.onload = () => {
+    const g = c.getContext('2d');
+    g.drawImage(img, 0, 0, c.width, c.height);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = color; g.fillRect(0, 0, c.width, c.height);
+    _markSil.needsUpdate = true;
+    document.dispatchEvent(new CustomEvent('jialan:motion'));
+  };
+  img.src = 'assets/maohan-mark.png';
+  return _markSil;
+}
+
+export function markDecal(capMesh, def, { scale = 1, material } = {}) {
   const local = new THREE.Mesh(capMesh.geometry, capMesh.material);
   local.updateMatrixWorld(true);
   const y = def.H * (def.square ? 0.5 : 0.55);
@@ -596,7 +631,7 @@ export function markDecal(capMesh, def, { scale = 1 } = {}) {
   if (!hit) return null;
   const w = def.R * (def.square ? 0.62 : 0.55) * scale, h = w * 329 / 400;
   const geo = new DecalGeometry(local, hit.point, new THREE.Euler(), new THREE.Vector3(w, h, def.R * 1.2));
-  const material = new THREE.MeshStandardMaterial({ map: markTexture(), transparent: true, alphaTest: 0.4, roughness: 0.45, metalness: 0.1,
+  material = material || new THREE.MeshStandardMaterial({ map: markTexture(), transparent: true, alphaTest: 0.4, roughness: 0.45, metalness: 0.1,
     depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 });
   return new THREE.Mesh(geo, material);
 }

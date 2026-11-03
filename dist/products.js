@@ -833,7 +833,7 @@ window.JIALAN = {
    "description": "Single-step and double-step shoulder collars in metallic and coloured finishes, with FEA13 and FEA15 options shown in the catalogue.",
    "note": "Choose the collar height and profile to suit the matching cap and bottle. See pages 38–39 for the full range.",
    "images": [
-    "assets/p/e681f73639c69fe1"
+    "assets/p/ac3242a0c12b0462"
    ],
    "page": 38
   },
@@ -851,7 +851,7 @@ window.JIALAN = {
    ],
    "description": "JL30 shoulder collar profiles, plus multi-step and special-shaped collars for different cap assemblies.",
    "images": [
-    "assets/p/7e97f9ee89366557"
+    "assets/p/e0a6a925957f8a45"
    ],
    "page": 39
   },
@@ -869,7 +869,7 @@ window.JIALAN = {
    ],
    "description": "Square shoulder collars and middle collars, shown alongside circular collar options in the catalogue.",
    "images": [
-    "assets/p/cb8faacd18a49684"
+    "assets/p/efb7c50374d10b6b"
    ],
    "page": 39
   },
@@ -907,7 +907,7 @@ window.JIALAN = {
    "description": "Closures for healthcare, facial cream, essential oil and lotion packaging. The catalogue includes 45 × 12.5, 30 × 12.5 and 63.5 × 19.1 mm examples.",
    "note": "Specify the container and required closure dimensions in your enquiry.",
    "images": [
-    "assets/p/6c35b53513ad4ddc"
+    "assets/p/3fa47c1278c08f00"
    ],
    "page": 36
   },

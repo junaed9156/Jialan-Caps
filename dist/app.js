@@ -1,8 +1,38 @@
 'use strict';
 (() => {
+  // Products added on the admin page come first, in the visitor's language. Fields are checked before use.
+  (() => {
+    const J = window.JIALAN, I = window.I18N, zh = !!(I && I.lang === 'zh'), t = s => (I ? I.t(s) : s);
+    const list = window.MAOHAN_ADMIN && Array.isArray(window.MAOHAN_ADMIN.products) ? window.MAOHAN_ADMIN.products : [];
+    const str = (v, max) => (typeof v === 'string' ? v : '').slice(0, max);
+    const seen = new Set(J.products.map(p => p.id)), added = [];
+    for (const a of list) {
+      if (!a || typeof a.id !== 'string' || !Array.isArray(a.images) || !Object.prototype.hasOwnProperty.call(J.categories, a.category)) continue;
+      const images = a.images.filter(x => typeof x === 'string' && /^assets\/admin\/[A-Za-z0-9-]+$/.test(x)).slice(0, 8);
+      const id = 'admin-' + a.id.replace(/[^A-Za-z0-9]/g, '').slice(0, 40);
+      if (!images.length || !str(a.model, 40) || !str(a.name, 80) || seen.has(id)) continue;
+      seen.add(id);
+      const en = images.map((_, i) => str(Array.isArray(a.finishes) && a.finishes[i], 50) || (images.length > 1 ? `Photo ${i + 1}` : 'Standard'));
+      const zhF = images.map((_, i) => str(Array.isArray(a.finishes_zh) && a.finishes_zh[i], 50));
+      const pick = (enV, zhV) => (zh ? (zhV || t(enV)) : enV);
+      added.push({
+        id, source: 'admin', category: a.category, images, imageExt: a.imageExt === 'jpg' ? 'jpg' : 'webp',
+        model: str(a.model, 40), name: pick(str(a.name, 80), str(a.name_zh, 80)),
+        description: pick(str(a.description, 600), str(a.description_zh, 600)),
+        material: pick(str(a.material, 80) || 'On request', str(a.material_zh, 80)),
+        size: pick(str(a.size, 60) || 'On request'), neck: str(a.neck, 40) || '—', weight: pick(str(a.weight, 40) || 'On request'),
+        badge: pick(str(a.badge, 24) || 'NEW'),
+        finishes: zh ? en.map((f, i) => zhF[i] || t(f)) : en,
+        _en: zh ? { model: str(a.model, 40), name: str(a.name, 80), description: str(a.description, 600), material: str(a.material, 80), finishes: en } : undefined,
+      });
+    }
+    J.products.unshift(...added);
+  })();
   const {products, categories} = window.JIALAN;
   const byId = new Map(products.map(p => [p.id, p]));
   const $ = id => document.getElementById(id);
+  const T = s => (window.I18N ? window.I18N.t(s) : s);
+  const enFinishes = p => (p._en && p._en.finishes) || p.finishes;
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const catalogue = window.JIALAN.pdf || 'assets/jialan-catalogue-2026.pdf';
   const state = {category:'all',query:'',neck:'all',expanded:false,variants:new Map(),detail:null,draft:''};
@@ -25,7 +55,8 @@
       if (/\.png$/i.test(img)) return {src: base, srcset: ''};
       return {src: `${base}_480x480.jpg_.webp`, srcset: `${base}_480x480.jpg_.webp 480w, ${base}_960x960.jpg_.webp 960w`, original: base};
     }
-    return {src: `${img}-400.webp`, srcset: `${img}-400.webp 400w, ${img}-800.webp 800w`};
+    const ext = p.imageExt || 'webp';
+    return {src: `${img}-400.${ext}`, srcset: `${img}-400.${ext} 400w, ${img}-800.${ext} 800w`};
   }
   function photoHTML(p, variant, sizes = '(max-width: 760px) 46vw, 23vw', eager = false) {
     const s = photoSources(p, variant);
@@ -68,15 +99,15 @@
       const s = photoSources(p, i);
       return `<button class="swatch thumb" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"><img src="${s.src}" alt="" loading="lazy" decoding="async"></button>`;
     }
-    return `<button class="swatch" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} style="--swatch:${swatchColour(p.finishes[i])}" aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"></button>`;
+    return `<button class="swatch" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} style="--swatch:${swatchColour(enFinishes(p)[i])}" aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"></button>`;
   }
   function card(p) {
     const v=variantOf(p),selected=isSelected(p.id,v);
-    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${p.badge}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">Price on request</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
+    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" aria-label="Explore ${escape(p.model)} — ${escape(p.name)}">${p.badge?`<span class="card-badge">${escape(p.badge)}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">Price on request</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
   }
   function filteredProducts() {
     const q=state.query.trim().toLowerCase();
-    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,...p.finishes].join(' ').toLowerCase().includes(q)));
+    return products.filter(p=>(state.category==='all'||p.category===state.category)&&(state.neck==='all'||p.neck.includes(state.neck))&&(!q||[p.model,p.name,p.material,p.neck,p.description,...p.finishes,...(p._en?[p._en.model,p._en.name,p._en.material,p._en.description,...p._en.finishes]:[])].join(' ').toLowerCase().includes(q)));
   }
   function renderProducts() {
     const all=filteredProducts();
@@ -140,11 +171,11 @@
     $('detail-title').textContent=p.name;$('detail-description').textContent=p.description;
     const rows=isStore(p)
       ?[...(window.JIALAN.showPrices!==false?[['Listing price',`${p.price} per piece`]]:[]),['Minimum order',`${Number(p.moq).toLocaleString('en')} pieces`],['Neck fitting',p.neck],['Category',categories[p.category]]]
-      :[['Model',p.model],['Material',p.material],['Dimensions',p.size+(p.size.match(/^\d/)?' mm':'')],['Neck fitting',p.neck],['Catalogue weight',p.weight]];
+      :[['Model',p.model],['Material',p.material],['Dimensions',p.size+(/^\d/.test(p.size)&&!/mm/i.test(p.size)?' mm':'')],['Neck fitting',p.neck],['Catalogue weight',p.weight]];
     $('detail-specs').innerHTML=rows.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
     $('detail-note').textContent=p.note||(isStore(p)?'Ask us for a quotation for your quantity, colours and logo.':'Confirm bottle-neck compatibility and your preferred collar combination when enquiring.');
-    $('detail-sheet').hidden=isStore(p);
-    if(!isStore(p)){$('detail-sheet').href=`${catalogue}#page=${p.page}`;$('detail-sheet').innerHTML='Specification sheet ↗';}
+    $('detail-sheet').hidden=isStore(p)||!p.page;
+    if(!isStore(p)&&p.page){$('detail-sheet').href=`${catalogue}#page=${p.page}`;$('detail-sheet').innerHTML='Specification sheet ↗';}
     document.querySelector('.detail-finishes>span').textContent=isStore(p)?'PRODUCT PHOTOS':'EXPLORE FINISHES';
     renderDetailVariant();updateDetailButton();showDialog($('product-dialog'));
   }
@@ -192,11 +223,11 @@
   const SALES_EMAIL='helens@vip.163.com';
   function draftFrom(data){
     const name=String(data.get('name')||'').trim(), email=String(data.get('email')||'').trim(), message=String(data.get('message')||'').trim();
-    const lines=['Hello Mao Han, I would like to discuss a packaging enquiry.','',`Name: ${name}`,`Email: ${email}`];
-    if(String(data.get('company')||'').trim())lines.push(`Company: ${String(data.get('company')).trim()}`);
-    if(data.get('quantity'))lines.push(`Quantity: ${data.get('quantity')} pieces`);
-    if(shortlist.length){lines.push('','Selected pieces:');shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name}`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
-    lines.push('','Project:',message);
+    const lines=[T('Hello Mao Han, I would like to discuss a packaging enquiry.'),'',T(`Name: ${name}`),T(`Email: ${email}`)];
+    if(String(data.get('company')||'').trim())lines.push(T(`Company: ${String(data.get('company')).trim()}`));
+    if(data.get('quantity'))lines.push(T(`Quantity: ${data.get('quantity')} pieces`));
+    if(shortlist.length){lines.push('',T('Selected pieces:'));shortlist.forEach(item=>{const p=byId.get(item.id);lines.push(isStore(p)?`• ${p.model} — ${p.name}`:`• ${p.model} — ${p.finishes[item.variant]} (${p.neck})`);});}
+    lines.push('',T('Project:'),message);
     return {name,email,message,text:lines.join('\n')};
   }
   function refreshLinks(){
@@ -227,7 +258,7 @@
     else $('enquiry-result').textContent='We could not send the form just now. Please email it directly or send it on WhatsApp.';
   });
   const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD'}];
-  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;paintPhoto($('finish-photo'),p,Math.max(0,p.finishes.indexOf(study.finish)),'(max-width: 760px) 80vw, 40vw');$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
+  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;paintPhoto($('finish-photo'),p,Math.max(0,enFinishes(p).indexOf(study.finish)),'(max-width: 760px) 80vw, 40vw');$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
   document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>chooseFinish(Number(b.dataset.finish))));
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('animations-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
   // Motion: one control pauses every animation, CSS and 3D alike.
@@ -241,5 +272,9 @@
   motionButton?.addEventListener('click',()=>setMotion(!document.body.classList.contains('motion-paused')));
   reducedMotion.addEventListener('change',()=>setMotion(reducedMotion.matches));
   setMotion(reducedMotion.matches);
+  // Hidden admin entrance: three quick clicks on the header logo open the admin login.
+  (()=>{const logo=document.querySelector('.header .brand');if(!logo)return;let clicks=[];
+    logo.addEventListener('click',event=>{const now=Date.now();clicks=clicks.filter(t=>now-t<1500);clicks.push(now);
+      if(clicks.length>=3){event.preventDefault();clicks=[];location.href='admin/';}});})();
   renderProducts();renderShortlist();chooseFinish(0);
 })();

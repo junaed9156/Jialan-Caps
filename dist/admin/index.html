@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self' https://api.github.com; font-src 'self'; form-action 'none'; base-uri 'none'">
+  <title>Mao Han · Admin</title>
+  <link rel="icon" href="../assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="admin.css">
+  <script src="../products.js" defer></script>
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><img src="../assets/maohan-mark.png" alt="" width="40" height="33"><span>MAO HAN <small>Admin · 管理后台</small></span></div>
+    <div class="bar-actions">
+      <a href="../" target="_blank" rel="noopener">View website · 查看网站 ↗</a>
+      <button type="button" id="logout" hidden>Log out · 退出</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Log in -->
+    <section class="panel narrow" id="login-view" hidden>
+      <h1>Admin login <span>管理员登录</span></h1>
+      <form id="login-form" autocomplete="on">
+        <input type="text" name="username" value="admin" autocomplete="username" hidden>
+        <label>Password · 密码<input type="password" id="login-password" autocomplete="current-password" required minlength="12" maxlength="200"></label>
+        <button class="primary" type="submit">Log in · 登录</button>
+        <p class="status" id="login-status" role="status"></p>
+      </form>
+      <p class="muted small">First time, or the GitHub key expired? <button type="button" class="link" id="show-setup">Set up the admin · 设置</button></p>
+    </section>
+
+    <!-- First-time setup -->
+    <section class="panel narrow" id="setup-view" hidden>
+      <h1>Set up the admin <span>设置管理后台</span></h1>
+      <ol class="steps">
+        <li>On GitHub, open <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
+        <li>Repository access: <b>Only select repositories → Jialan-Caps</b>. Permissions → Repository permissions → <b>Contents: Read and write</b>. Nothing else.</li>
+        <li>Paste the token below and choose an admin password (at least 12 characters). The token is stored only in encrypted form, locked by this password.</li>
+      </ol>
+      <form id="setup-form" autocomplete="off">
+        <label>GitHub token · GitHub 令牌<input type="password" id="setup-token" required autocomplete="off" spellcheck="false" maxlength="400"></label>
+        <label>New admin password · 新密码<input type="password" id="setup-password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+        <label>Repeat password · 再次输入密码<input type="password" id="setup-password2" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+        <button class="primary" type="submit">Save setup · 保存设置</button>
+        <p class="status" id="setup-status" role="status"></p>
+      </form>
+      <p class="muted small"><button type="button" class="link" id="back-login">← Back to login · 返回登录</button></p>
+    </section>
+
+    <!-- Products -->
+    <section id="admin-view" hidden>
+      <div class="panel">
+        <h1>Add a product <span>添加产品</span></h1>
+        <form id="product-form" autocomplete="off" novalidate>
+          <div class="grid">
+            <label>Model / code · 型号 *<input id="f-model" required maxlength="40" placeholder="e.g. WL120"></label>
+            <label>Category · 类别 *<select id="f-category" required></select></label>
+            <label>Name (English) · 英文名称 *<input id="f-name" required maxlength="80" placeholder="The tall signature"></label>
+            <label>Name (Chinese) · 中文名称<input id="f-name-zh" maxlength="80" placeholder="加高经典款"></label>
+            <label class="wide">Description (English) · 英文描述<textarea id="f-desc" rows="3" maxlength="600"></textarea></label>
+            <label class="wide">Description (Chinese) · 中文描述<textarea id="f-desc-zh" rows="3" maxlength="600"></textarea></label>
+            <label>Material · 材质<input id="f-material" maxlength="80" placeholder="Anodized aluminium"></label>
+            <label>Material (Chinese) · 中文材质<input id="f-material-zh" maxlength="80" placeholder="阳极氧化铝"></label>
+            <label>Size (mm) · 尺寸<input id="f-size" maxlength="60" placeholder="27.5 × 30"></label>
+            <label>Neck fitting · 瓶口<input id="f-neck" maxlength="40" list="necks" placeholder="FEA15"><datalist id="necks"><option value="FEA15"><option value="FEA13"><option value="FEA13 / FEA15"><option value="Custom"></datalist></label>
+            <label>Weight · 重量<input id="f-weight" maxlength="40" placeholder="27 g"></label>
+            <label>Badge · 标签<input id="f-badge" maxlength="24" placeholder="NEW"></label>
+          </div>
+          <fieldset>
+            <legend>Photos · 产品图片 * <span class="muted">(1–8; one photo per colour or finish · 每个颜色一张)</span></legend>
+            <input type="file" id="f-photos" accept="image/jpeg,image/png,image/webp" multiple>
+            <ul class="photos" id="photo-list"></ul>
+          </fieldset>
+          <button class="primary" type="submit" id="save-product">Save to website · 保存到网站</button>
+          <p class="status" id="save-status" role="status"></p>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>Products added here <span>已添加的产品</span></h2>
+        <p class="muted small">Catalogue products come from the PDF and are not listed here. · 目录产品来自 PDF，不在此列出。</p>
+        <ul class="list" id="product-list"></ul>
+        <p class="muted" id="empty-list" hidden>No products added yet. · 还没有添加产品。</p>
+      </div>
+
+      <div class="panel narrow">
+        <h2>Change password <span>修改密码</span></h2>
+        <form id="password-form" autocomplete="off">
+          <label>New password · 新密码<input type="password" id="new-password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+          <label>Repeat · 再次输入<input type="password" id="new-password2" required minlength="12" maxlength="200" autocomplete="new-password"></label>
+          <button type="submit">Change password · 修改密码</button>
+          <p class="status" id="password-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <noscript>JavaScript is required for the admin page.</noscript>
+</body>
+</html>

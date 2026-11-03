@@ -1,7 +1,7 @@
 /* WL100 assembly study. The centre bottle is fixed. Two mounted specimens turn independently. */
 import {
   THREE, CAPS, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial,
-  contactShadow, backdrop, motionAllowed,
+  contactShadow, backdrop, motionAllowed, bottleMark,
 } from './kit.js';
 
 export function mount(stage, sequence) {
@@ -41,26 +41,8 @@ export function mount(stage, sequence) {
   });
   bottle.root.rotation.y = -0.29;
   scene.add(bottle.root);
-  const paper = document.createElement('canvas');
-  paper.width = 512; paper.height = 232;
-  const ink = paper.getContext('2d');
-  const labelMap = new THREE.CanvasTexture(paper);
-  labelMap.colorSpace = THREE.SRGBColorSpace;
-  labelMap.anisotropy = 8;
-  // The Mao Han logo printed on the label (drawn once the image has loaded).
-  const logo = new Image();
-  logo.onload = () => {
-    const h = 220, w = h * logo.naturalWidth / logo.naturalHeight;
-    ink.drawImage(logo, (512 - w) / 2, (232 - h) / 2, w, h);
-    labelMap.needsUpdate = true;
-    document.dispatchEvent(new CustomEvent('jialan:motion'));
-  };
-  logo.src = 'assets/maohan-mark.png';
-  const label = new THREE.Mesh(new THREE.PlaneGeometry(2.65, 1.2),
-    // No paper: only the red mark, printed straight onto the glass.
-    new THREE.MeshStandardMaterial({ map: labelMap, transparent: true, alphaTest: 0.35, roughness: 0.4, depthWrite: false }));
-  label.position.set(0, 2.34, 1.39);
-  bottle.stack.add(label);
+  // Only the red Mao Han mark, printed in the exact middle of the glass.
+  bottle.bottle.add(bottleMark(bottle.bottle));
   const shadow = contactShadow(5.8, 3.7, 0.52, 0x06121c);
   shadow.position.y = 0.016;
   scene.add(shadow);

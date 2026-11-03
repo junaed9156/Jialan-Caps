@@ -300,3 +300,23 @@ p { color: #1d2b33 !important; font-weight: 500; }
 .footer-top > div a, .footer-bottom { color: #1d2b33; font-weight: 600; }
 h1, h2 { color: inherit; }
 .hero p, .hero-copy > p, .studio-view p { color: #f1ece0 !important; }
+
+/* True product colours: photos are shown exactly as photographed, on white, never blended into a tint. */
+.product-photo > img, .finish-product .product-photo > img, .personalise-art img { mix-blend-mode: normal !important; }
+.product-grid .product-card .product-image-button { background: #fff !important; border: 1px solid #e3d5b8; box-shadow: 0 14px 28px -22px #5c431866; }
+.product-grid .product-card .product-image-button::before { display: none; }
+.detail-visual { background: #fff !important; }
+#shortlist-items .mini-photo { background: #fff !important; border: 1px solid #e3d5b8; }
+.finish-product { background: #fff; box-shadow: 0 24px 50px -24px #0009; }
+.finish-product .product-photo > img { padding: 6%; }
+.personalise-art { background: #fff !important; }
+
+/* Language switch and Chinese typography. */
+.lang-switch { font-size: 15px; font-weight: 700; letter-spacing: .04em; padding: 8px 12px; border: 1px solid #c9b48a; border-radius: 20px; color: inherit; line-height: 1; transition: background .2s, color .2s; }
+.lang-switch:hover { background: #173e3b; color: #fff; border-color: #173e3b; }
+.lang-switch.in-menu { margin-top: 14px; }
+html.lang-zh body { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", Arial, sans-serif; }
+html.lang-zh h1, html.lang-zh h2, html.lang-zh .card-name strong, html.lang-zh .studio-caption strong, html.lang-zh .footer-top > p, html.lang-zh .enquiry-form h3 {
+  font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif; letter-spacing: 0; }
+html.lang-zh h1 em, html.lang-zh h2 em { font-style: normal; }
+html.lang-zh .eyebrow, html.lang-zh .card-badge, html.lang-zh .studio-form-label { letter-spacing: .08em; }

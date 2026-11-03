@@ -6,7 +6,13 @@ Static website for Jialan / Suzhou Maohan Metal Products Co., Ltd. Everything th
 dist/                     the website (commit everything here, including built files)
   index.html, styles.css  page and base styles
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
-  app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle
+  app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
+                          admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
+  i18n.js                 English / 中文 (English default, ?lang=zh, remembered per visitor); dictionary + patterns
+  admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
+  admin/                  admin page: password login, add/delete products, change password
+  admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
+  assets/admin/           photos uploaded on the admin page (<id>-<n>-400/800.webp)
   products.js             GENERATED product data — never edit by hand
   js/                     GENERATED 3D bundle (from src/3d) — never edit by hand
   assets/p/               GENERATED HD product photos: <hash>-400.webp and <hash>-800.webp
@@ -54,6 +60,17 @@ original). To refresh: open https://maohan.m.en.alibaba.com/productlist.html in 
 page embeds `module-data='…'` URL-encoded JSON whose product objects carry `subject`, `fobPriceWithoutUnit`,
 `moq`, `id` and `imageUrlList[].original`. Update the JSON, write a short `name` and `detail`, rebuild.
 Product links are generated in Alibaba's own form: first six title words + `_<id>.html`.
+
+## Admin page and languages
+
+- `admin/` (open it with three quick clicks on the header logo). First run: paste a fine-grained GitHub token
+  (only this repo, Contents: read and write) and choose a password of 12+ characters; the page stores the
+  token encrypted in `dist/admin/key.json`. Saving a product commits photos + `dist/admin-products.js` in one
+  commit via the GitHub API; the Pages workflow publishes it in 1–2 minutes. Pull before working locally.
+- Chinese: add new UI or product strings to the `ZH` map in `dist/i18n.js` (exact English text as key).
+  Untranslated text stays English. Admin products carry their own `*_zh` fields.
+- Security: CSP meta in index.html and admin/index.html (no inline scripts allowed — keep it that way),
+  frame-busting in i18n.js/admin.js, all product text escaped or set with textContent.
 
 ## 3D scenes
 
