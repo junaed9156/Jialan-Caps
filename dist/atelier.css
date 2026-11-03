@@ -208,3 +208,33 @@ h1 em, h2 em { color: #846140; }
 body:has(#shortlist-bar:not([hidden])) .whatsapp-float { bottom: 96px; }
 .contact-methods > .contact-address { flex-basis: 100%; }
 .contact-address strong { line-height: 1.6; font-size: 13px; }
+
+/* ---------- Colour pass: no plain white areas ---------- */
+:root { --tint-sage: #dfe9e3; --tint-sand: #f1e4cc; --tint-blush: #f2ddd3; --tint-sky: #dbe7ee; --tint-lilac: #e6e1ee; }
+body { background: linear-gradient(180deg, #f3ece0, #eef0e9 50%, #ece6dc); }
+.header { background: rgb(243 236 224 / 94%); }
+.capability-strip { background: linear-gradient(90deg, #e9dcc4, #dfe6df 50%, #e6dbcf); }
+.collection { background: radial-gradient(ellipse at 10% 0%, #ecd9b8 0, transparent 45%), radial-gradient(ellipse at 95% 35%, #cfe0d9 0, transparent 50%), linear-gradient(180deg, #f2e9da, #e5ece6); }
+.studio { background: linear-gradient(160deg, #f0e3cb 0%, #e9e7dc 55%, #dbe6e3 100%); }
+.personalise { background: linear-gradient(160deg, #f3dfd4, #efe6da 60%, #e3e9e4); }
+.about { background: linear-gradient(180deg, #e2eaee, #ece8df); }
+.anatomy { background: linear-gradient(180deg, #f1e3cf, #d5e3df); }
+.footer { background: linear-gradient(180deg, #e7dcc8, #dcd2bf); }
+
+/* Product tiles: rotating soft colours (photos multiply onto them). */
+.product-card:nth-child(5n+1) .product-image-button { background: linear-gradient(150deg, #eef3ea, #d3e2d4); }
+.product-card:nth-child(5n+2) .product-image-button { background: linear-gradient(150deg, #f8ebe2, #ecd3c6); }
+.product-card:nth-child(5n+3) .product-image-button { background: linear-gradient(150deg, #ebf2f7, #cfe0ea); }
+.product-card:nth-child(5n+4) .product-image-button { background: linear-gradient(150deg, #f7efdc, #e9d8b5); }
+.product-card:nth-child(5n)   .product-image-button { background: linear-gradient(150deg, #f0edf6, #dcd5ea); }
+.detail-visual { background: linear-gradient(150deg, #f4e8d3, #d9e5df); }
+
+/* Materials & finishes: the photo sits on a warm lit stage, not a white card. */
+.finish-view { background: radial-gradient(ellipse at 50% 40%, #f7e7c6 0%, #e2c896 45%, #9f8358 100%); color: #3a2c1a; box-shadow: 0 30px 60px #0007; }
+.finish-view > span, .finish-view-bottom { color: #4a3a22; }
+.finish-product .product-photo > img { mix-blend-mode: multiply; }
+.personalise-art { background: linear-gradient(140deg, #f3e2cf, #e2d3bd); }
+#shortlist-items .mini-photo { background: #ece2d0; }
+
+/* Studio side controls pick up the warm tone. */
+.studio-shapes > button { background: #fbf6ec99; }
