@@ -2,7 +2,9 @@
 
 Product website for Jialan / Suzhou Maohan Metal Products Co., Ltd: perfume caps, collars, pumps, bottles and cosmetic closures, with real-time 3D.
 
-Live website: https://jialan-caps.expert-siren-8808.chatgpt.site
+Live website: https://junaed9156.github.io/Jialan-Caps/ (GitHub Pages, redeploys on every push to `main`)
+
+Earlier preview: https://jialan-caps.expert-siren-8808.chatgpt.site
 
 ## What is on the site
 
