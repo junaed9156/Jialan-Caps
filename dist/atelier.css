@@ -330,3 +330,8 @@ html.lang-zh .eyebrow, html.lang-zh .card-badge, html.lang-zh .studio-form-label
 @media (max-width: 700px) { .lang-switch.in-header { display: none; } .lang-switch.in-menu { display: inline-block; } }
 @media (min-width: 701px) { .lang-switch.in-menu { display: none; } }
 @media (max-width: 700px) { .header .brand > span { font-size: 18px; letter-spacing: .14em; white-space: nowrap; } .header .brand small { font-size: 10px; letter-spacing: .18em; } .header .brand-mark { width: 38px; height: auto; } }
+/* Made personal (desktop): a larger banner, aligned with the top of the heading. */
+@media (min-width: 901px) {
+  .personalise { grid-template-columns: 60% 35% !important; gap: 5% !important; align-items: start !important; }
+  .personalise-art { margin-top: 36px; }
+}
