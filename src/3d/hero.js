@@ -44,21 +44,21 @@ export function mount(stage, sequence) {
   const paper = document.createElement('canvas');
   paper.width = 512; paper.height = 232;
   const ink = paper.getContext('2d');
-  ink.fillStyle = '#e8dfca'; ink.fillRect(0, 0, 512, 232);
   const labelMap = new THREE.CanvasTexture(paper);
   labelMap.colorSpace = THREE.SRGBColorSpace;
   labelMap.anisotropy = 8;
   // The Mao Han logo printed on the label (drawn once the image has loaded).
   const logo = new Image();
   logo.onload = () => {
-    const h = 170, w = h * logo.naturalWidth / logo.naturalHeight;
+    const h = 220, w = h * logo.naturalWidth / logo.naturalHeight;
     ink.drawImage(logo, (512 - w) / 2, (232 - h) / 2, w, h);
     labelMap.needsUpdate = true;
     document.dispatchEvent(new CustomEvent('jialan:motion'));
   };
   logo.src = 'assets/maohan-mark.png';
   const label = new THREE.Mesh(new THREE.PlaneGeometry(2.65, 1.2),
-    new THREE.MeshStandardMaterial({ map: labelMap, roughness: 0.9 }));
+    // No paper: only the red mark, printed straight onto the glass.
+    new THREE.MeshStandardMaterial({ map: labelMap, transparent: true, alphaTest: 0.35, roughness: 0.4, depthWrite: false }));
   label.position.set(0, 2.34, 1.39);
   bottle.stack.add(label);
   const shadow = contactShadow(5.8, 3.7, 0.52, 0x06121c);
