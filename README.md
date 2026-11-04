@@ -47,7 +47,11 @@ npm test             # language, frame budget, visibility and scene lifecycle ch
 The normal website URL always opens in English, even if a visitor previously selected Chinese.
 The language switch uses `?lang=zh` for an explicit Chinese page.
 
-The page paints before starting WebGL. Scenes load one at a time near the viewport, compile shaders
+The page paints before starting WebGL. The hero starts immediately after that paint, without waiting
+for all images to load, and shows a small loading indicator until its first rendered frame. The
+illustrated fallback appears only when WebGL is unavailable, fails or misses the eight-second
+startup deadline; a late download cannot replace that fallback during the same visit.
+Lower scenes load one at a time near the viewport, compile shaders
 asynchronously, and stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
 adapts down when frames stay slow; glass uses a smaller refraction buffer. The build also versions
 CSS/JS URLs by content so returning visitors receive matching scripts after deployment.

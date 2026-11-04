@@ -28,6 +28,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'Contact us': '联系我们',
     'Contact us ↗': '联系我们 ↗',
     // Hero
+    'Loading 3D study…': '正在加载 3D 展示…',
     'MAO HAN / JIANGSU': 'MAO HAN / 江苏', 'JIANGSU': '江苏',
     'The finishing': '画龙点睛的',
     'touch.': '一笔。',

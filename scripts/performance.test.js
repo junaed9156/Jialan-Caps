@@ -79,6 +79,57 @@ test('normal URL always uses English, including a previously saved Chinese prefe
   }
 });
 
+test('the first paint waits for the final hero; a failed module has a bounded fallback', () => {
+  const html = new Element(), timers = [];
+  runInNewContext(readFileSync(new URL('../dist/lang-boot.js', import.meta.url), 'utf8'), {
+    document: { documentElement: html }, location: { search: '' }, URLSearchParams,
+    setTimeout: (callback, delay) => timers.push({ callback, delay }),
+  });
+  assert.equal(html.dataset.heroState, 'loading');
+  assert.equal(timers[0].delay, 8000);
+  timers[0].callback();
+  assert.equal(html.dataset.heroState, 'fallback', 'A failed entry module must not leave a spinner forever');
+  html.dataset.heroState = 'ready'; timers[0].callback();
+  assert.equal(html.dataset.heroState, 'ready', 'The timeout must never replace a rendered hero');
+});
+
+test('the hero starts before window.load, with fallback on missing WebGL, failed or late downloads', async () => {
+  const source = readFileSync(new URL('../src/3d/main.js', import.meta.url), 'utf8')
+    .replace("import { mountSequence } from './sequence.js';", '')
+    .replaceAll(/import\('\.\/(hero|anatomy|studio)\.js'\)/g, (_, scene) => `loadScene('${scene}')`);
+  for (const mode of ['success', 'no-webgl', 'failure', 'timeout']) {
+    const document = new Element();
+    document.documentElement = new Element(); document.documentElement.dataset.heroState = 'loading';
+    document.readyState = 'interactive'; document.hidden = false;
+    const raf = [], downloads = [], mounts = [], warnings = [];
+    let finishDownload;
+    document.createElement = () => ({ getContext: () => mode === 'no-webgl' ? null : { getExtension: () => null } });
+    runInNewContext(source, {
+      document, window: { IntersectionObserver: Observer }, IntersectionObserver: Observer,
+      requestAnimationFrame: fn => raf.push(fn), setTimeout, mountSequence: () => ({}),
+      console: { warn: error => warnings.push(error) },
+      loadScene: scene => {
+        downloads.push(scene);
+        if (mode === 'failure') return Promise.reject(new Error('Offline'));
+        const module = { mount: () => mounts.push(scene) };
+        return mode === 'timeout' ? new Promise(resolve => { finishDownload = () => resolve(module); }) : Promise.resolve(module);
+      },
+    });
+    assert.equal(downloads.length, 0, 'Useful page content must paint before allocating WebGL');
+    raf.shift()(); raf.shift()();
+    await new Promise(resolve => setImmediate(resolve));
+    if (mode === 'timeout') {
+      document.documentElement.dataset.heroState = 'fallback'; finishDownload();
+      await new Promise(resolve => setImmediate(resolve));
+    }
+    assert.deepEqual(mounts, mode === 'success' ? ['hero'] : []);
+    assert.deepEqual(downloads, mode === 'no-webgl' ? [] : ['hero'], 'Lower scenes must stay lazy');
+    assert.equal(document.readyState, 'interactive', 'No window.load event was required');
+    if (mode !== 'success') assert.equal(document.documentElement.dataset.heroState, 'fallback');
+    assert.equal(warnings.length, mode === 'failure' ? 1 : 0);
+  }
+});
+
 test('renderer caches layout and lowers resolution under sustained slow frames', () => {
   let reads = 0;
   const el = { get clientWidth() { reads++; return 1000; }, get clientHeight() { reads++; return 600; } };
@@ -137,7 +188,9 @@ test('all scenes mount, draw finite cameras, pause, and recover after GPU contex
   const { mountSequence } = await import('../src/3d/sequence.js');
   const stage = new Element();
   const start = Observer.all.length;
+  doc.documentElement.dataset.heroState = 'loading';
   await (await import('../src/3d/hero.js')).mount(stage, mountSequence(stage));
+  assert.equal(doc.documentElement.dataset.heroState, 'ready', 'Only a rendered frame can reveal the hero');
   await (await import('../src/3d/anatomy.js')).mount(new Element());
   await (await import('../src/3d/studio.js')).mount(new Element());
   const observers = Observer.all.slice(start);
@@ -158,4 +211,20 @@ test('all scenes mount, draw finite cameras, pause, and recover after GPU contex
   doc.body.classList.remove('motion-paused'); doc.dispatchEvent(new Event('jialan:motion')); flush(24000);
   observers.forEach(io => io.emit(false));
   assert.equal(frames.size, 0, 'Off-screen scenes should not schedule frames');
+});
+
+test('a late GPU compilation cannot replace an already displayed fallback', async () => {
+  let complete, disposed = false, subscribed = false, removed = false;
+  const stage = new Element();
+  stage.prepend = canvas => { canvas.remove = () => { removed = true; }; };
+  kit.THREE.WebGLRenderer = class {
+    setPixelRatio() {}
+    compileAsync() { return new Promise(resolve => { complete = resolve; }); }
+    dispose() { disposed = true; }
+  };
+  doc.documentElement.dataset.heroState = 'loading';
+  const loading = (await import('../src/3d/hero.js')).mount(stage, { subscribe() { subscribed = true; } });
+  doc.documentElement.dataset.heroState = 'fallback'; complete(); await loading;
+  assert.equal(doc.documentElement.dataset.heroState, 'fallback');
+  assert.equal(subscribed, false); assert.equal(disposed, true); assert.equal(removed, true);
 });

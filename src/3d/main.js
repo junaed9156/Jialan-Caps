@@ -4,6 +4,7 @@ import { mountSequence } from './sequence.js';
 
 const heroStage = document.querySelector('.hero-scene');
 const heroSequence = heroStage && mountSequence(heroStage);
+const page = document.documentElement;
 
 function webglAvailable() {
   try {
@@ -30,17 +31,22 @@ function idle() {
   });
 }
 
-function lazy(selector, load, margin = '240px 0px', context) {
+function lazy(selector, load, margin = '240px 0px', context, priority = false) {
   const el = document.querySelector(selector);
   if (!el) return null;
   let started, mounted = false;
   const start = () => {
     if (started) return started;
     // Never initialise several WebGL renderers in the same frame while scrolling.
-    started = queue.then(idle).then(load).then(m => m.mount(el, context)).then(() => { mounted = true; }).catch(error => {
+    started = (priority ? Promise.resolve() : queue.then(idle)).then(load).then(m => {
+      // A timed-out hero stays in fallback for this visit, without another visual swap.
+      if (el === heroStage && page.dataset.heroState === 'fallback') return;
+      return m.mount(el, context);
+    }).then(() => { mounted = true; }).catch(error => {
       console.warn('3D:', error);
       el.classList.add('is-3d-failed');
       el.classList.remove('is-3d');
+      if (el === heroStage) page.dataset.heroState = 'fallback';
     });
     queue = started;
     return started;
@@ -53,19 +59,23 @@ function lazy(selector, load, margin = '240px 0px', context) {
   return { start, mounted: () => mounted };
 }
 
-function afterLoad(fn) {
-  const go = () => requestAnimationFrame(() => {
-    if ('requestIdleCallback' in window) requestIdleCallback(fn, { timeout: 1200 });
-    else setTimeout(fn, 32);
+function afterPaint(fn) {
+  const go = () => requestAnimationFrame(() => requestAnimationFrame(fn));
+  if (!document.hidden) { go(); return; }
+  document.addEventListener('visibilitychange', function visible() {
+    if (document.hidden) return;
+    document.removeEventListener('visibilitychange', visible);
+    go();
   });
-  if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
 }
 
-// Paint the useful page and its animated illustration before even allocating a GPU context.
-afterLoad(() => {
-  if (!webglAvailable()) return;
+// Start after the first paint, without waiting for unrelated images or window.load.
+afterPaint(() => {
+  if (!webglAvailable()) { page.dataset.heroState = 'fallback'; return; }
   document.documentElement.classList.add('webgl');
-  lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence);
+  if (page.dataset.heroState !== 'fallback') {
+    lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true)?.start();
+  }
   lazy('#anatomy', () => import('./anatomy.js'));
   const studio = lazy('#studio-view', () => import('./studio.js'), '320px 0px');
   let pendingDesign;

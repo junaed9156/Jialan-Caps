@@ -8,7 +8,7 @@ dist/                     the website (commit everything here, including built f
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
-  lang-boot.js            tiny <head> script: hides a Chinese page until i18n.js has translated it (no English flash)
+  lang-boot.js            tiny <head> script: language and hero loading state before first paint
   i18n.js                 English / 中文 (normal URL always English; explicit ?lang=zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
   admin/                  admin page: password login, add/delete products, change password
@@ -83,7 +83,9 @@ Run `npm test` for language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
-- `main.js` loads each scene lazily when its section nears the viewport, only if WebGL exists.
+- `main.js` starts the hero after first paint, without waiting for window.load. Lower scenes load near the viewport.
+  The hero shows a small loading indicator until its first rendered frame, so the illustrated fallback cannot flash first.
+  Unsupported WebGL, load errors or the eight-second startup deadline reveal the fallback; late initialisation cannot replace it.
   The hero shares one assembly timeline across WebGL and the projected illustration. Without WebGL the studio and anatomy retain their catalogue photographs.
 - Motion: the hero's "Pause motion" button and `prefers-reduced-motion` stop all animation
   (`body.motion-paused`, event `jialan:motion`).

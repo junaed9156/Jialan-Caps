@@ -82,6 +82,12 @@ h1 em, h2 em { color: #846140; }
   opacity: 1; pointer-events: none;
 }
 .hero-canvas { transition: opacity .25s linear; }
+.hero-loading { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 18px; color: #dfc499; font-size: 14px; letter-spacing: .04em; }
+.hero-loading-ring { width: 28px; height: 28px; border: 1px solid #718084; border-top-color: #e1c494; border-radius: 50%; animation: study-loading 1s linear infinite; }
+html[data-hero-state="loading"] .hero-loading { display: flex; }
+html[data-hero-state="loading"] .study-plate { visibility: hidden; }
+body.motion-paused .hero-loading-ring { animation-play-state: paused; }
+@keyframes study-loading { to { transform: rotate(360deg); } }
 .hero-scene.is-3d .study-plate { visibility: hidden; }
 .study-top, .study-controls {
   position: absolute; z-index: 2; left: clamp(13px, 2vw, 34px); right: clamp(13px, 2vw, 34px);

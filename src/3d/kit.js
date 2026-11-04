@@ -79,7 +79,7 @@ export function fit(renderer, camera, element) {
 }
 
 export async function prepareScene(renderer, scene, camera) {
-  // Parallel shader compilation keeps the illustration visible while the GPU prepares the scene.
+  // Prepare shaders without blocking the page before revealing the finished scene.
   await renderer.compileAsync(scene, camera);
 }
 

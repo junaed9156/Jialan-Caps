@@ -84,6 +84,7 @@ export async function mount(stage, sequence) {
     exhibits.forEach(({ turntable, speed }, i) => { turntable.rotation.y = (i ? 0.68 : -0.56) + time * speed; });
     renderFrame(renderer, scene, camera);
     if (!stage.classList.contains('is-3d')) stage.classList.add('is-3d');
+    if (document.documentElement.dataset.heroState !== 'ready') document.documentElement.dataset.heroState = 'ready';
   }
 
   const ray = new THREE.Raycaster(), pointer = new THREE.Vector2();
@@ -116,5 +117,17 @@ export async function mount(stage, sequence) {
     sequence.subscribe(draw);
   });
   await prepareScene(renderer, scene, camera);
+  if (document.documentElement.dataset.heroState === 'fallback') {
+    // Loading took too long. Keep the chosen fallback rather than replacing it late.
+    scene.traverse(object => {
+      object.geometry?.dispose();
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach(material => material?.dispose());
+    });
+    scene.environment?.dispose();
+    renderer.dispose();
+    canvas.remove();
+    return;
+  }
   sequence.subscribe(draw);
 }
