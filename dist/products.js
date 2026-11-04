@@ -42,7 +42,7 @@ window.JIALAN = {
    "images": [
     "assets/p/172643629eca7752",
     "assets/p/459bb3f4c52092d6",
-    "assets/p/6b979d899a2d5252",
+    "assets/p/bb94dd245608d6e8",
     "assets/p/a216c253079cfdd9",
     "assets/p/54b44811e86bde17",
     "assets/p/fe70de8dbe99000e",
@@ -78,7 +78,7 @@ window.JIALAN = {
    "images": [
     "assets/p/52a8136af3c326d5",
     "assets/p/83ea9fb9da702ca8",
-    "assets/p/9e41fe1b5959d2a8",
+    "assets/p/7c1e76c132020185",
     "assets/p/16da311db5f2faa8",
     "assets/p/8f7a8b8943212067",
     "assets/p/efdb2a84d522760a",
@@ -144,7 +144,7 @@ window.JIALAN = {
     "assets/p/a4aaf9b050025460",
     "assets/p/d1cda35e210d0f31",
     "assets/p/d2f9c00d1349bfdc",
-    "assets/p/36c4b1beda4339da"
+    "assets/p/97d09112ffff71b7"
    ],
    "defaultVariant": 1
   },
@@ -190,7 +190,7 @@ window.JIALAN = {
    "images": [
     "assets/p/8bc5d9ba429476d3",
     "assets/p/ff7edef2d6970fac",
-    "assets/p/1f977fbdadf7ba9d",
+    "assets/p/9b9e0079bc060085",
     "assets/p/fe108ad909b593ae",
     "assets/p/b4acd24a3e85610b",
     "assets/p/4479d668168408b9"
@@ -213,8 +213,8 @@ window.JIALAN = {
     "Glossy silver"
    ],
    "images": [
-    "assets/p/b1244172b2c14741",
-    "assets/p/4f24249e1f90e95d",
+    "assets/p/3adde1e15e6d89e7",
+    "assets/p/7ad83ab38d732da0",
     "assets/p/d7992f9fa4bb623f"
    ],
    "defaultVariant": 1
@@ -243,7 +243,7 @@ window.JIALAN = {
     "assets/p/83820f6ac7b4246a",
     "assets/p/c8ed338e70733337",
     "assets/p/aec8e3f451708aed",
-    "assets/p/ca8f138feaae6d77",
+    "assets/p/12fbe72c5cfb555b",
     "assets/p/767f664967a25caf"
    ]
   },
@@ -273,7 +273,7 @@ window.JIALAN = {
    "images": [
     "assets/p/345a20226af38ffc",
     "assets/p/c6fcc811a804e381",
-    "assets/p/6bab001916c14516",
+    "assets/p/e621c55bc42baf89",
     "assets/p/3908ddb0ef6210ab",
     "assets/p/78b12c0fc7485d92",
     "assets/p/d364c8d22842c070",
@@ -458,7 +458,7 @@ window.JIALAN = {
    "images": [
     "assets/p/957fc4f9d12acc09",
     "assets/p/e30b45ce0a8adf9e",
-    "assets/p/4968f2db798c13a6",
+    "assets/p/7963b54a1454954d",
     "assets/p/93e7d8f4ae91e5c8",
     "assets/p/a39fe0dcb1a1f42c",
     "assets/p/c5df149438540e80"
@@ -572,7 +572,7 @@ window.JIALAN = {
    "images": [
     "assets/p/78446a6f3394849c",
     "assets/p/a00c7e9e1a584ef1",
-    "assets/p/780eb2d7317731e7",
+    "assets/p/d69c8bc7056796f7",
     "assets/p/9bd9e9e391740264",
     "assets/p/cd78f63a9001e6ee",
     "assets/p/c81ed2f2901aa020"
@@ -596,8 +596,8 @@ window.JIALAN = {
     "Glossy silver"
    ],
    "images": [
-    "assets/p/3c8b84700e853e46",
-    "assets/p/fe510d435e21276e",
+    "assets/p/382802a42e79220f",
+    "assets/p/4c89aab591331b01",
     "assets/p/f3dcf32e9e43ffd1"
    ]
   },
@@ -619,9 +619,9 @@ window.JIALAN = {
     "Glossy coffee"
    ],
    "images": [
-    "assets/p/8689fdb73e073ed8",
-    "assets/p/97282047292ff3b4",
-    "assets/p/a59154945a572d8f"
+    "assets/p/4da4df9446acf3a6",
+    "assets/p/e859bd84c6c5900d",
+    "assets/p/05cb4e6631c18902"
    ]
   },
   {
@@ -639,7 +639,7 @@ window.JIALAN = {
    "description": "A domed electro-aluminium magnetic cap shown in glossy gold and silver.",
    "note": "The specification image lists a 26.5 g cap and a 3.5 g shoulder collar (30 g total). Enquire for the silver finish.",
    "images": [
-    "assets/p/51bd3b11e242687e"
+    "assets/p/2691f413ef31c652"
    ],
    "page": 28
   },
@@ -658,7 +658,7 @@ window.JIALAN = {
    "description": "A rectangular magnetic cap in glossy black with shoulder collar options in gold, black or silver.",
    "note": "The image lists 33 g for the cap and 3.8 g for the collar (36.8 g total). Confirm dimensions against the technical drawing.",
    "images": [
-    "assets/p/2af3c134ca99c845"
+    "assets/p/d33fd09e7f4d11a6"
    ],
    "page": 29
   },
@@ -680,7 +680,7 @@ window.JIALAN = {
    ],
    "images": [
     "assets/p/eec51d7644137ccc",
-    "assets/p/3a462413d9778749",
+    "assets/p/c3187b826af9f5f1",
     "assets/p/f5a43a18bb3a4421"
    ]
   },
@@ -758,7 +758,7 @@ window.JIALAN = {
    ],
    "images": [
     "assets/p/5cc4c284d77d133a",
-    "assets/p/b35da4115d66ec1b"
+    "assets/p/caf122d80a5ca654"
    ]
   },
   {
@@ -833,7 +833,7 @@ window.JIALAN = {
    "description": "Single-step and double-step shoulder collars in metallic and coloured finishes, with FEA13 and FEA15 options shown in the catalogue.",
    "note": "Choose the collar height and profile to suit the matching cap and bottle. See pages 38–39 for the full range.",
    "images": [
-    "assets/p/ac3242a0c12b0462"
+    "assets/p/884bb972dd55bb75"
    ],
    "page": 38
   },
@@ -851,7 +851,7 @@ window.JIALAN = {
    ],
    "description": "JL30 shoulder collar profiles, plus multi-step and special-shaped collars for different cap assemblies.",
    "images": [
-    "assets/p/e0a6a925957f8a45"
+    "assets/p/7d903accc0bfe15c"
    ],
    "page": 39
   },
@@ -869,7 +869,7 @@ window.JIALAN = {
    ],
    "description": "Square shoulder collars and middle collars, shown alongside circular collar options in the catalogue.",
    "images": [
-    "assets/p/efb7c50374d10b6b"
+    "assets/p/dc09ee17b06228b2"
    ],
    "page": 39
   },

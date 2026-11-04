@@ -384,3 +384,13 @@ html.i18n-pending body { visibility: hidden; }
   .header-actions { gap: 6px; }
   .header-actions > .button { padding-inline: 9px; font-size: 12px; }
 }
+
+/* 3D studio and scroll story: when 3D is available, never show the stand-in photo first;
+   a quiet loading ring holds the space until the 3D scene appears (the photo returns only if 3D fails). */
+html.webgl .studio-view:not(.is-3d):not(.is-3d-failed) #studio-fallback,
+html.webgl .anatomy:not(.is-3d):not(.is-3d-failed) .anatomy-fallback { visibility: hidden; }
+html.webgl .studio-view:not(.is-3d):not(.is-3d-failed) .studio-render::after,
+html.webgl .anatomy:not(.is-3d):not(.is-3d-failed) .anatomy-stage::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px;
+  border: 1px solid #8a7b5f66; border-top-color: #c9a35e; border-radius: 50%; animation: study-loading 1s linear infinite; pointer-events: none;
+}

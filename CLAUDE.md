@@ -11,7 +11,8 @@ dist/                     the website (commit everything here, including built f
   lang-boot.js            tiny <head> script: language and hero loading state before first paint
   i18n.js                 English / 中文 (normal URL always English; explicit ?lang=zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
-  admin/                  admin page: password login, add/delete products, change password
+  admin/                  admin page: password login, add/delete products, change password;
+                          uploads are auto-cropped and centred on white like the catalogue photos
   admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
   assets/admin/           photos uploaded on the admin page (<id>-<n>-400/800.webp)
   404.html, notfound.css  branded page-not-found (absolute /Jialan-Caps/ paths)
@@ -44,6 +45,11 @@ scripts/hd_photos.py         crop, isolate and 4x Real-ESRGAN enlargement (cache
    enlarged (about 20 s each on CPU, cached by content hash). `--fast` skips enlargement for a preview.
    If a crop picks the wrong photo for a new model, add `crop: [x0, y0, x1, y1]` in the
    1000 × 1000 spec-image pixel space (look at the image) and rebuild.
+   Single-product photos are enlarged (AI blended 50/50 with Lanczos so metal looks real, not glossy),
+   then `hd_photos.tidy` erases stray arrows/digits and centres the product on a white square at 80 %,
+   so every colour of a model is framed alike. If a digit touching a product survives, add
+   `"erase": {"<finish>": [[x0, y0, x1, y1]]}` (framed 1000 × 1000 coordinates) to that entry.
+   After changing tidy, delete the affected `dist/assets/p/<key>-*.webp` and rebuild (enlargements are cached).
 5. Check: `npm run serve`, open http://localhost:8000, browse filters and a few product dialogs.
 6. Commit `dist/`, `catalogue/` and any script changes; push to `main`.
 

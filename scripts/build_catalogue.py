@@ -215,11 +215,21 @@ def alibaba_url(item):
 
 
 # ---------------------------------------------------------------- photographs
-def write_photo(im, hd=True):
+def write_photo(im, hd=True, single=False, erase=None):
+    """`single`: one product per photo; it is cleaned of stray marks and framed like its other colours.
+    `erase`: optional [x0, y0, x1, y1] boxes (in the framed 1000 x 1000 photo) painted white, for a mark
+    touching the product that automatic cleaning cannot separate (set per finish in catalogue.json)."""
     key = hp.content_hash(im)
     base = PHOTOS / key
     if not (base.parent / f'{key}-800.webp').exists():
-        big = hp.enlarge(im) if hd and max(im.size) < 700 else im
+        big = hp.natural_enlarge(im) if hd and max(im.size) < 700 else im
+        if single:
+            big = hp.tidy(big)
+            if erase:
+                from PIL import ImageDraw
+                draw = ImageDraw.Draw(big)
+                for box in erase:
+                    draw.rectangle(tuple(box), fill=(255, 255, 255))
         hp.save_sizes(big, base)
     return f'assets/p/{key}'
 
@@ -241,7 +251,7 @@ def main():
 
     products, by_id, unmatched, ignored = [], {}, [], []
     for p in cfg['products']:
-        entry = {k: v for k, v in p.items() if k not in ('match', 'crop', 'special', 'finishNames', 'finishLabel', 'default')}
+        entry = {k: v for k, v in p.items() if k not in ('match', 'crop', 'special', 'finishNames', 'finishLabel', 'default', 'erase')}
         entry['_cfg'] = p
         entry['_cards'] = []
         products.append(entry)
@@ -311,7 +321,7 @@ def main():
         variants.sort(key=lambda v: (v[0], v[1]))
         images = []
         for _, _, label, photo, card in variants:
-            images.append(write_photo(photo))
+            images.append(write_photo(photo, single=True, erase=(c.get('erase') or {}).get(label)))
             used.add(Path(images[-1]).name)
         first = variants[0][4]
         item = {

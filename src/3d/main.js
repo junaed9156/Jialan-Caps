@@ -76,8 +76,9 @@ afterPaint(() => {
   if (page.dataset.heroState !== 'fallback') {
     lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true)?.start();
   }
-  lazy('#anatomy', () => import('./anatomy.js'));
-  const studio = lazy('#studio-view', () => import('./studio.js'), '320px 0px');
+  // Start a screen or two ahead so the 3D is ready by the time the section is reached.
+  lazy('#anatomy', () => import('./anatomy.js'), '900px 0px');
+  const studio = lazy('#studio-view', () => import('./studio.js'), '1100px 0px');
   let pendingDesign;
   document.addEventListener('jialan:studio', event => {
     if (!studio || studio.mounted()) return;

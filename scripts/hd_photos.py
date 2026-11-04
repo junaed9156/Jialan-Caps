@@ -58,6 +58,24 @@ def _isolate(a, threshold, coloured_background, strong, focus=None):
     return ndimage.binary_fill_holes(ndimage.binary_dilation(component))
 
 
+def _hull(mask: np.ndarray) -> np.ndarray:
+    """Filled convex hull of a boolean mask."""
+    from scipy.spatial import ConvexHull
+    from PIL import ImageDraw
+    ys, xs = np.where(mask)
+    if len(xs) < 3:
+        return mask
+    pts = np.column_stack([xs, ys])
+    try:
+        hull = ConvexHull(pts)
+    except Exception:
+        return mask
+    poly = [tuple(map(float, pts[i])) for i in hull.vertices]
+    img = Image.new('L', (mask.shape[1], mask.shape[0]), 0)
+    ImageDraw.Draw(img).polygon(poly, fill=255)
+    return np.asarray(img) > 0
+
+
 def photograph(im: Image.Image, box=None, threshold=244, coloured_background=False, margin=0) -> Image.Image:
     """Isolate the main connected photographic object inside `box`.
 
@@ -90,10 +108,108 @@ def photograph(im: Image.Image, box=None, threshold=244, coloured_background=Fal
         return im.crop(box)
     ys, xs = np.where(component)
     out = np.full_like(a, 255)
-    out[component] = a[component]
+    # Keep everything inside the product's outline (convex hull): white and silver caps have
+    # highlights as light as the background, which would otherwise be cut away.
+    # Only when real (non-white) product pixels were dropped, so unchanged photos stay cached.
+    keep = component
+    hull = _hull(component)
+    dropped = hull & ~component & (a.min(axis=2) < 250)
+    if dropped.sum() > 0.005 * component.sum():
+        keep = hull | component
+    out[keep] = a[keep]
     h, w = a.shape[:2]
     return Image.fromarray(out).crop((max(0, int(xs.min()) - 3), max(0, int(ys.min()) - 3),
                                       min(w, int(xs.max()) + 4), min(h, int(ys.max()) + 4)))
+
+
+def tidy(im: Image.Image, fill=0.80, size=1000, threshold=236) -> Image.Image:
+    """Frame a single-product photograph the same way every time.
+
+    Stray marks left from the specification image (arrow heads, dimension lines, digits) are whitened:
+    any dark mark outside the product's outline (its convex hull) goes, however close it sits. The
+    product's own pixels, including faint edges of white or silver caps, stay as photographed. The
+    product is then centred on a white square with an even margin, so switching between colours of
+    one model keeps the same size and position.
+    """
+    a = np.asarray(im.convert('RGB'))
+    dark = a.min(axis=2) < threshold
+    labels, n = ndimage.label(dark)
+    if not n:
+        return im
+    sizes = ndimage.sum(dark, labels, range(1, n + 1))
+    main = int(np.argmax(sizes)) + 1
+    body = labels == main
+    for i, area in enumerate(sizes, start=1):        # other large parts (e.g. a separate collar) stay
+        if i != main and area > 0.12 * sizes[main - 1]:
+            body |= labels == i
+    # Thin dimension lines attached to the product would stretch its outline out to the printed
+    # digits, so the outline is taken from the body with thin lines opened away.
+    core = ndimage.binary_opening(body, structure=np.ones((15, 15)))
+    if core.sum() < 0.5 * body.sum():
+        core = body
+    # Row by row, the product spans from its leftmost to its rightmost body pixel; digits beside it
+    # fall outside that span. Rows without body (thin rims, dome tips) use the body's convex outline.
+    h, w = core.shape
+    has = core.any(axis=1)
+    left = np.where(has, core.argmax(axis=1), 0)
+    right = np.where(has, w - 1 - core[:, ::-1].argmax(axis=1), -1)
+    cols = np.arange(w)[None, :]
+    band = has[:, None] & (cols >= (left - 4)[:, None]) & (cols <= (right + 4)[:, None])
+    outline = np.where(has[:, None], band, ndimage.binary_dilation(_hull(body), iterations=3))
+    stray = ndimage.binary_dilation(dark & ~outline, iterations=2) & ~outline
+    out = a.copy()
+    out[stray] = 255
+    near = outline
+    # Final pass: small dark pieces separated from the product by background (digit fragments a few
+    # pixels from its edge) are erased; anything within the product's own row span stays.
+    d2 = ndimage.binary_opening(out.min(axis=2) < 200, structure=np.ones((3, 3)))   # break 1–2 px bridges
+    lab2, n2 = ndimage.label(d2)
+    if n2 > 1:
+        sz2 = ndimage.sum(d2, lab2, range(1, n2 + 1))
+        # The product's span comes from its whole non-white silhouette (white caps included).
+        lit = ndimage.binary_opening(out.min(axis=2) < 246, structure=np.ones((3, 3)))
+        lab3, n3 = ndimage.label(lit)
+        sz3 = ndimage.sum(lit, lab3, range(1, n3 + 1))
+        main2 = lab3 == (int(np.argmax(sz3)) + 1)
+        # Metal and dark caps have a solid dark body; measuring against it ignores the faint grey
+        # pixels that can join a digit to the outline. White and pale-wood caps keep the outline.
+        dark_body = lab2 == (int(np.argmax(sz2)) + 1)
+        if dark_body.sum() > 0.6 * main2.sum():
+            main2 = dark_body
+        has2 = main2.any(axis=1)
+        l2 = np.where(has2, main2.argmax(axis=1), 0)
+        r2 = np.where(has2, w - 1 - main2[:, ::-1].argmax(axis=1), -1)
+        within = has2[:, None] & (cols >= (l2 - 1)[:, None]) & (cols <= (r2 + 1)[:, None])
+        touches = ndimage.maximum(within, lab2, range(1, n2 + 1))
+        small = sz2 < 0.02 * sz2.max()
+        drop = [i + 1 for i in range(n2) if small[i] and not touches[i]]
+        if drop:
+            out[ndimage.binary_dilation(np.isin(lab2, drop), iterations=4) & ~main2] = 255
+        # A digit fragment touching the side makes a short bump in an otherwise smooth edge. For metal
+        # and dark caps (solid dark body) each row's edge is compared with the median edge nearby.
+        if main2 is dark_body:
+            rows2 = np.where(has2)[0]
+            if len(rows2) > 80:
+                win = 61
+                l_ok = ndimage.median_filter(l2[rows2], size=win, mode='nearest') - 3
+                r_ok = ndimage.median_filter(r2[rows2], size=win, mode='nearest') + 3
+                bump = np.zeros_like(d2)
+                bump[rows2] = (cols < l_ok[:, None]) | (cols > r_ok[:, None])
+                # Only the middle of the height: the top and bottom of a cap curve quickly.
+                n_rows = len(rows2)
+                bump[:rows2[int(n_rows * 0.18)]] = False
+                bump[rows2[int(n_rows * 0.85)]:] = False
+                out[ndimage.binary_dilation(bump & (out.min(axis=2) < 200), iterations=3) & bump] = 255
+    # Frame by everything left that is not pure background (white caps have few dark pixels).
+    ys, xs = np.where(near | (out.min(axis=2) < 250))
+    pad = 6
+    box = (max(0, int(xs.min()) - pad), max(0, int(ys.min()) - pad), min(a.shape[1], int(xs.max()) + pad), min(a.shape[0], int(ys.max()) + pad))
+    obj = Image.fromarray(out).crop(box)
+    scale = size * fill / max(obj.width, obj.height)
+    obj = obj.resize((max(1, round(obj.width * scale)), max(1, round(obj.height * scale))), Image.Resampling.LANCZOS)
+    canvas = Image.new('RGB', (size, size), (255, 255, 255))
+    canvas.paste(obj, ((size - obj.width) // 2, (size - obj.height) // 2))
+    return canvas
 
 
 def auto_photograph(im: Image.Image) -> Image.Image:
@@ -166,6 +282,17 @@ def _model():
     net.load_model(str(MODEL_DIR / 'realesrgan-x4plus.bin'))
     _net = (ncnn, net)
     return _net
+
+
+def natural_enlarge(im: Image.Image, ai_share=0.5) -> Image.Image:
+    """4x enlargement that keeps the photograph's real look.
+
+    The AI result alone makes metal look glossier and smoother than the real product, so it is
+    mixed with a plain Lanczos enlargement of the same photo: sharp edges, real surface and colour.
+    """
+    ai = enlarge(im)
+    plain = im.convert('RGB').resize(ai.size, Image.Resampling.LANCZOS)
+    return Image.blend(plain, ai, ai_share)
 
 
 def enlarge(im: Image.Image) -> Image.Image:

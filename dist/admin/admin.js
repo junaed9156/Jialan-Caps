@@ -106,12 +106,37 @@
       return img;
     } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
   }
-  function encodeImage(img, longest, type) {
-    const scale = Math.min(1, longest / Math.max(img.naturalWidth, img.naturalHeight));
-    const w = Math.max(1, Math.round(img.naturalWidth * scale)), h = Math.max(1, Math.round(img.naturalHeight * scale));
+  // Same style as the catalogue photos: the product is cropped from its background, centred on a white
+  // square and scaled to 80 % of it, so every product tile looks alike.
+  function framePhoto(img, size = 1000, fill = 0.8) {
+    const w = img.naturalWidth, h = img.naturalHeight;
     const c = document.createElement('canvas'); c.width = w; c.height = h;
-    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, w, h);
-    g.imageSmoothingQuality = 'high'; g.drawImage(img, 0, 0, w, h);
+    const g = c.getContext('2d', { willReadFrequently: true }); g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.drawImage(img, 0, 0);
+    const px = g.getImageData(0, 0, w, h).data;
+    // Rows and columns that hold more than a trace of non-white pixels belong to the product.
+    const rows = new Uint32Array(h), cols = new Uint32Array(w);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      if (Math.min(px[i], px[i + 1], px[i + 2]) < 240) { rows[y]++; cols[x]++; }
+    }
+    const minRow = Math.max(2, w * 0.004), minCol = Math.max(2, h * 0.004);
+    let y0 = 0, y1 = h - 1, x0 = 0, x1 = w - 1;
+    while (y0 < h - 1 && rows[y0] < minRow) y0++;
+    while (y1 > y0 && rows[y1] < minRow) y1--;
+    while (x0 < w - 1 && cols[x0] < minCol) x0++;
+    while (x1 > x0 && cols[x1] < minCol) x1--;
+    if (x1 - x0 < 8 || y1 - y0 < 8) { x0 = 0; y0 = 0; x1 = w - 1; y1 = h - 1; }   // nothing found: keep the whole photo
+    const pad = Math.round(Math.max(x1 - x0, y1 - y0) * 0.01);
+    x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad); x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(h - 1, y1 + pad);
+    const cw = x1 - x0 + 1, ch = y1 - y0 + 1, scale = size * fill / Math.max(cw, ch);
+    const out = document.createElement('canvas'); out.width = out.height = size;
+    const o = out.getContext('2d'); o.fillStyle = '#fff'; o.fillRect(0, 0, size, size); o.imageSmoothingQuality = 'high';
+    o.drawImage(c, x0, y0, cw, ch, (size - cw * scale) / 2, (size - ch * scale) / 2, cw * scale, ch * scale);
+    return out;
+  }
+  function encodeImage(framed, side, type) {
+    const c = document.createElement('canvas'); c.width = c.height = side;
+    const g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(framed, 0, 0, side, side);
     return new Promise(r => c.toBlob(r, type, 0.88));
   }
   async function webpSupported() {
@@ -246,9 +271,10 @@
       for (let i = 0; i < photos.length; i++) {
         status('save-status', `Preparing photo ${i + 1} of ${photos.length}… · 正在处理图片…`);
         const img = await decode(photos[i].file);
+        const framed = framePhoto(img);
         const base = `${PHOTO_DIR}${id}-${i + 1}`;
         for (const size of [800, 400]) {
-          const blob = await encodeImage(img, size, type);
+          const blob = await encodeImage(framed, size, type);
           files.push({ path: `${base}-${size}.${ext}`, base64: toB64(await blob.arrayBuffer()) });
         }
         images.push(base);
