@@ -8,11 +8,14 @@ dist/                     the website (commit everything here, including built f
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
+  lang-boot.js            tiny <head> script: hides a Chinese page until i18n.js has translated it (no English flash)
   i18n.js                 English / 中文 (English default, ?lang=zh, remembered per visitor); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
   admin/                  admin page: password login, add/delete products, change password
   admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
   assets/admin/           photos uploaded on the admin page (<id>-<n>-400/800.webp)
+  404.html, notfound.css  branded page-not-found (absolute /Jialan-Caps/ paths)
+  countries.js            countries + calling codes for the enquiry phone field (from libphonenumber-js)
   products.js             GENERATED product data — never edit by hand
   js/                     GENERATED 3D bundle (from src/3d) — never edit by hand
   assets/p/               GENERATED HD product photos: <hash>-400.webp and <hash>-800.webp

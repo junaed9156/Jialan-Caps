@@ -492,7 +492,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
   const neutral = s => !/[a-z]{2}/.test(s) || /^[A-Z0-9][A-Z0-9 ./×–\-+]*$/.test(s) || /^[\w.+-]+@[\w.-]+$/.test(s);
   function tr(text) {
     if (lang !== 'zh' || text == null) return text;
-    const s = String(text).replace(/\u00a0/g, ' ').trim();   // &nbsp; counts as a space
+    const s = String(text).replace(/\s+/g, ' ').trim();   // runs of spaces and &nbsp; count as one space
     if (!s) return text;
     if (ZH[s] !== undefined) return ZH[s];
     const lc = lower.get(s.toLowerCase());
@@ -583,6 +583,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.content = tr(desc.content);
     walk(document.body);
+    document.documentElement.classList.remove('i18n-pending');
     new MutationObserver(records => {
       for (const r of records) {
         if (r.type === 'characterData') translateText(r.target);

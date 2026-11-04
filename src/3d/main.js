@@ -29,7 +29,12 @@ function lazy(selector, load, margin = '400px 0px', context) {
 
 if (webglAvailable()) {
   document.documentElement.classList.add('webgl');
-  lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence);
+  // The hero's drawn illustration shows at once; the WebGL version starts once the page has loaded.
+  const afterLoad = fn => {
+    const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300));
+    if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
+  };
+  afterLoad(() => lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence));
   lazy('#anatomy', () => import('./anatomy.js'), '800px 0px');
   lazy('#studio-view', () => import('./studio.js'), '1600px 0px');
 }
