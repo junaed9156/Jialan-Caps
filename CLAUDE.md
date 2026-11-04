@@ -85,6 +85,8 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 
 Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run build:3d` (writes `dist/js/`).
 The build versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
+It also writes `<link rel="modulepreload">` hints (between `<!-- 3d-preload -->` markers) for the hero's chunks, so
+the 3D code downloads alongside the page; chunk URLs stay unversioned because their names already carry a hash.
 Run `npm test` for language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
