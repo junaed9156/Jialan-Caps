@@ -9,7 +9,7 @@ dist/                     the website (commit everything here, including built f
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
   lang-boot.js            tiny <head> script: hides a Chinese page until i18n.js has translated it (no English flash)
-  i18n.js                 English / 中文 (English default, ?lang=zh, remembered per visitor); dictionary + patterns
+  i18n.js                 English / 中文 (normal URL always English; explicit ?lang=zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
   admin/                  admin page: password login, add/delete products, change password
   admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
@@ -78,6 +78,8 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 ## 3D scenes
 
 Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run build:3d` (writes `dist/js/`).
+The build versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
+Run `npm test` for language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.

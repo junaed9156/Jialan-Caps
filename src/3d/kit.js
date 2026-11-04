@@ -1,19 +1,40 @@
 /* Shared 3D kit: renderer, studio lighting, finishes and real-dimension cap geometry.
    Units are centimetres. Dimensions follow the 2026 catalogue (e.g. WL100: Ø27.5 × 28.6 mm). */
-import * as THREE from 'three';
+// Keep the shared namespace explicit so unused three.js features are removed from the download.
+import {
+  AdditiveBlending, BackSide, Box3, BufferAttribute, BufferGeometry,
+  CanvasTexture, CatmullRomCurve3, CircleGeometry, Color, CylinderGeometry,
+  DataTexture, DirectionalLight, DoubleSide, Euler, Float32BufferAttribute,
+  FrontSide, Group, HemisphereLight, MathUtils, Mesh,
+  MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, NeutralToneMapping, PMREMGenerator,
+  PerspectiveCamera, Plane, PlaneGeometry, Points, PointsMaterial,
+  Raycaster, RepeatWrapping, RingGeometry, SRGBColorSpace, Scene,
+  ShaderMaterial, SphereGeometry, TextureLoader, TorusGeometry, TubeGeometry,
+  Vector2, Vector3, WebGLRenderer,
+} from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 
-export { THREE };
+export const THREE = {
+  AdditiveBlending, BackSide, Box3, BufferAttribute, BufferGeometry,
+  CanvasTexture, CatmullRomCurve3, CircleGeometry, Color, CylinderGeometry,
+  DataTexture, DirectionalLight, DoubleSide, Euler, Float32BufferAttribute,
+  FrontSide, Group, HemisphereLight, MathUtils, Mesh,
+  MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, NeutralToneMapping, PMREMGenerator,
+  PerspectiveCamera, Plane, PlaneGeometry, Points, PointsMaterial,
+  Raycaster, RepeatWrapping, RingGeometry, SRGBColorSpace, Scene,
+  ShaderMaterial, SphereGeometry, TextureLoader, TorusGeometry, TubeGeometry,
+  Vector2, Vector3, WebGLRenderer,
+};
 
 /* ---------- quality ---------- */
 const coarse = matchMedia('(pointer: coarse)').matches;
 const small = Math.min(screen.width, screen.height) < 700;
 const weak = (navigator.deviceMemory || 8) <= 4 || (navigator.hardwareConcurrency || 8) <= 4;
 export const Q = {
-  low: coarse && (small || weak),
-  dpr: Math.min(window.devicePixelRatio || 1, coarse ? 1.75 : 2),
-  radial: coarse ? 96 : 160,
+  low: weak || (coarse && small),
+  dpr: Math.min(window.devicePixelRatio || 1, weak || (coarse && small) ? 1.25 : 1.5),
+  radial: weak || coarse ? 64 : 96,
 };
 
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -25,20 +46,60 @@ export function createRenderer(canvas) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.08;
+  // Glass is still refractive, but its extra render pass need not run at full resolution.
+  renderer.transmissionResolutionScale = Q.low ? 0.5 : 0.7;
   renderer.setPixelRatio(Q.dpr);
   return renderer;
 }
 
+const sizes = new WeakMap();
+const frameBudgets = new WeakMap();
 export function fit(renderer, camera, element) {
+  let size = sizes.get(renderer);
+  if (!size) {
+    size = { dirty: true, width: 0, height: 0 };
+    sizes.set(renderer, size);
+    new ResizeObserver(() => { size.dirty = true; }).observe(element);
+  }
+  if (!size.dirty) return false;
+  size.dirty = false;
   const w = Math.max(1, element.clientWidth), h = Math.max(1, element.clientHeight);
-  const size = renderer.getSize(new THREE.Vector2());
-  if (size.x !== w || size.y !== h) {
+  if (size.width !== w || size.height !== h) {
+    size.width = w; size.height = h;
+    // Keep large / high-DPI screens from multiplying the GPU workload without a limit.
+    const budget = Q.low ? 800000 : 1400000;
+    const dpr = Math.min(Q.dpr, Math.sqrt(budget / (w * h)));
+    renderer.setPixelRatio(Math.min(renderer.getPixelRatio(), dpr));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     return true;
   }
   return false;
+}
+
+export async function prepareScene(renderer, scene, camera) {
+  // Parallel shader compilation keeps the illustration visible while the GPU prepares the scene.
+  await renderer.compileAsync(scene, camera);
+}
+
+export function renderFrame(renderer, scene, camera, now = performance.now()) {
+  let budget = frameBudgets.get(renderer);
+  if (!budget) { budget = { last: 0, elapsed: 0, frames: 0, changed: now }; frameBudgets.set(renderer, budget); }
+  const dt = now - budget.last;
+  budget.last = now;
+  // Measure consecutive animation frames only. Idle/on-demand frames are not slow frames.
+  if (dt > 0 && dt < 120) { budget.elapsed += dt; budget.frames++; }
+  else { budget.elapsed = 0; budget.frames = 0; }
+  if (budget.frames >= 60) {
+    if (budget.elapsed / budget.frames > 24 && now - budget.changed > 2500) {
+      const ratio = renderer.getPixelRatio();
+      if (ratio > 0.8) renderer.setPixelRatio(Math.max(0.8, ratio * 0.8));
+      budget.changed = now;
+    }
+    budget.elapsed = 0; budget.frames = 0;
+  }
+  renderer.render(scene, camera);
 }
 
 /* ---------- studio environment: tall softboxes give the product-photography highlights ---------- */
@@ -311,7 +372,7 @@ export const CAPS = {
     return lathe(shell(pts, r * 0.95, 0.12, 1.8));
   } },
   jlf33: { model: 'JLF33', name: 'Soft square', R: 1.65, H: 2.76, square: true, build: () => {
-    const g = new RoundedBoxGeometry(3.3, 2.76, 3.3, 6, 0.42);
+    const g = new RoundedBoxGeometry(3.3, 2.76, 3.3, Q.low ? 3 : 4, 0.42);
     g.translate(0, 1.38, 0);
     return g;
   } },
@@ -357,11 +418,11 @@ export function makeBottle({ width = 4.4, depth = 2.9, height = 6.8, liquid = '#
       liq.position.y = 0.95;
     }
   } else {
-    glass = new THREE.Mesh(new RoundedBoxGeometry(width, height, depth, 8, 0.5), glassMat);
+    glass = new THREE.Mesh(new RoundedBoxGeometry(width, height, depth, Q.low ? 3 : 5, 0.5), glassMat);
     glass.position.y = height / 2;
     if (liquid) {
       const lh = height * 0.62;
-      liq = new THREE.Mesh(new RoundedBoxGeometry(width - 0.62, lh, depth - 0.62, 6, 0.32), liquidMat);
+      liq = new THREE.Mesh(new RoundedBoxGeometry(width - 0.62, lh, depth - 0.62, Q.low ? 3 : 4, 0.32), liquidMat);
       liq.position.y = 0.95 + lh / 2;
     }
   }
@@ -686,12 +747,17 @@ export function fieldLines(count = 10, color = 0xf3d89a) {
 
 /* ---------- render only while visible ---------- */
 export function whenVisible(element, onChange) {
-  let visible = false;
-  const io = new IntersectionObserver(entries => {
-    const v = entries.some(e => e.isIntersecting);
-    if (v !== visible) { visible = v; onChange(visible && !document.hidden); }
-  }, { rootMargin: '120px 0px' });
-  io.observe(element);
-  document.addEventListener('visibilitychange', () => onChange(visible && !document.hidden));
-  return () => visible && !document.hidden;
+  let visible = !('IntersectionObserver' in window);
+  const active = () => visible && !document.hidden && !document.body.classList.contains('modal-open');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      const v = entries.some(e => e.isIntersecting);
+      if (v !== visible) { visible = v; onChange(active()); }
+    });
+    io.observe(element);
+  }
+  for (const event of ['visibilitychange', 'jialan:overlay', 'jialan:motion']) {
+    document.addEventListener(event, () => onChange(active()));
+  }
+  return active;
 }

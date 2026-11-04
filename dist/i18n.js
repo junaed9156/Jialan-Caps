@@ -1,4 +1,4 @@
-/* English / 中文. English is the default; the choice is remembered per visitor (or set with ?lang=zh / ?lang=en).
+/* English / 中文. The normal URL always opens in English; ?lang=zh explicitly selects Chinese.
    Product data is translated before the app renders; page text is translated in place, including text the
    app or the 3D studio writes later. Strings without a translation stay in English. */
 'use strict';
@@ -481,10 +481,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
   ];
 
   const params = new URLSearchParams(location.search);
-  let lang = 'en';
-  try { lang = localStorage.getItem('maohan-lang') || 'en'; } catch { /* storage unavailable */ }
-  if (params.get('lang') === 'zh' || params.get('lang') === 'en') lang = params.get('lang');
-  if (lang !== 'zh') lang = 'en';
+  const lang = params.get('lang') === 'zh' ? 'zh' : 'en';
 
   const lower = new Map(Object.entries(ZH).map(([k, v]) => [k.toLowerCase(), v]));
   const SEP = / · | \/ | — |, /;
@@ -563,7 +560,6 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
       b.lang = lang === 'zh' ? 'en' : 'zh';
       b.addEventListener('click', () => {
         const next = lang === 'zh' ? 'en' : 'zh';
-        try { localStorage.setItem('maohan-lang', next); } catch { /* storage unavailable */ }
         const u = new URL(location.href); u.searchParams.delete('lang');
         if (next === 'zh') u.searchParams.set('lang', 'zh');
         location.href = u.toString();

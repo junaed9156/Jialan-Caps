@@ -1,10 +1,10 @@
 /* WL100 assembly study. The centre bottle is fixed. Two mounted specimens turn independently. */
 import {
   THREE, CAPS, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial,
-  contactShadow, backdrop, motionAllowed, bottleMark,
+  contactShadow, backdrop, motionAllowed, bottleMark, prepareScene, renderFrame, Q,
 } from './kit.js';
 
-export function mount(stage, sequence) {
+export async function mount(stage, sequence) {
   const canvas = document.createElement('canvas');
   canvas.className = 'hero-canvas';
   canvas.setAttribute('aria-hidden', 'true');
@@ -26,7 +26,7 @@ export function mount(stage, sequence) {
   const tone = new THREE.MeshStandardMaterial({ color: '#233742', metalness: 0.36, roughness: 0.34 });
   const rim = new THREE.MeshStandardMaterial({ color: '#bc9a65', metalness: 0.83, roughness: 0.31 });
   function stand(x, z, radius, height, top) {
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius + 0.05, height, 96), tone);
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius + 0.05, height, Q.radial), tone);
     body.position.set(x, top - height / 2, z);
     const lip = new THREE.Mesh(new THREE.TorusGeometry(radius - 0.015, 0.025, 8, 100), rim);
     lip.rotation.x = Math.PI / 2;
@@ -73,16 +73,17 @@ export function mount(stage, sequence) {
   scene.add(floor);
   const target = new THREE.Vector3(0, 5.0, 0);
   function draw(pose, time) {
-    fit(renderer, camera, stage);
-    const distance = Math.max(16.4, 14.7 / camera.aspect) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
-    camera.position.set(0, target.y + distance * 0.13, distance);
-    camera.lookAt(target);
+    if (fit(renderer, camera, stage)) {
+      const distance = Math.max(16.4, 14.7 / camera.aspect) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
+      camera.position.set(0, target.y + distance * 0.13, distance);
+      camera.lookAt(target);
+    }
     bottle.setLift(pose.lift);
     bottle.capGroup.position.x = pose.x;
     bottle.capGroup.rotation.set(0.035 * (pose.lift / 1.3), pose.yaw, pose.tilt, 'ZXY');
     exhibits.forEach(({ turntable, speed }, i) => { turntable.rotation.y = (i ? 0.68 : -0.56) + time * speed; });
-    renderer.render(scene, camera);
-    stage.classList.add('is-3d');
+    renderFrame(renderer, scene, camera);
+    if (!stage.classList.contains('is-3d')) stage.classList.add('is-3d');
   }
 
   const ray = new THREE.Raycaster(), pointer = new THREE.Vector2();
@@ -94,7 +95,11 @@ export function mount(stage, sequence) {
     if (hit?.object === bottle.capMesh) return { cap: 'wl100', finish: 'glossy-gold' };
     return hit && exhibits.find(item => item.mesh === hit.object);
   }
-  canvas.addEventListener('pointermove', e => { canvas.style.cursor = pick(e) ? 'pointer' : ''; }, { passive: true });
+  let hoverFrame = 0;
+  canvas.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || hoverFrame) return;
+    hoverFrame = requestAnimationFrame(() => { hoverFrame = 0; canvas.style.cursor = pick(e) ? 'pointer' : ''; });
+  }, { passive: true });
   canvas.addEventListener('click', e => {
     const part = pick(e);
     if (!part) return;
@@ -106,6 +111,10 @@ export function mount(stage, sequence) {
     stage.classList.remove('is-3d');
     sequence.unsubscribe(draw);
   });
-  canvas.addEventListener('webglcontextrestored', () => sequence.subscribe(draw));
+  canvas.addEventListener('webglcontextrestored', async () => {
+    await prepareScene(renderer, scene, camera);
+    sequence.subscribe(draw);
+  });
+  await prepareScene(renderer, scene, camera);
   sequence.subscribe(draw);
 }

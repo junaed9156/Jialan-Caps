@@ -1,7 +1,7 @@
 /* The 3D studio: choose a cap family, finish, collar and preview your own logo on it. */
 import {
   THREE, Q, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial, FINISHES, CAPS,
-  contactShadow, backdrop, textTexture, logoDecal, pulseRing, fieldLines, ease, clamp01, damp, motionAllowed, whenVisible,
+  contactShadow, backdrop, textTexture, logoDecal, pulseRing, fieldLines, ease, clamp01, damp, motionAllowed, whenVisible, prepareScene, renderFrame,
 } from './kit.js';
 
 const PRODUCT = { wl100: ['wl100', 4], wll100: ['wll100', 5], ky100: ['ky100', 10], jlg29: ['jlg29', 32], jlq36: ['jlq36', 26], jlw37: ['jlw37', 27], jlf33: ['jlf33', 30], jlm31: ['jlm31', 34] };
@@ -14,7 +14,7 @@ const LOGO_STYLES = {
   black: { label: 'Black print', make: () => new THREE.MeshStandardMaterial({ color: 0x111312, roughness: 0.5 }) },
 };
 
-export function mount(view) {
+export async function mount(view) {
   const $ = id => document.getElementById(id);
   const render = $('studio-render');
   const canvas = document.createElement('canvas');
@@ -70,6 +70,8 @@ export function mount(view) {
     }
   }
   function syncMirror() {
+    mirror.visible = !state.bottle;
+    if (!mirror.visible) return;
     const y = floorY();
     mirror.position.y = y * 2;
     for (const m of mirror.children) {
@@ -77,13 +79,12 @@ export function mount(view) {
       src.updateWorldMatrix(true, false);
       m.matrix.copy(src.matrixWorld);
     }
-    mirror.visible = !state.bottle;
   }
 
   /* ---------- logo decal ---------- */
   let decal = null;
   function buildDecal() {
-    if (decal) { asm.capMesh.remove(decal); decal.geometry.dispose(); decal.userData.texture?.dispose(); decal = null; }
+    if (decal) { asm.capMesh.remove(decal); decal.geometry.dispose(); decal.userData.texture?.dispose(); decal.material.dispose(); decal = null; }
     const text = state.logo.trim();
     if (text) {
       decal = logoDecal(asm.capMesh, CAPS[state.cap], text, LOGO_STYLES[state.logoStyle].make());
@@ -227,37 +228,47 @@ export function mount(view) {
 
   /* ---------- render loop ---------- */
   let raf = 0, last = 0, clock = 0, liftStart = -10, lift = 0, pop = 0, framed = false, faceFront = false;
-  const visibleNow = whenVisible(view, v => v && wake());
-  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
+  let ready = false, lost = false, layoutDirty = true, previousAngle = -1;
+  let pr, rr;
+  const angleInput = $('studio-angle'), angleOutput = $('studio-angle-value');
+  const visibleNow = whenVisible(view, visible => {
+    last = 0;
+    if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; }
+  });
+  function wake() { if (ready && !lost && visibleNow() && !raf) raf = requestAnimationFrame(tick); }
   const target = new THREE.Vector3();
 
   function tick(now) {
     raf = 0;
-    if (!visibleNow()) return;
+    if (!visibleNow() || lost) { last = 0; return; }
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
     last = now;
     clock += dt;
     fit(renderer, camera, view);
     // The canvas fills the whole panel; centre the product on the render box between the captions.
-    const pr = view.getBoundingClientRect(), rr = render.getBoundingClientRect();
-    const shift = (pr.top + pr.height / 2) - (rr.top + rr.height / 2);
-    camera.setViewOffset(pr.width, pr.height, 0, shift, pr.width, pr.height);
+    if (layoutDirty) {
+      pr = view.getBoundingClientRect(); rr = render.getBoundingClientRect();
+      const shift = (pr.top + pr.height / 2) - (rr.top + rr.height / 2);
+      camera.setViewOffset(pr.width, pr.height, 0, shift, pr.width, pr.height);
+      layoutDirty = false;
+    }
     const moving = motionAllowed();
 
     // Spin with inertia after a drag, or the slow showroom turn.
     if (faceFront && !drag?.active) {
       // Turn the shortest way to the front so a new logo is readable.
       const front = Math.round(view3.yaw / (Math.PI * 2)) * Math.PI * 2;
-      view3.yaw = damp(view3.yaw, front, 5, dt);
+      view3.yaw = moving ? damp(view3.yaw, front, 5, dt) : front;
       if (Math.abs(view3.yaw - front) < 0.002) { view3.yaw = front; faceFront = false; }
     } else if (!drag?.active) {
-      if (Math.abs(view3.vy) > 0.01) { view3.yaw += view3.vy * dt; view3.vy *= Math.pow(0.04, dt); }
+      if (!moving) view3.vy = 0;
+      if (moving && Math.abs(view3.vy) > 0.01) { view3.yaw += view3.vy * dt; view3.vy *= Math.pow(0.04, dt); }
       else if (state.auto && moving) view3.yaw += dt * 0.25;
     }
     asm.root.rotation.y = view3.yaw;
     asm.root.rotation.x = 0;
     const angle = Math.round(((view3.yaw * 180 / Math.PI) % 360 + 360) % 360);
-    $('studio-angle').value = angle; $('studio-angle-value').value = `${angle}°`;
+    if (angle !== previousAngle) { angleInput.value = angle; angleOutput.value = `${angle}°`; previousAngle = angle; }
 
     // Lift and magnetic snap.
     const since = clock - liftStart;
@@ -268,7 +279,7 @@ export function mount(view) {
     lines.userData.set(lift * 0.6, 1.4 + lift * 2.3);
     ring.position.y = asm.base + 0.36;
     ring.userData.fire(!state.lifted && moving ? clamp01((since - 0.3) / 0.7) : 0);
-    pop = damp(pop, 0, 5, dt);
+    pop = moving ? damp(pop, 0, 5, dt) : 0;
     asm.capGroup.scale.setScalar(1 + pop * 0.06);
 
     // Camera frames the closure alone or the whole bottle.
@@ -281,15 +292,15 @@ export function mount(view) {
     const wantTy = (top + bottom) / 2;
     const wantDist = Math.max(objH * (pr.height / boxH) / (2 * tanHalf), objW * (pr.height / boxW) / (2 * tanHalf)) / Math.cos(view3.pitch);
     if (!framed) { view3.ty = wantTy; view3.dist = wantDist; framed = true; }
-    view3.ty = damp(view3.ty, wantTy, 4, dt);
-    view3.dist = damp(view3.dist, wantDist, 4, dt);
+    view3.ty = moving ? damp(view3.ty, wantTy, 4, dt) : wantTy;
+    view3.dist = moving ? damp(view3.dist, wantDist, 4, dt) : wantDist;
     const d = view3.dist;
     target.set(0, view3.ty, 0);
     camera.position.set(Math.sin(0.0) * d, view3.ty + Math.sin(view3.pitch) * d, Math.cos(view3.pitch) * d);
     camera.lookAt(target);
 
     // Warm softbox glow on the backdrop, behind the bottle, so glass and perfume light up.
-    glow = damp(glow, state.bottle ? 1.15 : 0, 5, dt);
+    glow = moving ? damp(glow, state.bottle ? 1.15 : 0, 5, dt) : (state.bottle ? 1.15 : 0);
     const bu = bd.material.uniforms;
     bu.uGlow.value = glow;
     const hitY = view3.ty - 40 * Math.tan(view3.pitch) - 2.5;
@@ -301,17 +312,25 @@ export function mount(view) {
     shadow.material.opacity = 0.5;
     syncMirror();
 
-    renderer.render(scene, camera);
+    renderFrame(renderer, scene, camera, now);
     if (!view.classList.contains('is-3d')) { view.classList.add('is-3d'); updateText(); }
-    const busy = faceFront || drag?.active || Math.abs(view3.vy) > 0.01 || (state.auto && moving) || since < 1.2 || pop > 0.01 ||
-      Math.abs(view3.ty - wantTy) > 0.005 || Math.abs(view3.dist - wantDist) > 0.01;
+    const busy = moving && (faceFront || Math.abs(view3.vy) > 0.01 || state.auto || since < 1.2 || pop > 0.01 ||
+      Math.abs(view3.ty - wantTy) > 0.005 || Math.abs(view3.dist - wantDist) > 0.01 || Math.abs(glow - (state.bottle ? 1.15 : 0)) > 0.005);
     if (busy) wake();
   }
 
   renderSwatches();
   setCap(state.cap);
   updateSpin();
-  new ResizeObserver(wake).observe(view);
-  canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); view.classList.remove('is-3d'); });
+  const resize = new ResizeObserver(() => { layoutDirty = true; wake(); });
+  resize.observe(view); resize.observe(render);
+  canvas.addEventListener('webglcontextlost', e => {
+    e.preventDefault(); lost = true; cancelAnimationFrame(raf); raf = 0; view.classList.remove('is-3d');
+  });
+  canvas.addEventListener('webglcontextrestored', async () => {
+    await prepareScene(renderer, scene, camera); lost = false; last = 0; layoutDirty = true; wake();
+  });
+  await prepareScene(renderer, scene, camera);
+  ready = true;
   wake();
 }

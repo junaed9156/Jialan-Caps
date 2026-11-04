@@ -1,10 +1,9 @@
-/* Runs in <head>, before the page is drawn: when the visitor chose Chinese, keep the page hidden until
-   i18n.js has put the Chinese text in place, so English never flashes. A timer shows the page regardless. */
+/* The normal URL always opens in English. Only an explicit ?lang=zh requests Chinese.
+   Hide that page briefly until translation is ready, avoiding an English flash. */
 (function () {
   try {
     var q = new URLSearchParams(location.search).get('lang');
-    var lang = q || localStorage.getItem('maohan-lang');
-    if (lang === 'zh') {
+    if (q === 'zh') {
       var html = document.documentElement;
       html.classList.add('i18n-pending', 'lang-zh');
       html.lang = 'zh-CN';

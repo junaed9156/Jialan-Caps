@@ -41,7 +41,17 @@ The script reads every specification card (photo, model, size, neck, weight, fin
 ```sh
 npm install
 npm run build:3d      # bundles src/3d/*.js into dist/js/
+npm test             # language, frame budget, visibility and scene lifecycle checks
 ```
+
+The normal website URL always opens in English, even if a visitor previously selected Chinese.
+The language switch uses `?lang=zh` for an explicit Chinese page.
+
+The page paints before starting WebGL. Scenes load one at a time near the viewport, compile shaders
+asynchronously, and stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
+adapts down when frames stay slow; glass uses a smaller refraction buffer. The build also versions
+CSS/JS URLs by content so returning visitors receive matching scripts after deployment.
+Tests use real geometry and a renderer double; visual checks on actual GPU devices remain separate.
 
 ## Content sources
 

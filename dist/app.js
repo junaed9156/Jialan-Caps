@@ -163,8 +163,8 @@
     $('detail-add').innerHTML=selected?'Remove from enquiry <span aria-hidden="true">−</span>':'Add to enquiry <span aria-hidden="true">+</span>';
     $('detail-add').setAttribute('aria-pressed',selected);
   }
-  function showDialog(dialog) {dialog.showModal();document.body.classList.add('modal-open');}
-  function closeDialog(dialog) {dialog.close();if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');}
+  function showDialog(dialog) {dialog.showModal();document.body.classList.add('modal-open');document.dispatchEvent(new Event('jialan:overlay'));}
+  function closeDialog(dialog) {dialog.close();if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');document.dispatchEvent(new Event('jialan:overlay'));}
   function openProduct(id) {
     const p=byId.get(id);if(!p)return;state.detail=id;
     $('detail-category').textContent=categories[p.category];$('detail-model').textContent=p.model;
@@ -206,7 +206,7 @@
   ['enquiry-items','shortlist-items'].forEach(id=>$(id).addEventListener('click',event=>{const b=event.target.closest('[data-remove]');if(b)removePiece(b.dataset.remove);}));
   $('clear-selection').addEventListener('click',()=>{shortlist=[];persist();notify('Your enquiry shortlist is clear.');});
   document.querySelectorAll('dialog').forEach(dialog=>{
-    dialog.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');});
+    dialog.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');document.dispatchEvent(new Event('jialan:overlay'));});
     dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeDialog(dialog);}});
   });
   $('menu-toggle').addEventListener('click',()=>{
@@ -281,7 +281,7 @@
     else $('enquiry-result').textContent='We could not send the form just now. Please email it directly or send it on WhatsApp.';
   });
   const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM',cut:'glossy-gold'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM',cut:'glossy-black'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM',cut:'matte-silver'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD',cut:'coffee-wood'}];
-  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;const v=Math.max(0,enFinishes(p).indexOf(study.finish)),fp=$('finish-photo');fp.classList.remove('is-store');fp.classList.add('is-cutout');fp.innerHTML=`<img src="assets/finish/${study.cut}.webp" alt="${escape(p.model+', '+p.finishes[v])}" decoding="async">`;fp.setAttribute('aria-label',`${p.model}, ${p.finishes[v]}`);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
+  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;const v=Math.max(0,enFinishes(p).indexOf(study.finish)),fp=$('finish-photo');fp.classList.remove('is-store');fp.classList.add('is-cutout');fp.innerHTML=`<img src="assets/finish/${study.cut}.webp" loading="lazy" alt="${escape(p.model+', '+p.finishes[v])}" decoding="async">`;fp.setAttribute('aria-label',`${p.model}, ${p.finishes[v]}`);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
   document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>chooseFinish(Number(b.dataset.finish))));
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('animations-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
   // Motion: one control pauses every animation, CSS and 3D alike.

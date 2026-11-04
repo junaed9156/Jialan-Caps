@@ -4,8 +4,9 @@
   "description": "Jialan catalogue website. The 3D scenes in src/3d are bundled into dist/js.",
   "type": "module",
   "scripts": {
-    "build:3d": "rm -rf dist/js && esbuild src/3d/main.js --bundle --splitting --format=esm --minify --target=es2020 --outdir=dist/js --chunk-names=chunk-[hash] --legal-comments=none",
+    "build:3d": "node scripts/build-3d.mjs",
     "watch:3d": "npm run build:3d -- --watch",
+    "test": "node --test scripts/performance.test.js",
     "serve": "python3 -m http.server 8000 --directory dist"
   },
   "devDependencies": {

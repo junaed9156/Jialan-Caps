@@ -49,9 +49,10 @@ export function mountSequence(stage) {
   const playing = () => !reduced.matches && !document.body.classList.contains('motion-paused');
   function tick(now) {
     frame = 0;
-    if (!observed || document.hidden) { last = null; return; }
+    if (!observed || document.hidden || document.body.classList.contains('modal-open')) { last = null; return; }
     if (playing()) {
-      const dt = last === null ? 0 : Math.max(0, (now - last) / 1000);
+      // A slow frame or restored tab must not jump over the cap's assembly sequence.
+      const dt = last === null ? 0 : Math.min(0.05, Math.max(0, (now - last) / 1000));
       ambient += dt;
       t = (t + dt) % CYCLE;
     }
@@ -79,6 +80,7 @@ export function mountSequence(stage) {
   }
   document.addEventListener('jialan:motion', wake);
   document.addEventListener('visibilitychange', wake);
+  document.addEventListener('jialan:overlay', wake);
   reduced.addEventListener('change', preference);
   new ResizeObserver(wake).observe(stage);
   if ('IntersectionObserver' in window) {

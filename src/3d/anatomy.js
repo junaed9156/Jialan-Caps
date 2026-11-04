@@ -2,7 +2,7 @@
    and receives a laser-engraved logo. Scroll position drives every frame. */
 import {
   THREE, Q, createRenderer, fit, studioEnvironment, makeAssembly, FINISHES, CAPS, contactShadow, caustic, backdrop,
-  markDecal, markSilhouette, bottleMark, pulseRing, fieldLines, softDot, lerpFinish, ease, clamp01, range, damp, motionAllowed, whenVisible,
+  markDecal, markSilhouette, bottleMark, pulseRing, fieldLines, softDot, lerpFinish, ease, clamp01, range, damp, motionAllowed, whenVisible, prepareScene, renderFrame,
 } from './kit.js';
 
 const FINISH_TOUR = ['glossy-gold', 'glossy-black', 'glossy-silver', 'glossy-red', 'matte-gold'];
@@ -22,7 +22,7 @@ function cameraAt(p) {
   return a.slice(1).map((v, k) => v + (b[k + 1] - v) * t);
 }
 
-export function mount(section) {
+export async function mount(section) {
   const stage = section.querySelector('.anatomy-stage');
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -43,7 +43,7 @@ export function mount(section) {
   scene.add(key, new THREE.HemisphereLight(0xffffff, 0xcad4da, 1.0));
 
   const floorMat = new THREE.MeshStandardMaterial({ color: 0xd4c9b8, roughness: 0.9, envMapIntensity: 0.3 });
-  const floor = new THREE.Mesh(new THREE.CylinderGeometry(7.5, 7.5, 0.6, 128), floorMat);
+  const floor = new THREE.Mesh(new THREE.CylinderGeometry(7.5, 7.5, 0.6, Q.radial), floorMat);
   floor.position.y = -0.3;
   scene.add(floor);
   const trim = new THREE.Mesh(new THREE.TorusGeometry(7.5, 0.04, 8, 200), new THREE.MeshPhysicalMaterial({ color: '#e5bd72', metalness: 1, roughness: 0.2 }));
@@ -82,48 +82,56 @@ export function mount(section) {
   const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 8), beamMat);
   const spot = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.9), new THREE.MeshBasicMaterial({ map: softDot(), color: 0xffd39a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
   scene.add(beam, spot);
-  const SPARKS = 90;
+  const SPARKS = Q.low ? 36 : 64;
   const sparkPos = new Float32Array(SPARKS * 3), sparkVel = new Float32Array(SPARKS * 3), sparkLife = new Float32Array(SPARKS);
   const sparkGeo = new THREE.BufferGeometry();
   sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
   const sparks = new THREE.Points(sparkGeo, new THREE.PointsMaterial({ map: softDot(), color: 0xffc27a, size: 0.12, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
   scene.add(sparks);
 
-  const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3();
+  const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3(), from = new THREE.Vector3(), bounds = new THREE.Box3();
   let raf = 0, last = 0, smooth = 0, target = 0, time = 0;
-  const visibleNow = whenVisible(section, v => v && wake());
-  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
+  let ready = false, lost = false, scrollDirty = true, layoutDirty = true, width = 1, height = 1, activeStep = -1;
+  const visibleNow = whenVisible(stage, visible => {
+    last = 0;
+    if (visible) { scrollDirty = true; wake(); }
+    else { cancelAnimationFrame(raf); raf = 0; }
+  });
+  function wake() { if (ready && !lost && visibleNow() && !raf) raf = requestAnimationFrame(tick); }
   function readScroll() {
     const r = section.getBoundingClientRect();
     target = clamp01(-r.top / Math.max(1, r.height - innerHeight));
   }
-  addEventListener('scroll', () => { readScroll(); wake(); }, { passive: true });
+  addEventListener('scroll', () => { scrollDirty = true; wake(); }, { passive: true });
 
   function place(label, world, visible) {
     const el = labels[label];
     if (!el) return;
     tmp.copy(world).project(camera);
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    const x = (tmp.x * 0.5 + 0.5) * w, y = (-tmp.y * 0.5 + 0.5) * h;
+    const x = (tmp.x * 0.5 + 0.5) * width, y = (-tmp.y * 0.5 + 0.5) * height;
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
     el.style.opacity = visible.toFixed(3);
   }
 
   function tick(now) {
     raf = 0;
-    if (!visibleNow()) return;
+    if (!visibleNow() || lost) { last = 0; return; }
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
     last = now;
     time += dt;
-    readScroll();
-    smooth = motionAllowed() ? damp(smooth, target, 7, dt) : target;
+    if (scrollDirty) { readScroll(); scrollDirty = false; }
+    const moving = motionAllowed();
+    smooth = moving ? damp(smooth, target, 7, dt) : target;
     const p = smooth;
 
     fit(renderer, camera, stage);
     const wide = camera.aspect > 1.1;
     // On wide screens the product sits right of the copy column.
-    const W = stage.clientWidth, H = stage.clientHeight;
-    camera.setViewOffset(W, H, wide ? -W * 0.17 : W * 0.1, wide ? 0 : H * 0.1, W, H);
+    if (layoutDirty) {
+      width = stage.clientWidth; height = stage.clientHeight;
+      camera.setViewOffset(width, height, wide ? -width * 0.17 : width * 0.1, wide ? 0 : height * 0.1, width, height);
+      layoutDirty = false;
+    }
 
     const [yaw, pitch, dist0, ty] = cameraAt(p);
     const dist = dist0 * (wide ? 1 : Math.max(1, 0.62 / camera.aspect));
@@ -154,7 +162,11 @@ export function mount(section) {
     const collarFrom = FINISH_TOUR[fi].includes('black') ? 'glossy-black' : FINISH_TOUR[fi].includes('silver') ? 'glossy-silver' : 'glossy-gold';
     const collarTo = FINISH_TOUR[fi + 1].includes('black') ? 'glossy-black' : FINISH_TOUR[fi + 1].includes('silver') ? 'glossy-silver' : 'glossy-gold';
     lerpFinish(collarMat, collarFrom, collarTo, ft);
-    if (finishName) finishName.textContent = FINISHES[FINISH_TOUR[Math.round(tour)]].label;
+    if (finishName) {
+      const label = FINISHES[FINISH_TOUR[Math.round(tour)]].label;
+      const text = window.I18N ? window.I18N.t(label) : label;
+      if (finishName.textContent !== text) finishName.textContent = text;
+    }
 
     // Keep the logo facing the camera while it is engraved.
     asm.root.rotation.y = p > 0.72 ? -yaw * ease.inOutCubic(range(p, 0.72, 0.8)) * (1 - range(p, 0.95, 1)) : 0;
@@ -162,16 +174,16 @@ export function mount(section) {
 
     // Laser.
     if (decal) {
-      const bb = new THREE.Box3().setFromObject(decal);
+      const bb = bounds.setFromObject(decal);
       const x = bb.min.x + (bb.max.x - bb.min.x) * engrave;
       cut.constant = engrave >= 1 ? 1e4 : x; // plane keeps points with x <= constant
       decal.visible = engrave > 0 || p > 0.92;
-      const active = engrave > 0 && engrave < 1 ? 1 : 0;
-      const beamOn = damp(beamMat.opacity, active ? 0.9 : 0, 12, dt);
+      const active = moving && engrave > 0 && engrave < 1 ? 1 : 0;
+      const beamOn = moving ? damp(beamMat.opacity, active ? 0.9 : 0, 12, dt) : 0;
       beamMat.opacity = beamOn;
       spot.material.opacity = beamOn;
       const hitPoint = tmp2.set(x, (bb.min.y + bb.max.y) / 2 + Math.sin(time * 40) * 0.05, bb.max.z);
-      const from = new THREE.Vector3(hitPoint.x + 2.5, hitPoint.y + 7, hitPoint.z + 4);
+      from.set(hitPoint.x + 2.5, hitPoint.y + 7, hitPoint.z + 4);
       beam.position.copy(from).add(hitPoint).multiplyScalar(0.5);
       beam.scale.y = from.distanceTo(hitPoint);
       beam.lookAt(hitPoint); beam.rotateX(Math.PI / 2);
@@ -179,8 +191,8 @@ export function mount(section) {
       spot.lookAt(camera.position);
       // Sparks spray from the contact point while the laser runs.
       for (let i = 0; i < SPARKS; i++) {
-        sparkLife[i] -= dt;
-        if (sparkLife[i] <= 0 && active && motionAllowed()) {
+        sparkLife[i] = moving ? sparkLife[i] - dt : 0;
+        if (sparkLife[i] <= 0 && active) {
           sparkLife[i] = 0.25 + Math.random() * 0.45;
           sparkPos[i * 3] = hitPoint.x; sparkPos[i * 3 + 1] = hitPoint.y; sparkPos[i * 3 + 2] = hitPoint.z;
           sparkVel[i * 3] = (Math.random() - 0.3) * 2.2; sparkVel[i * 3 + 1] = Math.random() * 2.5 - 0.5; sparkVel[i * 3 + 2] = Math.random() * 1.8;
@@ -196,24 +208,31 @@ export function mount(section) {
     // Labels for the exploded view.
     const show = explode;
     const R = CAPS.wl100.R;
-    place('cap', asm.capGroup.localToWorld(tmp2.set(R, CAPS.wl100.H * 0.6, 0)).clone(), show);
-    place('pump', asm.stack.localToWorld(tmp2.set(0.5, asm.actuator.position.y + 0.5, 0)).clone(), show);
-    place('collar', asm.stack.localToWorld(tmp2.set(1.23, asm.collar.position.y + 0.2, 0)).clone(), show);
-    place('bottle', asm.stack.localToWorld(tmp2.set(2.2, 3.4, 0)).clone(), show);
+    place('cap', asm.capGroup.localToWorld(tmp2.set(R, CAPS.wl100.H * 0.6, 0)), show);
+    place('pump', asm.stack.localToWorld(tmp2.set(0.5, asm.actuator.position.y + 0.5, 0)), show);
+    place('collar', asm.stack.localToWorld(tmp2.set(1.23, asm.collar.position.y + 0.2, 0)), show);
+    place('bottle', asm.stack.localToWorld(tmp2.set(2.2, 3.4, 0)), show);
 
     // Copy: highlight the step for this part of the scroll.
     const active = p < 0.14 ? 0 : p < 0.3 ? 1 : p < 0.58 ? 2 : p < 0.79 ? 3 : 4;
-    steps.forEach((s, i) => s.classList.toggle('is-active', i === active));
+    if (active !== activeStep) { steps.forEach((s, i) => s.classList.toggle('is-active', i === active)); activeStep = active; }
     if (progressBar) progressBar.style.transform = `scaleY(${p.toFixed(4)})`;
 
-    renderer.render(scene, camera);
+    renderFrame(renderer, scene, camera, now);
     if (!section.classList.contains('is-3d')) section.classList.add('is-3d');
-    const settling = Math.abs(smooth - target) > 0.0005 || (engrave > 0 && engrave < 1) || sparkLife.some(l => l > 0) || (close > 0 && close < 1);
+    const settling = moving && (Math.abs(smooth - target) > 0.0005 || (engrave > 0 && engrave < 1) || sparkLife.some(l => l > 0) || beamMat.opacity > 0.002);
     if (settling) wake();
   }
 
-  new ResizeObserver(wake).observe(stage);
-  canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); section.classList.remove('is-3d'); });
+  new ResizeObserver(() => { layoutDirty = true; scrollDirty = true; wake(); }).observe(stage);
+  canvas.addEventListener('webglcontextlost', e => {
+    e.preventDefault(); lost = true; cancelAnimationFrame(raf); raf = 0; section.classList.remove('is-3d');
+  });
+  canvas.addEventListener('webglcontextrestored', async () => {
+    await prepareScene(renderer, scene, camera); lost = false; last = 0; layoutDirty = true; wake();
+  });
   readScroll();
+  await prepareScene(renderer, scene, camera);
+  ready = true;
   wake();
 }
