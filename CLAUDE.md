@@ -111,3 +111,12 @@ Run `npm test` for language, frame-budget and scene lifecycle regressions.
   factory statistics or testimonials. Notes in `catalogue.json` explain catalogue inconsistencies.
 - Contact: WhatsApp +86 13812950775, WeChat 13812950775 (from the catalogue). Enquiries open a
   WhatsApp draft; nothing is sent or stored by the site.
+
+## Site switched off (6 Nov 2026)
+
+The owner asked to take the site offline until the client pays. GitHub Pages was unpublished and the
+"Deploy website" workflow was disabled (so pushes do not republish). To switch it back on:
+1. `gh api -X PUT repos/junaed9156/Jialan-Caps/actions/workflows/405603318/enable`
+2. `gh api -X POST repos/junaed9156/Jialan-Caps/actions/workflows/405603318/dispatches -f ref=main`
+3. Settings → Pages: Custom domain `www.mao-han.cn` (Save), then tick Enforce HTTPS once the DNS check passes.
+   Aliyun DNS already points `www` (CNAME) to `junaed9156.github.io`. Remove this section afterwards.
