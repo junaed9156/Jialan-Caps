@@ -74,7 +74,8 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 
 - `admin/` (open it with three quick clicks on the header logo). First run: paste a fine-grained GitHub token
   (only this repo, Contents: read and write) and choose a password of 12+ characters; the page stores the
-  token encrypted in `dist/admin/key.json`. Saving a product commits photos + `dist/admin-products.js` in one
+  token encrypted in `dist/admin/key.json`, locked by the ID and password together (an older password-only key is
+  re-locked with the ID typed at the next login). Saving a product commits photos + `dist/admin-products.js` in one
   commit via the GitHub API; the Pages workflow publishes it in 1–2 minutes. Pull before working locally.
 - Chinese: add new UI or product strings to the `ZH` map in `dist/i18n.js` (exact English text as key).
   Untranslated text stays English. Admin products carry their own `*_zh` fields.

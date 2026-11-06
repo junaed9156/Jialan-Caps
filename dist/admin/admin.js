@@ -1,7 +1,7 @@
 /* Mao Han admin: add or remove products on the website.
    The site is static (GitHub Pages). A fine-grained GitHub token with "Contents: read and write" on this one
-   repository is stored in admin/key.json, encrypted with AES-GCM under a key derived from the admin password
-   (PBKDF2-SHA256). After login the token lives only in this tab's memory. Saving writes the photos and
+   repository is stored in admin/key.json, encrypted with AES-GCM under a key derived from the admin ID and
+   password together (PBKDF2-SHA256). After login the token lives only in this tab's memory. Saving writes the photos and
    dist/admin-products.js to the repository in one commit; the Pages workflow then publishes the site. */
 'use strict';
 (() => {
@@ -9,7 +9,7 @@
   const REPO = 'junaed9156/Jialan-Caps', BRANCH = 'main', ROOT = 'dist/';
   const API = 'https://api.github.com';
   const KEY_FILE = 'admin/key.json', DATA_FILE = 'admin-products.js', PHOTO_DIR = 'assets/admin/';
-  const ITERATIONS = 600000, MIN_PASSWORD = 12, MAX_PHOTOS = 8;
+  const ITERATIONS = 600000, MIN_PASSWORD = 12, MIN_ID = 3, MAX_PHOTOS = 8;
   const $ = id => document.getElementById(id);
   const enc = new TextEncoder(), dec = new TextDecoder();
   let token = null;
@@ -33,14 +33,17 @@
     const base = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
     return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
   }
-  async function seal(secret, password) {
+  // Key version 2 locks the token with the admin ID and the password together; version 1 used the password alone.
+  const normId = id => String(id || '').normalize('NFC').trim().toLowerCase();
+  const lockText = (id, password) => `${normId(id)}\u0000${password}`;
+  async function seal(secret, id, password) {
     const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
-    const key = await deriveKey(password, salt, ITERATIONS);
+    const key = await deriveKey(lockText(id, password), salt, ITERATIONS);
     const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(secret));
-    return { v: 1, kdf: 'PBKDF2-SHA256', iterations: ITERATIONS, cipher: 'AES-256-GCM', salt: toB64(salt), iv: toB64(iv), data: toB64(data), saved: new Date().toISOString() };
+    return { v: 2, kdf: 'PBKDF2-SHA256', iterations: ITERATIONS, cipher: 'AES-256-GCM', salt: toB64(salt), iv: toB64(iv), data: toB64(data), saved: new Date().toISOString() };
   }
-  async function unseal(box, password) {
-    const key = await deriveKey(password, fromB64(box.salt), box.iterations);
+  async function unseal(box, id, password) {
+    const key = await deriveKey(box.v >= 2 ? lockText(id, password) : password, fromB64(box.salt), box.iterations);
     const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64(box.iv) }, key, fromB64(box.data));
     return dec.decode(plain);
   }
@@ -172,14 +175,24 @@
       status('login-status', 'Checking… · 验证中…');
       const key = await loadKey();
       if (!key) { show('setup-view'); return; }
+      const id = $('login-id').value, pw = $('login-password').value;
+      if (normId(id).length < MIN_ID) { status('login-status', `Enter the admin ID (at least ${MIN_ID} characters). · 请输入管理员账号。`, 'bad'); return; }
       let t;
-      try { t = await unseal(key, $('login-password').value); }
-      catch { failures++; try { sessionStorage.setItem('admin-failures', String(failures)); } catch { /* ignore */ } status('login-status', 'Wrong password. · 密码错误。', 'bad'); return; }
+      try { t = await unseal(key, id, pw); }
+      catch { failures++; try { sessionStorage.setItem('admin-failures', String(failures)); } catch { /* ignore */ } status('login-status', 'Wrong admin ID or password. · 账号或密码错误。', 'bad'); return; }
       await gh(`/repos/${REPO}`, {}, t).catch(err => { throw new Error(err.status === 401 ? 'The GitHub token has expired or was revoked. Run setup again with a new token. · GitHub 令牌已过期，请重新设置。' : err.message); });
       token = t; failures = 0; try { sessionStorage.removeItem('admin-failures'); } catch { /* ignore */ }
       $('login-password').value = '';
       status('login-status', '');
       show('admin-view'); refreshList();
+      if (!(key.v >= 2)) {   // older key locked by the password alone: lock it with the ID typed now as well
+        status('save-status', 'Saving your admin ID… · 正在保存管理员账号…');
+        try {
+          const box = await seal(t, id, pw);
+          await commit('Admin: require admin ID and password', async () => [{ path: KEY_FILE, base64: textB64(JSON.stringify(box, null, 1) + '\n') }]);
+          status('save-status', 'Admin ID saved. From now on log in with this ID and password (live in about 2 minutes). · 管理员账号已保存。', 'good');
+        } catch (err) { status('save-status', `Could not save the admin ID: ${err.message}`, 'bad'); }
+      }
     } catch (err) { status('login-status', err.message, 'bad'); }
     finally { btn.disabled = false; }
   });
@@ -190,7 +203,8 @@
   // Setup: check the token can write to this repository, then store it encrypted.
   $('setup-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const t = $('setup-token').value.trim(), p1 = $('setup-password').value, p2 = $('setup-password2').value;
+    const t = $('setup-token').value.trim(), id = $('setup-id').value, p1 = $('setup-password').value, p2 = $('setup-password2').value;
+    if (normId(id).length < MIN_ID) return status('setup-status', `Use an admin ID of at least ${MIN_ID} characters. · 管理员账号至少 ${MIN_ID} 位。`, 'bad');
     if (p1.length < MIN_PASSWORD) return status('setup-status', `Use at least ${MIN_PASSWORD} characters. · 密码至少 ${MIN_PASSWORD} 位。`, 'bad');
     if (p1 !== p2) return status('setup-status', 'The passwords do not match. · 两次密码不一致。', 'bad');
     if (!/^(github_pat_|ghp_)[A-Za-z0-9_]{20,}$/.test(t)) return status('setup-status', 'That does not look like a GitHub token. · 令牌格式不正确。', 'bad');
@@ -200,10 +214,10 @@
       const repo = await gh(`/repos/${REPO}`, {}, t);
       if (repo.permissions && !repo.permissions.push) throw new Error('This token cannot write to the repository. Give it "Contents: Read and write". · 令牌没有写入权限。');
       status('setup-status', 'Encrypting and saving… · 正在加密保存…');
-      const box = await seal(t, p1);
+      const box = await seal(t, id, p1);
       token = t;
       await commit('Admin: set up encrypted access key', async () => [{ path: KEY_FILE, base64: textB64(JSON.stringify(box, null, 1) + '\n') }]);
-      ['setup-token', 'setup-password', 'setup-password2'].forEach(id => { $(id).value = ''; });
+      ['setup-token', 'setup-id', 'setup-password', 'setup-password2'].forEach(id => { $(id).value = ''; });
       status('setup-status', '');
       show('admin-view'); refreshList();
       status('save-status', 'Setup saved. You are logged in. · 设置已保存，已登录。', 'good');
@@ -213,15 +227,16 @@
 
   $('password-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const p1 = $('new-password').value, p2 = $('new-password2').value;
+    const id = $('new-id').value, p1 = $('new-password').value, p2 = $('new-password2').value;
+    if (normId(id).length < MIN_ID) return status('password-status', `Use an admin ID of at least ${MIN_ID} characters. · 管理员账号至少 ${MIN_ID} 位。`, 'bad');
     if (p1.length < MIN_PASSWORD) return status('password-status', `Use at least ${MIN_PASSWORD} characters. · 密码至少 ${MIN_PASSWORD} 位。`, 'bad');
     if (p1 !== p2) return status('password-status', 'The passwords do not match. · 两次密码不一致。', 'bad');
     const btn = e.submitter || e.target.querySelector('button'); btn.disabled = true;
     try {
-      const box = await seal(token, p1);
-      await commit('Admin: change password', async () => [{ path: KEY_FILE, base64: textB64(JSON.stringify(box, null, 1) + '\n') }]);
-      $('new-password').value = $('new-password2').value = '';
-      status('password-status', 'Password changed. It works on the live site in about 2 minutes. · 密码已修改，约 2 分钟后生效。', 'good');
+      const box = await seal(token, id, p1);
+      await commit('Admin: change admin ID and password', async () => [{ path: KEY_FILE, base64: textB64(JSON.stringify(box, null, 1) + '\n') }]);
+      $('new-id').value = $('new-password').value = $('new-password2').value = '';
+      status('password-status', 'ID and password changed. They work on the live site in about 2 minutes. · 账号和密码已修改，约 2 分钟后生效。', 'good');
     } catch (err) { status('password-status', err.message, 'bad'); }
     finally { btn.disabled = false; }
   });

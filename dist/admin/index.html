@@ -26,7 +26,7 @@
     <section class="panel narrow" id="login-view" hidden>
       <h1>Admin login <span>管理员登录</span></h1>
       <form id="login-form" autocomplete="on">
-        <input type="text" name="username" value="admin" autocomplete="username" hidden>
+        <label>Admin ID · 管理员账号<input type="text" id="login-id" autocomplete="username" required minlength="3" maxlength="64" spellcheck="false" autocapitalize="off"></label>
         <label>Password · 密码<input type="password" id="login-password" autocomplete="current-password" required minlength="12" maxlength="200"></label>
         <button class="primary" type="submit">Log in · 登录</button>
         <p class="status" id="login-status" role="status"></p>
@@ -40,10 +40,11 @@
       <ol class="steps">
         <li>On GitHub, open <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
         <li>Repository access: <b>Only select repositories → Jialan-Caps</b>. Permissions → Repository permissions → <b>Contents: Read and write</b>. Nothing else.</li>
-        <li>Paste the token below and choose an admin password (at least 12 characters). The token is stored only in encrypted form, locked by this password.</li>
+        <li>Paste the token below and choose an admin ID and password (at least 12 characters). The token is stored only in encrypted form, locked by this ID and password together.</li>
       </ol>
       <form id="setup-form" autocomplete="off">
         <label>GitHub token · GitHub 令牌<input type="password" id="setup-token" required autocomplete="off" spellcheck="false" maxlength="400"></label>
+        <label>Admin ID · 管理员账号<input type="text" id="setup-id" required minlength="3" maxlength="64" autocomplete="username" spellcheck="false" autocapitalize="off"></label>
         <label>New admin password · 新密码<input type="password" id="setup-password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
         <label>Repeat password · 再次输入密码<input type="password" id="setup-password2" required minlength="12" maxlength="200" autocomplete="new-password"></label>
         <button class="primary" type="submit">Save setup · 保存设置</button>
@@ -89,11 +90,12 @@
       </div>
 
       <div class="panel narrow">
-        <h2>Change password <span>修改密码</span></h2>
+        <h2>Change ID and password <span>修改账号和密码</span></h2>
         <form id="password-form" autocomplete="off">
+          <label>Admin ID · 管理员账号<input type="text" id="new-id" required minlength="3" maxlength="64" autocomplete="username" spellcheck="false" autocapitalize="off"></label>
           <label>New password · 新密码<input type="password" id="new-password" required minlength="12" maxlength="200" autocomplete="new-password"></label>
           <label>Repeat · 再次输入<input type="password" id="new-password2" required minlength="12" maxlength="200" autocomplete="new-password"></label>
-          <button type="submit">Change password · 修改密码</button>
+          <button type="submit">Save ID and password · 保存账号和密码</button>
           <p class="status" id="password-status" role="status"></p>
         </form>
       </div>
