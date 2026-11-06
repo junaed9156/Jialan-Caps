@@ -51,13 +51,15 @@ class Resize {
   constructor(callback) { this.callback = callback; Resize.all.push(this); }
   observe() {}
 }
+const idleTasks = [];
 const win = new EventTarget();
-Object.assign(win, { devicePixelRatio: 2, IntersectionObserver: Observer });
+Object.assign(win, { devicePixelRatio: 2, IntersectionObserver: Observer, requestIdleCallback: true });
 Object.assign(globalThis, {
   window: win, document: doc, screen: { width: 1440, height: 900 }, matchMedia: match,
   Image: Element,
   IntersectionObserver: Observer, ResizeObserver: Resize, innerHeight: 600,
   requestAnimationFrame: fn => { const id = nextFrame++; frames.set(id, fn); return id; },
+  requestIdleCallback: fn => idleTasks.push(fn),
   cancelAnimationFrame: id => frames.delete(id), addEventListener: (...args) => win.addEventListener(...args),
 });
 Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { deviceMemory: 8, hardwareConcurrency: 8 } });
@@ -93,41 +95,63 @@ test('the first paint waits for the final hero; a failed module has a bounded fa
   assert.equal(html.dataset.heroState, 'ready', 'The timeout must never replace a rendered hero');
 });
 
-test('the hero starts before window.load, with fallback on missing WebGL, failed or late downloads', async () => {
+function startup({ hash = '', webgl = true, loadScene } = {}) {
   const source = readFileSync(new URL('../src/3d/main.js', import.meta.url), 'utf8')
     .replace("import { mountSequence } from './sequence.js';", '')
     .replaceAll(/import\('\.\/(hero|anatomy|studio)\.js'\)/g, (_, scene) => `loadScene('${scene}')`);
-  for (const mode of ['success', 'no-webgl', 'failure', 'timeout']) {
-    const document = new Element();
-    document.documentElement = new Element(); document.documentElement.dataset.heroState = 'loading';
-    document.readyState = 'interactive'; document.hidden = false;
-    const raf = [], downloads = [], mounts = [], warnings = [];
-    let finishDownload;
-    document.createElement = () => ({ getContext: () => mode === 'no-webgl' ? null : { getExtension: () => null } });
-    runInNewContext(source, {
-      document, window: { IntersectionObserver: Observer }, IntersectionObserver: Observer,
-      requestAnimationFrame: fn => raf.push(fn), setTimeout, mountSequence: () => ({}),
-      console: { warn: error => warnings.push(error) },
-      loadScene: scene => {
-        downloads.push(scene);
-        if (mode === 'failure') return Promise.reject(new Error('Offline'));
-        const module = { mount: () => mounts.push(scene) };
-        return mode === 'timeout' ? new Promise(resolve => { finishDownload = () => resolve(module); }) : Promise.resolve(module);
-      },
-    });
-    assert.equal(downloads.length, 0, 'Useful page content must paint before allocating WebGL');
-    raf.shift()(); raf.shift()();
-    await new Promise(resolve => setImmediate(resolve));
-    if (mode === 'timeout') {
-      document.documentElement.dataset.heroState = 'fallback'; finishDownload();
-      await new Promise(resolve => setImmediate(resolve));
-    }
-    assert.deepEqual(mounts, mode === 'success' ? ['hero'] : []);
-    assert.deepEqual(downloads, mode === 'no-webgl' ? [] : ['hero'], 'Nothing may compete with the hero before it is showing');
-    assert.equal(document.readyState, 'interactive', 'No window.load event was required');
-    if (mode !== 'success') assert.equal(document.documentElement.dataset.heroState, 'fallback');
-    assert.equal(warnings.length, mode === 'failure' ? 1 : 0);
-  }
+  const document = new Element();
+  document.documentElement = new Element(); document.documentElement.dataset.heroState = 'loading';
+  document.readyState = 'interactive'; document.hidden = false;
+  const raf = [], idle = [], downloads = [], mounts = [], warnings = [];
+  document.createElement = () => ({ getContext: () => webgl ? { getExtension: () => null } : null });
+  const moduleFor = scene => ({ mount: async element => {
+    mounts.push(scene);
+    await loadScene?.(scene);
+    element.classList.add('is-3d');
+  } });
+  runInNewContext(source, {
+    document, location: { hash }, window: { IntersectionObserver: Observer, requestIdleCallback: true },
+    IntersectionObserver: Observer, requestIdleCallback: fn => idle.push(fn),
+    requestAnimationFrame: fn => raf.push(fn), setTimeout, mountSequence: () => ({}),
+    console: { warn: error => warnings.push(error) },
+    loadScene: async scene => { downloads.push(scene); return moduleFor(scene); },
+  });
+  return { document, raf, idle, downloads, mounts, warnings,
+    frame() { raf.shift()?.(); }, settle: () => new Promise(resolve => setImmediate(resolve)) };
+}
+
+test('studio becomes ready while hero shaders are still pending, before window.load', async () => {
+  let finishHero;
+  const app = startup({ loadScene: scene => scene === 'hero' ? new Promise(resolve => { finishHero = resolve; }) : undefined });
+  assert.deepEqual(app.downloads, []);
+  app.frame(); app.frame(); await app.settle();
+  assert.deepEqual(app.downloads, ['hero']);
+  app.frame(); await app.settle();
+  assert.deepEqual(app.downloads, ['hero', 'studio']);
+  assert.ok(app.document.querySelector('#studio-view').classList.contains('is-3d'));
+  assert.equal(app.document.querySelector('.hero-scene').classList.contains('is-3d'), false);
+  assert.equal(app.document.readyState, 'interactive');
+  assert.equal(app.idle.length, 0, 'Anatomy must not compete with the initial previews');
+  finishHero(); await app.settle();
+  assert.equal(app.idle.length, 1, 'Anatomy can warm once both initial previews are ready');
+});
+
+test('a direct studio visit is prioritised and a failed hero cannot block it', async () => {
+  const direct = startup({ hash: '#studio' });
+  direct.frame(); direct.frame(); await direct.settle();
+  assert.deepEqual(direct.downloads, ['studio']);
+  assert.ok(direct.document.querySelector('#studio-view').classList.contains('is-3d'));
+  direct.frame(); await direct.settle();
+  assert.deepEqual(direct.downloads, ['studio', 'hero']);
+  const failed = startup({ loadScene: scene => { if (scene === 'hero') throw new Error('GPU failure'); } });
+  failed.frame(); failed.frame(); await failed.settle(); failed.frame(); await failed.settle();
+  assert.equal(failed.document.documentElement.dataset.heroState, 'fallback');
+  assert.ok(failed.document.querySelector('#studio-view').classList.contains('is-3d'));
+  assert.equal(failed.warnings.length, 1);
+  const unsupported = startup({ webgl: false });
+  unsupported.frame(); unsupported.frame(); await unsupported.settle();
+  assert.deepEqual(unsupported.downloads, []);
+  assert.equal(unsupported.document.documentElement.dataset.heroState, 'fallback');
 });
 
 test('renderer caches layout and lowers resolution under sustained slow frames', () => {
@@ -176,11 +200,15 @@ test('assembly clock clamps stalls and resumes without skipping the animation', 
 test('all scenes mount, draw finite cameras, pause, and recover after GPU context restoration', async () => {
   const renderers = [];
   class Renderer {
-    constructor({ canvas }) { this.canvas = canvas; this.ratio = 1; this.draws = 0; renderers.push(this); }
+    constructor({ canvas }) { this.canvas = canvas; this.ratio = 1; this.draws = 0; this.compiles = []; renderers.push(this); }
     getPixelRatio() { return this.ratio; }
     setPixelRatio(value) { this.ratio = value; }
     setSize() {}
-    async compileAsync() {}
+    async compileAsync(scene, camera, targetScene) {
+      let glass = 0;
+      scene.traverse(object => { if (object.material?.transmission > 0) glass++; });
+      this.compiles.push({ glass, targetScene, draws: this.draws });
+    }
     render(scene, camera) { assert.ok(camera.projectionMatrix.elements.every(Number.isFinite)); this.draws++; }
   }
   kit.THREE.WebGLRenderer = Renderer;
@@ -192,7 +220,15 @@ test('all scenes mount, draw finite cameras, pause, and recover after GPU contex
   await (await import('../src/3d/hero.js')).mount(stage, mountSequence(stage));
   assert.equal(doc.documentElement.dataset.heroState, 'ready', 'Only a rendered frame can reveal the hero');
   await (await import('../src/3d/anatomy.js')).mount(new Element());
-  await (await import('../src/3d/studio.js')).mount(new Element());
+  const studioView = new Element();
+  await (await import('../src/3d/studio.js')).mount(studioView);
+  const studio = renderers[2];
+  assert.ok(studioView.classList.contains('is-3d'), 'The first studio frame must be ready before scrolling');
+  assert.equal(studio.draws, 1);
+  assert.equal(studio.compiles[0].glass, 0, 'Invisible bottle shaders must not delay the first cap frame');
+  idleTasks.pop()(); await new Promise(resolve => setImmediate(resolve));
+  assert.ok(studio.compiles[1].glass > 0, 'Bottle shaders still warm for later interactions');
+  assert.ok(studio.compiles[1].draws > 0, 'Optional shaders may warm only after the cap is showing');
   const observers = Observer.all.slice(start);
   observers.forEach(io => io.emit(true));
   for (let i = 0; i < 8; i++) flush(20000 + i * 16);
@@ -200,7 +236,6 @@ test('all scenes mount, draw finite cameras, pause, and recover after GPU contex
   assert.ok(renderers.every(r => r.draws > 0));
   doc.body.classList.add('motion-paused'); doc.dispatchEvent(new Event('jialan:motion'));
   flush(21000); flush(21016); assert.equal(frames.size, 0, 'Paused scenes should not keep rendering');
-  const studio = renderers[2];
   studio.canvas.dispatchEvent(new Event('webglcontextlost', { cancelable: true }));
   const previous = studio.draws;
   doc.dispatchEvent(new Event('jialan:motion')); flush(22000);

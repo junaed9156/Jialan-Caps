@@ -322,7 +322,9 @@ export async function mount(view) {
   }
 
   renderSwatches();
-  setCap(state.cap);
+  // makeAssembly already built this cap; avoid building the geometry a second time.
+  buildDecal();
+  updateText();
   updateSpin();
   const resize = new ResizeObserver(() => { layoutDirty = true; wake(); });
   resize.observe(view); resize.observe(render);
@@ -332,9 +334,18 @@ export async function mount(view) {
   canvas.addEventListener('webglcontextrestored', async () => {
     await prepareScene(renderer, scene, camera); lost = false; last = 0; layoutDirty = true; wake();
   });
-  await prepareScene(renderer, scene, camera);
+  // three.js compiles invisible meshes too. Keep glass/refraction shaders out of the
+  // first cap preview, then warm them separately for the "Show on bottle" control.
+  asm.stack.remove(asm.bottle);
+  try { await prepareScene(renderer, scene, camera); }
+  finally { asm.stack.add(asm.bottle); }
   ready = true;
   if (!lost) tick(performance.now());
   last = 0;
   wake();
+  const warmBottle = () => {
+    if (!lost) renderer.compileAsync(asm.bottle, camera, scene).catch(error => console.warn('Bottle preview:', error));
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(warmBottle, { timeout: 2000 });
+  else setTimeout(warmBottle, 100);
 }

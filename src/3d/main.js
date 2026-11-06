@@ -1,5 +1,5 @@
-/* Loads the hero first, then prepares the studio and anatomy in the background (their render loops only
-   run while visible), so they are already on screen when a visitor scrolls or jumps to them.
+/* Warm the hero and studio independently, with CPU setup on separate frames. Their shader
+   compilation can overlap, so entering the studio never waits behind the hero's glass shaders.
    Without WebGL (or if a scene fails) the catalogue photographs stay in place. */
 import { mountSequence } from './sequence.js';
 
@@ -38,26 +38,28 @@ function lazy(selector, load, margin = '240px 0px', context, priority = false) {
   let started, mounted = false;
   const start = () => {
     if (started) return started;
-    // Never initialise several WebGL renderers in the same frame while scrolling.
+    // Background scenes yield; critical scenes must not wait for another scene's shaders.
     started = (priority ? Promise.resolve() : queue.then(idle)).then(load).then(m => {
       // A timed-out hero stays in fallback for this visit, without another visual swap.
       if (el === heroStage && page.dataset.heroState === 'fallback') return;
       return m.mount(el, context);
-    }).then(() => { mounted = true; }).catch(error => {
+    }).then(() => { mounted = el.classList.contains('is-3d'); }).catch(error => {
       console.warn('3D:', error);
       el.classList.add('is-3d-failed');
       el.classList.remove('is-3d');
       if (el === heroStage) page.dataset.heroState = 'fallback';
     });
-    queue = started;
+    if (!priority) queue = started;
     return started;
   };
-  if (!('IntersectionObserver' in window)) { start(); return { start, mounted: () => mounted }; }
+  const control = { start, mounted: () => mounted };
+  if (priority) return control;
+  if (!('IntersectionObserver' in window)) { start(); return control; }
   const io = new IntersectionObserver(entries => {
     if (entries.some(e => e.isIntersecting)) { io.disconnect(); start(); }
   }, { rootMargin: margin });
   io.observe(el);
-  return { start, mounted: () => mounted };
+  return control;
 }
 
 function afterPaint(fn) {
@@ -74,18 +76,25 @@ function afterPaint(fn) {
 afterPaint(() => {
   if (!webglAvailable()) { page.dataset.heroState = 'fallback'; return; }
   document.documentElement.classList.add('webgl');
-  let heroReady = Promise.resolve();
-  if (page.dataset.heroState !== 'fallback') {
-    heroReady = lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true)?.start() || heroReady;
-  }
-  // Each scene also starts early if its section comes near the viewport first.
-  const studio = lazy('#studio-view', () => import('./studio.js'), '1100px 0px');
+  const hero = page.dataset.heroState !== 'fallback'
+    ? lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true) : null;
+  const studio = lazy('#studio-view', () => import('./studio.js'), '0px', undefined, true);
+  // A direct #studio visit gets its own first frame first. Otherwise paint the hero first.
+  const [first, second] = location.hash === '#studio' ? [studio, hero] : [hero, studio];
+  const firstReady = first?.start();
+  const secondReady = new Promise(resolve => requestAnimationFrame(() => resolve(second?.start())));
+  const criticalReady = Promise.all([firstReady, secondReady]);
+  queue = criticalReady;
   const anatomy = lazy('#anatomy', () => import('./anatomy.js'), '900px 0px');
-  // Once the hero is showing, prepare the studio (the page links straight to it), then the anatomy story.
-  heroReady.then(() => { studio?.start(); anatomy?.start(); });
-  // A click on a "3D studio" link starts it at once if it has not started yet.
-  document.addEventListener('click', event => {
+  criticalReady.then(() => anatomy?.start());
+  // Intent also wakes the studio if a visitor navigates during startup.
+  const studioIntent = event => {
     if (event.target.closest?.('a[href="#studio"]')) studio?.start();
+  };
+  document.addEventListener('pointerover', studioIntent, { passive: true });
+  document.addEventListener('focusin', studioIntent);
+  document.addEventListener('click', event => {
+    studioIntent(event);
   }, true);
   let pendingDesign;
   document.addEventListener('jialan:studio', event => {

@@ -7,17 +7,16 @@ const options = {
   entryPoints: ['src/3d/main.js'], bundle: true, splitting: true, format: 'esm', minify: true,
   target: 'es2020', outdir: 'dist/js', chunkNames: 'chunk-[hash]', legalComments: 'none', logLevel: 'info', metafile: true,
   plugins: [{ name: 'version-assets', setup(builder) {
-    builder.onEnd(async result => { if (result.errors.length) return; await preloadHero(result.metafile); return versionAssets(); });
+    builder.onEnd(async result => { if (result.errors.length) return; await preloadCriticalScenes(result.metafile); return versionAssets(); });
   } }],
 };
 
-// The hero's 3D code is imported only after first paint. Preloading its chunks from <head> lets the
-// browser download them alongside the page instead of after it, so the 3D appears much sooner.
-async function preloadHero(meta) {
+// Fetch both interactive entry points with the page. Their shared engine is requested only once.
+async function preloadCriticalScenes(meta) {
   const outputs = meta.outputs;
-  const heroOut = Object.keys(outputs).find(o => outputs[o].entryPoint === 'src/3d/hero.js');
-  if (!heroOut) return;
-  const need = new Set(), stack = [heroOut];
+  const entryPoints = new Set(['src/3d/hero.js', 'src/3d/studio.js']);
+  const need = new Set(), stack = Object.keys(outputs).filter(o => entryPoints.has(outputs[o].entryPoint));
+  if (stack.length !== entryPoints.size) throw new Error('Missing a critical 3D entry point');
   while (stack.length) {
     const o = stack.pop();
     if (need.has(o)) continue;

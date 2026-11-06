@@ -86,14 +86,15 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 
 Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run build:3d` (writes `dist/js/`).
 The build versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
-It also writes `<link rel="modulepreload">` hints (between `<!-- 3d-preload -->` markers) for the hero's chunks, so
+It also writes `<link rel="modulepreload">` hints (between `<!-- 3d-preload -->` markers) for the hero and studio chunks, so
 the 3D code downloads alongside the page; chunk URLs stay unversioned because their names already carry a hash.
 Run `npm test` for language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
-- `main.js` starts the hero after first paint, without waiting for window.load. Once the hero shows, the studio and then the anatomy
-  are prepared in the background (earlier if their section nears the viewport or a #studio link is clicked).
+- `main.js` starts the hero and studio on separate frames after first paint, without waiting for window.load or each other's shaders.
+  Direct `#studio` visits start the studio first. Both previews draw once off screen, then animate only while visible.
+  Anatomy waits for both previews. Studio's hidden bottle shaders warm separately after its first cap frame.
   The hero shows a small loading indicator until its first rendered frame, so the illustrated fallback cannot flash first.
   Unsupported WebGL, load errors or the eight-second startup deadline reveal the fallback; late initialisation cannot replace it.
   The hero shares one assembly timeline across WebGL and the projected illustration. Without WebGL the studio and anatomy retain their catalogue photographs.

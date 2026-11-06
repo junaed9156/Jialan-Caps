@@ -51,8 +51,10 @@ The page paints before starting WebGL. The hero starts immediately after that pa
 for all images to load, and shows a small loading indicator until its first rendered frame. The
 illustrated fallback appears only when WebGL is unavailable, fails or misses the eight-second
 startup deadline; a late download cannot replace that fallback during the same visit.
-Lower scenes load one at a time near the viewport, compile shaders
-asynchronously, and stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
+The hero and studio chunks preload together. Their setup starts on separate frames and shader
+compilation overlaps; direct `#studio` visits prioritise the studio. The initial cap preview excludes
+hidden glass shaders, which warm separately after its first frame. Anatomy waits for both previews.
+Scenes stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
 adapts down when frames stay slow; glass uses a smaller refraction buffer. The build also versions
 CSS/JS URLs by content so returning visitors receive matching scripts after deployment.
 Tests use real geometry and a renderer double; visual checks on actual GPU devices remain separate.
