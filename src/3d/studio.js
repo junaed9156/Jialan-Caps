@@ -228,7 +228,7 @@ export async function mount(view) {
 
   /* ---------- render loop ---------- */
   let raf = 0, last = 0, clock = 0, liftStart = -10, lift = 0, pop = 0, framed = false, faceFront = false;
-  let ready = false, lost = false, layoutDirty = true, previousAngle = -1;
+  let ready = false, lost = false, layoutDirty = true, previousAngle = -1, primed = false;
   let pr, rr;
   const angleInput = $('studio-angle'), angleOutput = $('studio-angle-value');
   const visibleNow = whenVisible(view, visible => {
@@ -240,7 +240,8 @@ export async function mount(view) {
 
   function tick(now) {
     raf = 0;
-    if (!visibleNow() || lost) { last = 0; return; }
+    // The first frame is drawn even off screen, so the studio is already showing when a visitor arrives.
+    if (lost || (primed && !visibleNow())) { last = 0; return; }
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
     last = now;
     clock += dt;
@@ -313,6 +314,7 @@ export async function mount(view) {
     syncMirror();
 
     renderFrame(renderer, scene, camera, now);
+    primed = true;
     if (!view.classList.contains('is-3d')) { view.classList.add('is-3d'); updateText(); }
     const busy = moving && (faceFront || Math.abs(view3.vy) > 0.01 || state.auto || since < 1.2 || pop > 0.01 ||
       Math.abs(view3.ty - wantTy) > 0.005 || Math.abs(view3.dist - wantDist) > 0.01 || Math.abs(glow - (state.bottle ? 1.15 : 0)) > 0.005);
@@ -332,5 +334,7 @@ export async function mount(view) {
   });
   await prepareScene(renderer, scene, camera);
   ready = true;
+  if (!lost) tick(performance.now());
+  last = 0;
   wake();
 }
