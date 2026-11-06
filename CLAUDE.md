@@ -15,7 +15,7 @@ dist/                     the website (commit everything here, including built f
                           uploads are auto-cropped and centred on white like the catalogue photos
   admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
   assets/admin/           photos uploaded on the admin page (<id>-<n>-400/800.webp)
-  404.html, notfound.css  branded page-not-found (absolute /Jialan-Caps/ paths)
+  404.html, notfound.css  branded page-not-found (absolute / paths; site is served at https://mao-han.cn)
   countries.js            countries + calling codes for the enquiry phone field (from libphonenumber-js)
   products.js             GENERATED product data — never edit by hand
   js/                     GENERATED 3D bundle (from src/3d) — never edit by hand
