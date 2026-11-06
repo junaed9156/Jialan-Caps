@@ -5,6 +5,7 @@ Static website for Jialan / Suzhou Maohan Metal Products Co., Ltd. Everything th
 ```
 dist/                     the website (commit everything here, including built files)
   index.html, styles.css  page and base styles
+  site.css               GENERATED combined/minified stylesheet; edit the four source CSS files, then build
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
@@ -85,12 +86,14 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 ## 3D scenes
 
 Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run build:3d` (writes `dist/js/`).
-The build versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
+The build combines styles.css, studio.css, scenes.css and atelier.css into site.css in that order,
+then versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
 It also writes `<link rel="modulepreload">` hints (between `<!-- 3d-preload -->` markers) for the hero and studio chunks, so
 the 3D code downloads alongside the page; chunk URLs stay unversioned because their names already carry a hash.
 Run `npm test` for language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
+- `context.js`: retains the WebGL capability-check canvas for the first scene; all 3D scene canvases use createCanvas().
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
 - `main.js` starts the hero and studio on separate frames after first paint, without waiting for window.load or each other's shaders.
   Direct `#studio` visits start the studio first. Both previews draw once off screen, then animate only while visible.

@@ -2,21 +2,11 @@
    compilation can overlap, so entering the studio never waits behind the hero's glass shaders.
    Without WebGL (or if a scene fails) the catalogue photographs stay in place. */
 import { mountSequence } from './sequence.js';
+import { webglAvailable } from './context.js';
 
 const heroStage = document.querySelector('.hero-scene');
 const heroSequence = heroStage && mountSequence(heroStage);
 const page = document.documentElement;
-
-function webglAvailable() {
-  try {
-    const c = document.createElement('canvas');
-    // This version of three.js needs WebGL2. Release the probe's GPU context immediately.
-    const gl = c.getContext('webgl2');
-    if (!gl) return false;
-    gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return true;
-  } catch { return false; }
-}
 
 let queue = Promise.resolve();
 function idle() {

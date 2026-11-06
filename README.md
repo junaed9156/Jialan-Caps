@@ -57,6 +57,9 @@ hidden glass shaders, which warm separately after its first frame. Anatomy waits
 Scenes stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
 adapts down when frames stay slow; glass uses a smaller refraction buffer. The build also versions
 CSS/JS URLs by content so returning visitors receive matching scripts after deployment.
+The four source stylesheets compile into one minified `dist/site.css`, in their original cascade
+order. Edit the source stylesheets and rerun the build. The WebGL support check reserves a canvas
+for the first scene, avoiding a disposable context and a second GPU initialisation.
 Tests use real geometry and a renderer double; visual checks on actual GPU devices remain separate.
 
 ## Content sources

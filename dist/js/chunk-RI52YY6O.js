@@ -1,0 +1,1 @@
+var n={alpha:!1,antialias:!0,powerPreference:"high-performance"},t;function r(){if(t)return!0;try{let e=document.createElement("canvas");return e.getContext("webgl2",n)?(t=e,!0):!1}catch{return!1}}function a(){let e=t||document.createElement("canvas");return t=void 0,e}export{n as a,r as b,a as c};

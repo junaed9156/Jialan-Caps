@@ -65,6 +65,32 @@ Object.assign(globalThis, {
 Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { deviceMemory: 8, hardwareConcurrency: 8 } });
 const kit = await import('../src/3d/kit.js');
 
+test('the WebGL support check reuses its context for exactly the first scene', async () => {
+  const context = await import('../src/3d/context.js');
+  const original = doc.createElement;
+  const created = [], requests = [];
+  doc.createElement = () => {
+    const canvas = new Element();
+    canvas.getContext = (type, options) => { requests.push({ type, options }); return {}; };
+    created.push(canvas);
+    return canvas;
+  };
+  try {
+    assert.equal(context.webglAvailable(), true);
+    assert.equal(context.webglAvailable(), true);
+    assert.equal(requests.length, 1, 'Repeated capability checks must not allocate more contexts');
+    assert.equal(context.createCanvas(), created[0], 'The first scene must keep the already initialised GPU context');
+    assert.notEqual(context.createCanvas(), created[0], 'Other scenes need their own canvases');
+    assert.equal(requests[0].type, 'webgl2');
+    assert.equal(requests[0].options.alpha, false);
+    assert.equal(requests[0].options.antialias, true);
+    doc.createElement = () => ({ getContext: () => null });
+    assert.equal(context.webglAvailable(), false);
+    doc.createElement = () => ({ getContext() { throw new Error('GPU unavailable'); } });
+    assert.equal(context.webglAvailable(), false);
+  } finally { doc.createElement = original; }
+});
+
 test('normal URL always uses English, including a previously saved Chinese preference', () => {
   for (const query of ['', '?lang=en', '?lang=invalid', '?lang=zh']) {
     const html = new Element();
@@ -98,6 +124,7 @@ test('the first paint waits for the final hero; a failed module has a bounded fa
 function startup({ hash = '', webgl = true, loadScene } = {}) {
   const source = readFileSync(new URL('../src/3d/main.js', import.meta.url), 'utf8')
     .replace("import { mountSequence } from './sequence.js';", '')
+    .replace("import { webglAvailable } from './context.js';", '')
     .replaceAll(/import\('\.\/(hero|anatomy|studio)\.js'\)/g, (_, scene) => `loadScene('${scene}')`);
   const document = new Element();
   document.documentElement = new Element(); document.documentElement.dataset.heroState = 'loading';
@@ -110,7 +137,7 @@ function startup({ hash = '', webgl = true, loadScene } = {}) {
     element.classList.add('is-3d');
   } });
   runInNewContext(source, {
-    document, location: { hash }, window: { IntersectionObserver: Observer, requestIdleCallback: true },
+    document, webglAvailable: () => webgl, location: { hash }, window: { IntersectionObserver: Observer, requestIdleCallback: true },
     IntersectionObserver: Observer, requestIdleCallback: fn => idle.push(fn),
     requestAnimationFrame: fn => raf.push(fn), setTimeout, mountSequence: () => ({}),
     console: { warn: error => warnings.push(error) },

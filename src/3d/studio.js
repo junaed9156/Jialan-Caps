@@ -1,6 +1,6 @@
 /* The 3D studio: choose a cap family, finish, collar and preview your own logo on it. */
 import {
-  THREE, Q, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial, FINISHES, CAPS,
+  THREE, Q, createCanvas, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial, FINISHES, CAPS,
   contactShadow, backdrop, textTexture, logoDecal, pulseRing, fieldLines, ease, clamp01, damp, motionAllowed, whenVisible, prepareScene, renderFrame,
 } from './kit.js';
 
@@ -17,7 +17,7 @@ const LOGO_STYLES = {
 export async function mount(view) {
   const $ = id => document.getElementById(id);
   const render = $('studio-render');
-  const canvas = document.createElement('canvas');
+  const canvas = createCanvas();
   canvas.id = 'studio-canvas';
   canvas.setAttribute('role', 'img');
   view.prepend(canvas);

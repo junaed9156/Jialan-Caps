@@ -1,4 +1,4 @@
-import { build, context } from 'esbuild';
+import { build, context, transform } from 'esbuild';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, rm } from 'node:fs/promises';
 
@@ -7,9 +7,33 @@ const options = {
   entryPoints: ['src/3d/main.js'], bundle: true, splitting: true, format: 'esm', minify: true,
   target: 'es2020', outdir: 'dist/js', chunkNames: 'chunk-[hash]', legalComments: 'none', logLevel: 'info', metafile: true,
   plugins: [{ name: 'version-assets', setup(builder) {
-    builder.onEnd(async result => { if (result.errors.length) return; await preloadCriticalScenes(result.metafile); return versionAssets(); });
+    builder.onEnd(async result => {
+      if (result.errors.length) return;
+      await bundleStyles();
+      await preloadCriticalScenes(result.metafile);
+      return versionAssets();
+    });
   } }],
 };
+
+// Keep the existing cascade and relative URLs, with one smaller render-blocking download.
+async function bundleStyles() {
+  const names = ['styles.css', 'studio.css', 'scenes.css', 'atelier.css'];
+  const sources = await Promise.all(names.map(name => readFile('dist/' + name, 'utf8')));
+  const result = await transform(sources.join('\n'), { loader: 'css', minify: true, charset: 'utf8', legalComments: 'none' });
+  await writeFile('dist/site.css', result.code);
+  let linked = false;
+  const html = (await readFile('dist/index.html', 'utf8')).replace(
+    /  <link rel="stylesheet" href="(?:styles|studio|scenes|atelier|site)\.css(?:\?v=[\w-]+)?">\n/g,
+    () => {
+      if (linked) return '';
+      linked = true;
+      return '  <link rel="stylesheet" href="site.css">\n';
+    },
+  );
+  if (!linked) throw new Error('Missing website stylesheet link');
+  await writeFile('dist/index.html', html);
+}
 
 // Fetch both interactive entry points with the page. Their shared engine is requested only once.
 async function preloadCriticalScenes(meta) {

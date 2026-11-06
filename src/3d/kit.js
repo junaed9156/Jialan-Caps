@@ -14,6 +14,8 @@ import {
 } from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
+import { contextAttributes } from './context.js';
+export { createCanvas } from './context.js';
 
 export const THREE = {
   AdditiveBlending, BackSide, Box3, BufferAttribute, BufferGeometry,
@@ -42,7 +44,7 @@ export const motionAllowed = () => !reducedMotion.matches && !document.body.clas
 
 /* ---------- renderer ---------- */
 export function createRenderer(canvas) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
+  const renderer = new THREE.WebGLRenderer({ canvas, ...contextAttributes });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.08;

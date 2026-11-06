@@ -1,7 +1,7 @@
 /* Scroll story: the closure assembles, lifts, separates into its parts, changes finish
    and receives a laser-engraved logo. Scroll position drives every frame. */
 import {
-  THREE, Q, createRenderer, fit, studioEnvironment, makeAssembly, FINISHES, CAPS, contactShadow, caustic, backdrop,
+  THREE, Q, createCanvas, createRenderer, fit, studioEnvironment, makeAssembly, FINISHES, CAPS, contactShadow, caustic, backdrop,
   markDecal, markSilhouette, bottleMark, pulseRing, fieldLines, softDot, lerpFinish, ease, clamp01, range, damp, motionAllowed, whenVisible, prepareScene, renderFrame,
 } from './kit.js';
 
@@ -24,7 +24,7 @@ function cameraAt(p) {
 
 export async function mount(section) {
   const stage = section.querySelector('.anatomy-stage');
-  const canvas = document.createElement('canvas');
+  const canvas = createCanvas();
   canvas.setAttribute('aria-hidden', 'true');
   stage.prepend(canvas);
   const steps = [...section.querySelectorAll('[data-step]')];

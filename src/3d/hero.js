@@ -1,11 +1,11 @@
 /* WL100 assembly study. The centre bottle is fixed. Two mounted specimens turn independently. */
 import {
-  THREE, CAPS, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial,
+  THREE, CAPS, createCanvas, createRenderer, fit, studioEnvironment, makeAssembly, finishMaterial,
   contactShadow, backdrop, motionAllowed, bottleMark, prepareScene, renderFrame, Q,
 } from './kit.js';
 
 export async function mount(stage, sequence) {
-  const canvas = document.createElement('canvas');
+  const canvas = createCanvas();
   canvas.className = 'hero-canvas';
   canvas.setAttribute('aria-hidden', 'true');
   const renderer = createRenderer(canvas);
