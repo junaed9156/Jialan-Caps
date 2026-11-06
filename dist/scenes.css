@@ -4,7 +4,7 @@
 .hero-scene .hero-cap,.hero-scene .plinth,.hero-scene .orbit,.hero-scene .scene-word,.hero-scene .scene-cross{transition:opacity .7s ease}
 .hero-scene.is-3d .hero-cap,.hero-scene.is-3d .plinth,.hero-scene.is-3d .orbit,.hero-scene.is-3d .scene-word,.hero-scene.is-3d .scene-cross{opacity:0}
 /* 3D studio */
-.studio-view #studio-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;cursor:grab;touch-action:pan-y;opacity:0;transition:opacity .8s}
+.studio-view #studio-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;cursor:grab;touch-action:pan-y;opacity:0;transition:opacity .35s}
 .studio-view.is-3d #studio-canvas{opacity:1}
 .studio-view #studio-canvas:active{cursor:grabbing}
 .studio-view>*:not(canvas){position:relative;z-index:1}

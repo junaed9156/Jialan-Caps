@@ -123,7 +123,7 @@ test('the hero starts before window.load, with fallback on missing WebGL, failed
       await new Promise(resolve => setImmediate(resolve));
     }
     assert.deepEqual(mounts, mode === 'success' ? ['hero'] : []);
-    assert.deepEqual(downloads, mode === 'no-webgl' ? [] : ['hero'], 'Lower scenes must stay lazy');
+    assert.deepEqual(downloads, mode === 'no-webgl' ? [] : ['hero'], 'Nothing may compete with the hero before it is showing');
     assert.equal(document.readyState, 'interactive', 'No window.load event was required');
     if (mode !== 'success') assert.equal(document.documentElement.dataset.heroState, 'fallback');
     assert.equal(warnings.length, mode === 'failure' ? 1 : 0);

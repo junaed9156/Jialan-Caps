@@ -1,4 +1,5 @@
-/* Loads each 3D scene only when its section approaches the viewport.
+/* Loads the hero first, then prepares the studio and anatomy in the background (their render loops only
+   run while visible), so they are already on screen when a visitor scrolls or jumps to them.
    Without WebGL (or if a scene fails) the catalogue photographs stay in place. */
 import { mountSequence } from './sequence.js';
 
@@ -73,12 +74,19 @@ function afterPaint(fn) {
 afterPaint(() => {
   if (!webglAvailable()) { page.dataset.heroState = 'fallback'; return; }
   document.documentElement.classList.add('webgl');
+  let heroReady = Promise.resolve();
   if (page.dataset.heroState !== 'fallback') {
-    lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true)?.start();
+    heroReady = lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true)?.start() || heroReady;
   }
-  // Start a screen or two ahead so the 3D is ready by the time the section is reached.
-  lazy('#anatomy', () => import('./anatomy.js'), '900px 0px');
+  // Each scene also starts early if its section comes near the viewport first.
   const studio = lazy('#studio-view', () => import('./studio.js'), '1100px 0px');
+  const anatomy = lazy('#anatomy', () => import('./anatomy.js'), '900px 0px');
+  // Once the hero is showing, prepare the studio (the page links straight to it), then the anatomy story.
+  heroReady.then(() => { studio?.start(); anatomy?.start(); });
+  // A click on a "3D studio" link starts it at once if it has not started yet.
+  document.addEventListener('click', event => {
+    if (event.target.closest?.('a[href="#studio"]')) studio?.start();
+  }, true);
   let pendingDesign;
   document.addEventListener('jialan:studio', event => {
     if (!studio || studio.mounted()) return;
