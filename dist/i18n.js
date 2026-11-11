@@ -194,7 +194,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'Send your selected models, dimensions and quantities to discuss sampling.': '发送你选择的型号、尺寸和数量，商讨打样。',
     'Start a custom enquiry': '开始定制询价',
     // About
-    '03 / THE PEOPLE BEHIND THE PIECE': '03 / 产品背后的团队',
+    'THE PEOPLE BEHIND THE PIECE': '产品背后的团队',
     'Thoughtful packaging.': '用心的包装，',
     'A direct connection.': '直接的沟通。',
     'Mao Han (Suzhou Maohan Metal Products Co., Ltd.) makes magnetic perfume cap assemblies and cosmetic packaging components.': 'MAO HAN（Suzhou Maohan Metal Products Co., Ltd.）生产磁吸香水瓶盖组件和化妆品包装配件。',
@@ -209,7 +209,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     'YOUR NEXT STEP': '下一步',
     'A conversation, then a sample.': '先沟通，再打样。',
     // Contact
-    '04 / LET’S CREATE SOMETHING': '04 / 一起创造',
+    '03 / LET’S CREATE SOMETHING': '03 / 一起创造',
     'Every great bottle': '每一款好瓶子，',
     'starts with a': '都从一次',
     'conversation.': '沟通开始。',

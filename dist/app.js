@@ -118,12 +118,12 @@
   function renderProducts() {
     const all=filteredProducts();
     const limited=!state.expanded && state.category==='all' && !state.query && state.neck==='all';
-    const shown=limited?all.slice(0,8):all;
+    const shown=limited?all.slice(0,12):all;
     $('product-grid').innerHTML=shown.map(card).join('');
     riseCards();
     $('result-count').textContent=`${all.length} ${all.length===1?'piece':'pieces'}`;
     $('shown-count').textContent=`Showing ${shown.length} of ${all.length} pieces`;
-    $('show-all').hidden=!limited || all.length<=8;
+    $('show-all').hidden=!limited || all.length<=12;
     $('no-results').hidden=all.length!==0;
     $('category-filters').querySelectorAll('[data-category]').forEach(button=>{
       const active=button.dataset.category===state.category;

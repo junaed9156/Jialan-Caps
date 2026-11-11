@@ -434,3 +434,16 @@ body.motion-paused .product-card .product-image-button { transform: none; transi
 @media (prefers-reduced-motion: reduce) {
   .product-card .product-image-button, body.animations-ready .product-card.card-rise { transform: none; opacity: 1; }
 }
+
+/* "Thoughtful packaging" (About) sits under the Made personal banner, in the left column;
+   on narrow screens it follows the Made personal copy. */
+.personalise > .personalise-about { border-top: 1px solid var(--line); padding-top: 38px; }
+.personalise-about h2 { font-size: clamp(38px, 3.4vw, 54px); margin: 18px 0 22px; }
+.personalise-about .about-description p { font-size: 16px; margin-bottom: 14px; max-width: 640px; }
+.personalise-about .about-details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 32px; margin-top: 30px; padding-top: 22px; }
+@media (min-width: 901px) {
+  .personalise { grid-template-rows: auto 1fr; }
+  .personalise > .personalise-art { grid-column: 1; grid-row: 1; }
+  .personalise > .personalise-copy { grid-column: 2; grid-row: 1 / span 2; }
+  .personalise > .personalise-about { grid-column: 1; grid-row: 2; align-self: start; margin-top: 46px; }
+}
