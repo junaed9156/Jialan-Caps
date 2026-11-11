@@ -330,9 +330,10 @@ html.lang-zh .eyebrow, html.lang-zh .card-badge, html.lang-zh .studio-form-label
 .personalise-art { min-height: 0 !important; aspect-ratio: auto !important; background: none !important; display: block !important; overflow: visible !important; }
 .personalise-art img { width: 100% !important; max-width: 100% !important; height: auto !important; margin: 0 !important; object-fit: contain; border: 0; border-radius: 4px; box-shadow: 0 26px 50px -30px #5c4318aa; }
 .personalise-art .photo-label { position: static; display: block; margin-top: 16px; color: #3a2c1a; }
-/* Phones: the language switch lives in the menu, so the header keeps room for the logo. */
-@media (max-width: 700px) { .lang-switch.in-header { display: none; } .lang-switch.in-menu { display: inline-block; } }
-@media (min-width: 701px) { .lang-switch.in-menu { display: none; } }
+/* Phones: the language switch stays visible in the header as a compact pill (not hidden in the menu). */
+.lang-switch.in-menu { display: none; }
+@media (max-width: 700px) { .lang-switch.in-header { font-size: 13px; padding: 6px 9px; letter-spacing: .02em; flex: none; } }
+@media (max-width: 380px) { .lang-switch.in-header { font-size: 12px; padding: 5px 7px; } }
 @media (max-width: 700px) { .header .brand > span { font-size: 18px; letter-spacing: .14em; white-space: nowrap; } .header .brand small { font-size: 10px; letter-spacing: .18em; } .header .brand-mark { width: 38px; height: auto; } }
 /* Made personal (desktop): a larger banner, aligned with the top of the heading. */
 @media (min-width: 901px) {
@@ -437,3 +438,6 @@ body.motion-paused .product-card .product-image-button { transform: none; transi
   .personalise > .personalise-copy { grid-column: 2; grid-row: 1 / span 2; }
   .personalise > .personalise-about { grid-column: 1; grid-row: 2; align-self: start; margin-top: 46px; }
 }
+/* Narrow phones: drop the arrow from "Let’s talk" so the language pill has room beside the logo. */
+@media (max-width: 430px) { .header-actions > .button > span { display: none; } .header-actions { gap: 6px; } .header-actions > .button { padding-inline: 10px; } .header .brand > span { letter-spacing: .1em; } .header .brand small { letter-spacing: .1em; } }
+@media (min-width: 371px) and (max-width: 389px) { .header .brand > span { font-size: 16px; } .header .brand small { font-size: 9px; letter-spacing: .05em; } .header .brand-mark { width: 32px; } .header .brand { gap: 8px; } .menu-toggle { padding: 8px 2px 8px 6px; } .header-actions { gap: 5px; } .header-actions > .button { padding-inline: 9px; } }
