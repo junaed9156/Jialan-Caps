@@ -1,10 +1,10 @@
 {
- "v": 1,
+ "v": 2,
  "kdf": "PBKDF2-SHA256",
  "iterations": 600000,
  "cipher": "AES-256-GCM",
- "salt": "NZXl07EGfGofSCwdLeqNiQ==",
- "iv": "Le0dJJWfLizrdAuv",
- "data": "bnPBqkYUidP/4eRZzQy0F8zXRp5VD67ka8dSCFCMPchwqzD/zU9v9iHNLk0KQzxhaLjbpTmU0w3rGAld4fKbAaW+SrJzI+uiko1h807z313qm8o7mM1rYq6SyEte2u7BUXDxr2pHWJCA3cxoug==",
- "saved": "2026-11-06T07:49:01.596Z"
+ "salt": "aiyu/jO/s645Zrn0HuPCPg==",
+ "iv": "fWdg01wH9p3ldbx3",
+ "data": "Rj8J/npYJ7TEMVfyvy2GjIeC327TDiLcVjDY42P2Q624SXf35FrPwekx7H46CwTNiJFih1tp71XjrTJYCR2Z5ooA6fmhUc6EcfIZPr296qiO8MqjLopblsLsUCSi+qV3EUqioHkr2rtxFHRekQ==",
+ "saved": "2026-11-11T13:57:08.238Z"
 }
