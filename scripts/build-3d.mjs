@@ -1,6 +1,6 @@
 import { build, context, transform } from 'esbuild';
 import { createHash } from 'node:crypto';
-import { readFile, writeFile, rm } from 'node:fs/promises';
+import { readFile, writeFile, rm, readdir } from 'node:fs/promises';
 
 await rm('dist/js', { recursive: true, force: true });
 const options = {
@@ -10,37 +10,76 @@ const options = {
     builder.onEnd(async result => {
       if (result.errors.length) return;
       await bundleStyles();
+      await bundleApplication();
       await preloadCriticalScenes(result.metafile);
       return versionAssets();
     });
   } }],
 };
 
-// Keep the existing cascade and relative URLs, with one smaller render-blocking download.
+// The complete skin travels with the HTML, so there is no blocking CSS round trip or restyle.
+// Keep a standalone copy for diagnostics; the four source files remain editable.
 async function bundleStyles() {
   const names = ['styles.css', 'studio.css', 'scenes.css', 'atelier.css'];
   const sources = await Promise.all(names.map(name => readFile('dist/' + name, 'utf8')));
   const result = await transform(sources.join('\n'), { loader: 'css', minify: true, charset: 'utf8', legalComments: 'none' });
   await writeFile('dist/site.css', result.code);
+  const style = `  <style id="site-styles">${result.code.trim()}</style>\n`;
   let linked = false;
-  const html = (await readFile('dist/index.html', 'utf8')).replace(
+  let html = (await readFile('dist/index.html', 'utf8')).replace(
     /  <link rel="stylesheet" href="(?:styles|studio|scenes|atelier|site)\.css(?:\?v=[\w-]+)?">\n/g,
     () => {
       if (linked) return '';
       linked = true;
-      return '  <link rel="stylesheet" href="site.css">\n';
+      return style;
     },
   );
-  if (!linked) throw new Error('Missing website stylesheet link');
+  if (!linked && /  <style id="site-styles">[\s\S]*?<\/style>\n/.test(html)) {
+    html = html.replace(/  <style id="site-styles">[\s\S]*?<\/style>\n/, () => style);
+    linked = true;
+  }
+  if (!linked) throw new Error('Missing website styles');
   await writeFile('dist/index.html', html);
 }
 
-// Fetch both interactive entry points with the page. Their shared engine is requested only once.
+// Keep product feeds separate: the existing admin can publish them without rebuilding the app.
+async function bundleApplication() {
+  const names = ['lang-boot.js', 'countries.js', 'i18n.js', 'app.js'];
+  const sources = await Promise.all(names.map(name => readFile('dist/' + name, 'utf8')));
+  // Translation strings dominate the application bytes. English visits never need them.
+  // Keep the editable dictionary in i18n.js; derive an independent, content-hashed asset.
+  const dictionary = sources[2].match(/  const ZH = (\{[\s\S]*?\n  \});/);
+  if (!dictionary) throw new Error('Missing Chinese translation dictionary');
+  const jsOptions = { loader: 'js', minify: true, target: 'es2020', charset: 'utf8', legalComments: 'none' };
+  const translated = await transform('window.MAOHAN_ZH=' + dictionary[1] + ';', jsOptions);
+  const hash = createHash('sha256').update(translated.code).digest('hex').slice(0, 10);
+  const translationFile = `translations-${hash}.js`;
+  for (const file of await readdir('dist')) if (/^translations-[a-f0-9]{10}\.js$/.test(file) && file !== translationFile) await rm('dist/' + file);
+  await writeFile('dist/' + translationFile, translated.code);
+  sources[2] = sources[2].replace(dictionary[0], '  const ZH = window.MAOHAN_ZH || {};');
+  const loadTranslation = `
+    if (new URLSearchParams(location.search).get('lang') === 'zh') {
+      try { await new Promise((resolve, reject) => {
+        const script = document.createElement('script'); script.src = '${translationFile}';
+        script.onload = resolve; script.onerror = reject; document.head.append(script);
+      }); } catch (error) { console.warn('Translation unavailable:', error); }
+    }
+  `;
+  const result = await transform(`(async () => {\n${sources[0]}\n${loadTranslation}\n${sources.slice(1).join('\n;\n')}\n})();`, jsOptions);
+  await writeFile('dist/site.js', result.code);
+  let html = await readFile('dist/index.html', 'utf8');
+  html = html.replace(/  <script src="(?:lang-boot|countries|i18n|app|site)\.js(?:\?v=[\w-]+)?"(?: defer)?><\/script>\n/g, '');
+  html = html.replace(/(  <script src="admin-products\.js[^"\n]*" defer><\/script>\n)/, '$1  <script src="site.js" defer></script>\n');
+  await writeFile('dist/index.html', html);
+}
+
+// Preload only the lightweight boot module's static dependencies. The WebGL engine is
+// requested after the first paint, and only for a scene that is approaching the viewport.
 async function preloadCriticalScenes(meta) {
   const outputs = meta.outputs;
-  const entryPoints = new Set(['src/3d/hero.js', 'src/3d/studio.js']);
-  const need = new Set(), stack = Object.keys(outputs).filter(o => entryPoints.has(outputs[o].entryPoint));
-  if (stack.length !== entryPoints.size) throw new Error('Missing a critical 3D entry point');
+  const main = Object.keys(outputs).find(o => outputs[o].entryPoint === 'src/3d/main.js');
+  if (!main) throw new Error('Missing the 3D bootstrap');
+  const need = new Set(), stack = outputs[main].imports.filter(i => i.kind === 'import-statement').map(i => i.path);
   while (stack.length) {
     const o = stack.pop();
     if (need.has(o)) continue;

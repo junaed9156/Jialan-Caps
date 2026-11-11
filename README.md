@@ -47,20 +47,29 @@ npm test             # language, frame budget, visibility and scene lifecycle ch
 The normal website URL always opens in English, even if a visitor previously selected Chinese.
 The language switch uses `?lang=zh` for an explicit Chinese page.
 
-The page paints before starting WebGL. The hero starts immediately after that paint, without waiting
-for all images to load, and shows a small loading indicator until its first rendered frame. The
-illustrated fallback appears only when WebGL is unavailable, fails or misses the eight-second
-startup deadline; a late download cannot replace that fallback during the same visit.
-The hero and studio chunks preload together. Their setup starts on separate frames and shader
-compilation overlaps; direct `#studio` visits prioritise the studio. The initial cap preview excludes
-hidden glass shaders, which warm separately after its first frame. Anatomy waits for both previews.
-Scenes stop rendering off screen, in hidden tabs or behind product dialogs. Resolution
-adapts down when frames stay slow; glass uses a smaller refraction buffer. The build also versions
-CSS/JS URLs by content so returning visitors receive matching scripts after deployment.
-The four source stylesheets compile into one minified `dist/site.css`, in their original cascade
-order. Edit the source stylesheets and rerun the build. The WebGL support check reserves a canvas
-for the first scene, avoiding a disposable context and a second GPU initialisation.
-Tests use real geometry and a renderer double; visual checks on actual GPU devices remain separate.
+The page includes its final styling and assembly illustration in the initial HTML. No CSS or
+synchronous script request blocks the first paint, and there is no blank hero or loading spinner.
+The live WebGL hero enhances that illustration after the first paint; a failed or very slow GPU
+keeps the illustration. All existing product photographs and content remain unchanged.
+
+The studio and anatomy scenes load near the viewport, and studio navigation starts its download
+immediately. Neither scene waits behind another scene's shader compilation. Off-screen scenes,
+hidden tabs and product dialogs stop animation. The studio compiles its hidden glass shaders only
+after the first cap frame, and resolution adapts down if frames remain slow.
+
+`npm run build:3d` also bundles the four source stylesheets into `site.css` and embeds the result
+in `index.html`. It builds `site.js` from `lang-boot.js`, `countries.js`, `i18n.js` and `app.js`,
+and extracts the Chinese dictionary to a hashed `translations-*.js` file loaded only for `?lang=zh`.
+Edit those source files, not the generated bundles. `products.js` and `admin-products.js` stay
+separate so the existing product admin still works. CSS/JS asset versions are derived from content.
+The Pages workflow rebuilds and tests every deployment, including product-admin updates.
+
+Initial HTML/CSS/JS requests: **13 → 6**; uncompressed bytes: **817 KB → 158 KB**
+(about **219 KB → 45 KB gzip**). These are startup assets, excluding photographs and the
+WebGL engine that loads afterward. Network, server response time and device/GPU speed still
+matter; this is not a guarantee that every device finishes the entire 3D site within one second.
+Tests cover initial payload budgets, language routing, scene scheduling, geometry, frame budgets
+and context recovery. GPU rendering uses a renderer double in Node; actual GPU visual checks are separate.
 
 ## Content sources
 

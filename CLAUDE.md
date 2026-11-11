@@ -5,11 +5,13 @@ Static website for Jialan / Suzhou Maohan Metal Products Co., Ltd. Everything th
 ```
 dist/                     the website (commit everything here, including built files)
   index.html, styles.css  page and base styles
-  site.css               GENERATED combined/minified stylesheet; edit the four source CSS files, then build
+  site.css               GENERATED stylesheet, also embedded in index.html; edit source CSS then build
+  site.js                GENERATED application bundle; edit lang-boot.js, countries.js, i18n.js or app.js
+  translations-*.js      GENERATED Chinese dictionary, downloaded only on explicit Chinese visits
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
-  lang-boot.js            tiny <head> script: language and hero loading state before first paint
+  lang-boot.js            language boot code bundled in the deferred site.js (never hide the hero)
   i18n.js                 English / 中文 (normal URL always English; explicit ?lang=zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
   admin/                  admin page: password login, add/delete products, change password;
@@ -98,21 +100,23 @@ Product links are generated in Alibaba's own form: first six title words + `_<id
 ## 3D scenes
 
 Source in `src/3d/`, bundled with esbuild: `npm install` once, then `npm run build:3d` (writes `dist/js/`).
-The build combines styles.css, studio.css, scenes.css and atelier.css into site.css in that order,
-then versions local CSS/JS URLs in `dist/index.html`; run it after changes to those assets too.
-It also writes `<link rel="modulepreload">` hints (between `<!-- 3d-preload -->` markers) for the hero and studio chunks, so
-the 3D code downloads alongside the page; chunk URLs stay unversioned because their names already carry a hash.
-Run `npm test` for language, frame-budget and scene lifecycle regressions.
+The build combines styles.css, studio.css, scenes.css and atelier.css into site.css and embeds
+it in index.html. It also bundles the application as site.js and extracts the Chinese dictionary
+from i18n.js into a hashed translations file. Keep products.js and admin-products.js separate;
+the admin publishes those feeds directly. All generated artifacts must be committed.
+Preload only the bootstrap's tiny static dependencies, never the full three.js engine or
+below-fold scenes. Pages now builds and tests on each deployment so source edits and admin
+changes cannot ship stale bundles or asset versions.
+Run `npm test` for payload, language, frame-budget and scene lifecycle regressions.
 - `kit.js`: renderer, studio lighting, finish materials (named like the catalogue), cap geometry
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `context.js`: retains the WebGL capability-check canvas for the first scene; all 3D scene canvases use createCanvas().
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
-- `main.js` starts the hero and studio on separate frames after first paint, without waiting for window.load or each other's shaders.
-  Direct `#studio` visits start the studio first. Both previews draw once off screen, then animate only while visible.
-  Anatomy waits for both previews. Studio's hidden bottle shaders warm separately after its first cap frame.
-  The hero shows a small loading indicator until its first rendered frame, so the illustrated fallback cannot flash first.
-  Unsupported WebGL, load errors or the eight-second startup deadline reveal the fallback; late initialisation cannot replace it.
-  The hero shares one assembly timeline across WebGL and the projected illustration. Without WebGL the studio and anatomy retain their catalogue photographs.
+- `main.js` starts the hero after first paint when visible. Studio/anatomy initialise near
+  the viewport or on explicit navigation/intent, independently of other pending shaders.
+  The inline hero illustration and product photos remain visible during downloads. The hero
+  keeps its illustration if WebGL fails or exceeds its eight-second startup deadline.
+  Studio's hidden bottle shaders warm after its first cap frame. Scenes stop off screen.
 - Motion: the hero's "Pause motion" button and `prefers-reduced-motion` stop all animation
   (`body.motion-paused`, event `jialan:motion`).
 - Visual checks: headless Chrome needs `--use-angle=swiftshader --enable-unsafe-swiftshader`.

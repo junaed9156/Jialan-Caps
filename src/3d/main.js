@@ -1,56 +1,11 @@
-/* Warm the hero and studio independently, with CPU setup on separate frames. Their shader
-   compilation can overlap, so entering the studio never waits behind the hero's glass shaders.
-   Without WebGL (or if a scene fails) the catalogue photographs stay in place. */
+/* Paint the catalogue and inline assembly illustration first. WebGL is an enhancement:
+   only a scene approaching the viewport (or explicitly requested) downloads and starts. */
 import { mountSequence } from './sequence.js';
 import { webglAvailable } from './context.js';
 
 const heroStage = document.querySelector('.hero-scene');
 const heroSequence = heroStage && mountSequence(heroStage);
 const page = document.documentElement;
-
-let queue = Promise.resolve();
-function idle() {
-  return new Promise(resolve => {
-    const start = () => 'requestIdleCallback' in window
-      ? requestIdleCallback(resolve, { timeout: 1000 }) : setTimeout(resolve, 32);
-    if (!document.hidden) { start(); return; }
-    document.addEventListener('visibilitychange', function visible() {
-      if (document.hidden) return;
-      document.removeEventListener('visibilitychange', visible);
-      start();
-    });
-  });
-}
-
-function lazy(selector, load, margin = '240px 0px', context, priority = false) {
-  const el = document.querySelector(selector);
-  if (!el) return null;
-  let started, mounted = false;
-  const start = () => {
-    if (started) return started;
-    // Background scenes yield; critical scenes must not wait for another scene's shaders.
-    started = (priority ? Promise.resolve() : queue.then(idle)).then(load).then(m => {
-      // A timed-out hero stays in fallback for this visit, without another visual swap.
-      if (el === heroStage && page.dataset.heroState === 'fallback') return;
-      return m.mount(el, context);
-    }).then(() => { mounted = el.classList.contains('is-3d'); }).catch(error => {
-      console.warn('3D:', error);
-      el.classList.add('is-3d-failed');
-      el.classList.remove('is-3d');
-      if (el === heroStage) page.dataset.heroState = 'fallback';
-    });
-    if (!priority) queue = started;
-    return started;
-  };
-  const control = { start, mounted: () => mounted };
-  if (priority) return control;
-  if (!('IntersectionObserver' in window)) { start(); return control; }
-  const io = new IntersectionObserver(entries => {
-    if (entries.some(e => e.isIntersecting)) { io.disconnect(); start(); }
-  }, { rootMargin: margin });
-  io.observe(el);
-  return control;
-}
 
 function afterPaint(fn) {
   const go = () => requestAnimationFrame(() => requestAnimationFrame(fn));
@@ -62,30 +17,73 @@ function afterPaint(fn) {
   });
 }
 
-// Start after the first paint, without waiting for unrelated images or window.load.
+function scene(selector, load, context) {
+  const el = document.querySelector(selector);
+  if (!el) return null;
+  let started, mounted = false, observer;
+  const start = () => {
+    if (started) return started;
+    observer?.disconnect();
+    el.classList.add('is-3d-loading');
+    // Only the hero has an automatic visual upgrade deadline. Photos remain usable
+    // throughout other scene downloads, including failed/slow connections.
+    let timer;
+    if (el === heroStage) {
+      page.dataset.heroState = 'loading';
+      timer = setTimeout(() => {
+        if (page.dataset.heroState === 'loading') page.dataset.heroState = 'fallback';
+      }, 8000);
+    }
+    started = load().then(m => {
+      if (el === heroStage && page.dataset.heroState === 'fallback') return;
+      return m.mount(el, context);
+    }).then(() => { mounted = el.classList.contains('is-3d'); }).catch(error => {
+      console.warn('3D:', error);
+      el.classList.add('is-3d-failed');
+      el.classList.remove('is-3d');
+      if (el === heroStage) page.dataset.heroState = 'fallback';
+    }).finally(() => {
+      clearTimeout(timer);
+      el.classList.remove('is-3d-loading');
+    });
+    return started;
+  };
+  const observe = (margin = '400px 0px') => {
+    if (started) return;
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) start();
+    }, { rootMargin: margin });
+    observer.observe(el);
+  };
+  return { start, observe, mounted: () => mounted };
+}
+
 afterPaint(() => {
   if (!webglAvailable()) { page.dataset.heroState = 'fallback'; return; }
-  document.documentElement.classList.add('webgl');
-  const hero = page.dataset.heroState !== 'fallback'
-    ? lazy('.hero-scene', () => import('./hero.js'), '0px', heroSequence, true) : null;
-  const studio = lazy('#studio-view', () => import('./studio.js'), '0px', undefined, true);
-  // A direct #studio visit gets its own first frame first. Otherwise paint the hero first.
-  const [first, second] = location.hash === '#studio' ? [studio, hero] : [hero, studio];
-  const firstReady = first?.start();
-  const secondReady = new Promise(resolve => requestAnimationFrame(() => resolve(second?.start())));
-  const criticalReady = Promise.all([firstReady, secondReady]);
-  queue = criticalReady;
-  const anatomy = lazy('#anatomy', () => import('./anatomy.js'), '900px 0px');
-  criticalReady.then(() => anatomy?.start());
-  // Intent also wakes the studio if a visitor navigates during startup.
+  page.classList.add('webgl');
+  const hero = scene('.hero-scene', () => import('./hero.js'), heroSequence);
+  const studio = scene('#studio-view', () => import('./studio.js'));
+  const anatomy = scene('#anatomy', () => import('./anatomy.js'));
+  // No off-screen warm-up or shared queue: a studio visit cannot wait behind glass
+  // shaders in an unrelated scene. Normal visits initialise only the visible hero.
+  if (location.hash === '#studio') studio?.start();
+  else if (location.hash === '#anatomy') anatomy?.start();
+  else if (!location.hash || location.hash === '#main') hero?.start();
+  hero?.observe('0px');
+  studio?.observe('500px 0px');
+  anatomy?.observe('150px 0px');
+
   const studioIntent = event => {
-    if (event.target.closest?.('a[href="#studio"]')) studio?.start();
+    if (event.target.closest?.('a[href="#studio"], #studio')) studio?.start();
   };
   document.addEventListener('pointerover', studioIntent, { passive: true });
   document.addEventListener('focusin', studioIntent);
-  document.addEventListener('click', event => {
-    studioIntent(event);
-  }, true);
+  document.addEventListener('click', studioIntent, true);
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#studio') studio?.start();
+    if (location.hash === '#anatomy') anatomy?.start();
+  });
   let pendingDesign;
   document.addEventListener('jialan:studio', event => {
     if (!studio || studio.mounted()) return;

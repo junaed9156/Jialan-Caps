@@ -2,7 +2,8 @@
 // Uses real three.js geometry with a renderer double; browser/GPU visual QA is separate.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { runInNewContext } from 'node:vm';
 import { Texture } from 'three';
 
@@ -107,18 +108,26 @@ test('normal URL always uses English, including a previously saved Chinese prefe
   }
 });
 
-test('the first paint waits for the final hero; a failed module has a bounded fallback', () => {
+test('the first paint includes the complete design without waiting for scripts or CSS', () => {
   const html = new Element(), timers = [];
   runInNewContext(readFileSync(new URL('../dist/lang-boot.js', import.meta.url), 'utf8'), {
     document: { documentElement: html }, location: { search: '' }, URLSearchParams,
     setTimeout: (callback, delay) => timers.push({ callback, delay }),
   });
-  assert.equal(html.dataset.heroState, 'loading');
-  assert.equal(timers[0].delay, 8000);
-  timers[0].callback();
-  assert.equal(html.dataset.heroState, 'fallback', 'A failed entry module must not leave a spinner forever');
-  html.dataset.heroState = 'ready'; timers[0].callback();
-  assert.equal(html.dataset.heroState, 'ready', 'The timeout must never replace a rendered hero');
+  assert.notEqual(html.dataset.heroState, 'loading', 'The static illustration must never wait for WebGL');
+  assert.equal(timers.length, 0, 'No arbitrary first-paint delay on the English page');
+  const index = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
+  assert.match(index, /<style id="site-styles">/);
+  assert.doesNotMatch(index, /<link rel="stylesheet"/);
+  assert.match(index, /data-hero-state="preview"/);
+  const scripts = [...index.matchAll(/<script\b([^>]*\bsrc="[^"]+"[^>]*)>/g)];
+  assert.ok(scripts.every(([, attrs]) => /\bdefer\b|type="module"/.test(attrs)), 'No parser-blocking scripts');
+  for (const [, path] of index.matchAll(/<link rel="modulepreload" href="([^"]+)"/g)) {
+    assert.ok(statSync(new URL('../dist/' + path, import.meta.url)).size < 2000, 'Do not eagerly download the 3D engine');
+  }
+  assert.ok(gzipSync(index).length < 28000, 'The complete first-paint document stays below 28 KB compressed');
+  const application = readFileSync(new URL('../dist/site.js', import.meta.url));
+  assert.ok(gzipSync(application).length < 12000, 'The English application must not include the Chinese dictionary');
 });
 
 function startup({ hash = '', webgl = true, loadScene } = {}) {
@@ -137,30 +146,33 @@ function startup({ hash = '', webgl = true, loadScene } = {}) {
     element.classList.add('is-3d');
   } });
   runInNewContext(source, {
-    document, webglAvailable: () => webgl, location: { hash }, window: { IntersectionObserver: Observer, requestIdleCallback: true },
+    document, webglAvailable: () => webgl, location: { hash }, window: { IntersectionObserver: Observer, addEventListener() {} },
     IntersectionObserver: Observer, requestIdleCallback: fn => idle.push(fn),
-    requestAnimationFrame: fn => raf.push(fn), setTimeout, mountSequence: () => ({}),
+    requestAnimationFrame: fn => raf.push(fn), setTimeout, clearTimeout, mountSequence: () => ({}),
     console: { warn: error => warnings.push(error) },
     loadScene: async scene => { downloads.push(scene); return moduleFor(scene); },
   });
   return { document, raf, idle, downloads, mounts, warnings,
+    enter(selector) { Observer.all.findLast(io => io.target === document.querySelector(selector))?.emit(true); },
     frame() { raf.shift()?.(); }, settle: () => new Promise(resolve => setImmediate(resolve)) };
 }
 
-test('studio becomes ready while hero shaders are still pending, before window.load', async () => {
+test('off-screen scenes stay unloaded; entering the studio bypasses pending hero shaders', async () => {
   let finishHero;
   const app = startup({ loadScene: scene => scene === 'hero' ? new Promise(resolve => { finishHero = resolve; }) : undefined });
   assert.deepEqual(app.downloads, []);
   app.frame(); app.frame(); await app.settle();
   assert.deepEqual(app.downloads, ['hero']);
-  app.frame(); await app.settle();
+  assert.deepEqual(app.mounts, ['hero'], 'Only the visible hero starts on a normal visit');
+  app.enter('#studio-view'); await app.settle();
   assert.deepEqual(app.downloads, ['hero', 'studio']);
   assert.ok(app.document.querySelector('#studio-view').classList.contains('is-3d'));
   assert.equal(app.document.querySelector('.hero-scene').classList.contains('is-3d'), false);
   assert.equal(app.document.readyState, 'interactive');
-  assert.equal(app.idle.length, 0, 'Anatomy must not compete with the initial previews');
   finishHero(); await app.settle();
-  assert.equal(app.idle.length, 1, 'Anatomy can warm once both initial previews are ready');
+  assert.deepEqual(app.downloads, ['hero', 'studio'], 'Finishing the hero must not wake off-screen anatomy');
+  app.enter('#anatomy'); await app.settle();
+  assert.deepEqual(app.downloads, ['hero', 'studio', 'anatomy']);
 });
 
 test('a direct studio visit is prioritised and a failed hero cannot block it', async () => {
@@ -168,11 +180,12 @@ test('a direct studio visit is prioritised and a failed hero cannot block it', a
   direct.frame(); direct.frame(); await direct.settle();
   assert.deepEqual(direct.downloads, ['studio']);
   assert.ok(direct.document.querySelector('#studio-view').classList.contains('is-3d'));
-  direct.frame(); await direct.settle();
+  direct.enter('.hero-scene'); await direct.settle();
   assert.deepEqual(direct.downloads, ['studio', 'hero']);
   const failed = startup({ loadScene: scene => { if (scene === 'hero') throw new Error('GPU failure'); } });
-  failed.frame(); failed.frame(); await failed.settle(); failed.frame(); await failed.settle();
+  failed.frame(); failed.frame(); await failed.settle();
   assert.equal(failed.document.documentElement.dataset.heroState, 'fallback');
+  failed.enter('#studio-view'); await failed.settle();
   assert.ok(failed.document.querySelector('#studio-view').classList.contains('is-3d'));
   assert.equal(failed.warnings.length, 1);
   const unsupported = startup({ webgl: false });
