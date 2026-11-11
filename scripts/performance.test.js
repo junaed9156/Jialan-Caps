@@ -228,12 +228,26 @@ test('visibility pauses GPU work behind dialogs and hidden browser tabs', () => 
 test('assembly clock clamps stalls and resumes without skipping the animation', async () => {
   const { mountSequence } = await import('../src/3d/sequence.js');
   const stage = new Element();
+  stage.classList.add('is-3d');   // the clock only runs once the live scene is drawing
   const sequence = mountSequence(stage);
   let time = 0; sequence.subscribe((pose, ambient) => { time = ambient; });
   Observer.all.at(-1).emit(true); flush(1000); flush(1016); flush(5016);
   assert.ok(time > 0 && time < 0.08, `A stalled frame jumped to ${time}s`);
   Observer.all.at(-1).emit(false); assert.equal(frames.size, 0);
   Observer.all.at(-1).emit(true); flush(12000); assert.ok(time < 0.08);
+  Observer.all.at(-1).emit(false);
+});
+
+test('the hero waits on its first pose (the poster frame) until the 3D scene draws', async () => {
+  const { mountSequence } = await import('../src/3d/sequence.js');
+  const stage = new Element();
+  const sequence = mountSequence(stage);
+  let time = -1; sequence.subscribe((pose, ambient) => { time = ambient; });
+  Observer.all.at(-1).emit(true); flush(1000); flush(1016); flush(1032);
+  assert.equal(time, 0, 'The clock must not advance behind the poster');
+  assert.equal(frames.size, 0, 'No animation loop while waiting for the scene');
+  stage.classList.add('is-3d'); sequence.subscribe(() => {}); flush(1048); flush(1064);
+  assert.ok(time > 0, 'The clock starts once the scene draws');
   Observer.all.at(-1).emit(false);
 });
 

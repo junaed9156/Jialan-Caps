@@ -441,3 +441,21 @@ body.motion-paused .product-card .product-image-button { transform: none; transi
 /* Narrow phones: drop the arrow from "Let’s talk" so the language pill has room beside the logo. */
 @media (max-width: 430px) { .header-actions > .button > span { display: none; } .header-actions { gap: 6px; } .header-actions > .button { padding-inline: 10px; } .header .brand > span { letter-spacing: .1em; } .header .brand small { letter-spacing: .1em; } }
 @media (min-width: 371px) and (max-width: 389px) { .header .brand > span { font-size: 16px; } .header .brand small { font-size: 9px; letter-spacing: .05em; } .header .brand-mark { width: 32px; } .header .brand { gap: 8px; } .menu-toggle { padding: 8px 2px 8px 6px; } .header-actions { gap: 5px; } .header-actions > .button { padding-inline: 9px; } }
+
+/* Chinese pages: heavier type on every screen size. CJK strokes read thin at regular weight,
+   so body copy is semibold and headings, labels and buttons are bold. */
+html.lang-zh body,
+html.lang-zh body :is(p, li, label, span, a, small, em, h3, h4, button, input, textarea, select, option, dd, dt, td, th, figcaption, strong) { font-weight: 600; }
+html.lang-zh body :is(h1, h2, h1 em, h2 em, .eyebrow, .button, .card-name strong, .card-badge, .lang-switch, .about-details strong, .process-list h3, .studio-form-label, .photo-label, .desktop-nav a, .mobile-nav a, .filter-chip, [data-category]) { font-weight: 700; }
+html.lang-zh body :is(input, textarea)::placeholder { font-weight: 500; }
+
+/* Hero: the first paint is a photograph of the 3D scene's own first frame (the bottle with the red
+   Mao Han mark), so nothing changes when the live scene takes over; it is also the fallback when
+   WebGL is unavailable. The drawn illustration (with lettering on the bottle) is never shown.
+   Camera: wide panels keep the scene height fixed (height-fit); portrait panels keep its width.
+   Regenerate the posters with scripts/hero-poster.mjs after changing the hero scene. */
+.hero-scene .study-plate { display: none !important; }
+.hero-scene { background: #101f2a url("assets/hero-poster-wide.webp") 50% 50% / auto 100% no-repeat; }
+@media (min-width: 701px) and (max-width: 1100px), (max-width: 340px) {
+  .hero-scene { background-image: url("assets/hero-poster-tall.webp"); background-size: 100% auto; }
+}

@@ -1,6 +1,7 @@
 import { build, context, transform } from 'esbuild';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, rm, readdir } from 'node:fs/promises';
+import { runInNewContext } from 'node:vm';
 
 await rm('dist/js', { recursive: true, force: true });
 const options = {
@@ -12,7 +13,8 @@ const options = {
       await bundleStyles();
       await bundleApplication();
       await preloadCriticalScenes(result.metafile);
-      return versionAssets();
+      await versionAssets();
+      return prerenderChinese();
     });
   } }],
 };
@@ -58,7 +60,7 @@ async function bundleApplication() {
   await writeFile('dist/' + translationFile, translated.code);
   sources[2] = sources[2].replace(dictionary[0], '  const ZH = window.MAOHAN_ZH || {};');
   const loadTranslation = `
-    if (new URLSearchParams(location.search).get('lang') === 'zh') {
+    if (new URLSearchParams(location.search).get('lang') === 'zh' || document.documentElement.dataset.lang === 'zh') {
       try { await new Promise((resolve, reject) => {
         const script = document.createElement('script'); script.src = '${translationFile}';
         script.onload = resolve; script.onerror = reject; document.head.append(script);
@@ -107,6 +109,60 @@ for (const match of [...html.matchAll(/\b(?:src|href)="([\w./-]+\.(?:js|css))(?:
   html = html.replace(match[0], match[0].replace(/(?:\?v=[\w-]+)?"$/, `?v=${version}"`));
 }
 await writeFile('dist/index.html', html);
+}
+
+// Chinese visitors get /zh: index.html with every static string already translated by the same
+// dictionary the browser uses, so the first paint is Chinese (no English flash, no hidden page).
+// The markup is edited as text, so the page structure stays byte-for-byte the English design.
+async function prerenderChinese() {
+  const html = await readFile('dist/index.html', 'utf8');
+  const root = { classList: { add() {}, remove() {}, toggle() {}, contains: () => false }, dataset: {}, style: {} };
+  const w = {}; w.self = w; w.top = w;
+  const sandbox = {
+    window: w, location: { search: '?lang=zh' }, URLSearchParams, setTimeout() {},
+    document: { documentElement: root, body: {}, title: '', querySelector: () => null, getElementById: () => null,
+      createTreeWalker: () => ({ nextNode: () => null }) },
+    NodeFilter: { SHOW_ELEMENT: 1, SHOW_TEXT: 4, FILTER_REJECT: 2, FILTER_ACCEPT: 1 }, MutationObserver: class { observe() {} },
+  };
+  runInNewContext(await readFile('dist/i18n.js', 'utf8'), sandbox);
+  const tr = w.I18N && w.I18N.t;
+  if (!tr || w.I18N.lang !== 'zh') throw new Error('Chinese dictionary unavailable for /zh');
+  const decode = s => s.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'").replace(/&rsquo;/g, '’').replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(+n)).replace(/&amp;/g, '&');
+  const encodeText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const encodeAttr = s => encodeText(s).replace(/"/g, '&quot;');
+  const translate = raw => {
+    const text = decode(raw);
+    if (!/[A-Za-z]/.test(text)) return null;
+    const out = tr(text);
+    return typeof out === 'string' && out !== text.replace(/\s+/g, ' ').trim() && out !== text ? out : null;
+  };
+  const ATTRS = /\b(placeholder|aria-label|title|alt)="([^"]*)"/g;
+  let skipDepth = 0;
+  const parts = html.split(/(<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>|<noscript\b[\s\S]*?<\/noscript>|<!--[\s\S]*?-->|<[^>]+>)/);
+  const out = parts.map((part, i) => {
+    if (i % 2 === 1) {
+      if (/^<(script|style|noscript|!--)/i.test(part)) return part;
+      if (/^<[a-z][^>]*\bdata-no-translate\b/i.test(part) && !/\/>$/.test(part)) skipDepth++;
+      let tag = part.replace(ATTRS, (m, name, value) => {
+        const t = translate(value);
+        return t ? `${name}="${encodeAttr(t)}"` : m;
+      });
+      if (/^<meta\b[^>]*name="description"/.test(tag)) tag = tag.replace(/content="([^"]*)"/, (m, v) => { const t = translate(v); return t ? `content="${encodeAttr(t)}"` : m; });
+      return tag;
+    }
+    if (skipDepth || !part.trim()) return part;
+    const t = translate(part);
+    if (!t) return part;
+    const lead = part.match(/^\s*/)[0], trail = part.match(/\s*$/)[0];
+    return lead + encodeText(t) + trail;
+  });
+  let zh = out.join('')
+    .replace(/<html lang="en"/, '<html lang="zh-CN" data-lang="zh" class="lang-zh"')
+    .replace(/<link rel="canonical" href="[^"]*">/, '<link rel="canonical" href="https://www.mao-han.cn/zh">')
+    .replace(/<meta property="og:url" content="[^"]*">/, '<meta property="og:url" content="https://www.mao-han.cn/zh">');
+  if (!/data-lang="zh"/.test(zh)) throw new Error('Could not mark /zh as Chinese');
+  await writeFile('dist/zh.html', zh);
 }
 
 if (process.argv.includes('--watch')) await (await context(options)).watch();

@@ -8,11 +8,12 @@ dist/                     the website (commit everything here, including built f
   site.css               GENERATED stylesheet, also embedded in index.html; edit source CSS then build
   site.js                GENERATED application bundle; edit lang-boot.js, countries.js, i18n.js or app.js
   translations-*.js      GENERATED Chinese dictionary, downloaded only on explicit Chinese visits
+  zh.html                GENERATED Chinese page (/zh): index.html pre-translated at build time, so it never flashes English
   scenes.css              styles for the 3D scenes, studio controls, HD photos, store items
   app.js                  collection, filters, product dialog, shortlist, WhatsApp enquiry, motion toggle,
                           admin-product merge, hidden admin entrance (3 quick clicks on the header logo)
   lang-boot.js            language boot code bundled in the deferred site.js (never hide the hero)
-  i18n.js                 English / 中文 (normal URL always English; explicit ?lang=zh); dictionary + patterns
+  i18n.js                 English / 中文 (/ is English, /zh is Chinese; an old ?lang=zh link moves to /zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
   admin/                  admin page: password login, add/delete products, change password;
                           uploads are auto-cropped and centred on white like the catalogue photos
@@ -112,10 +113,17 @@ Run `npm test` for payload, language, frame-budget and scene lifecycle regressio
   built from catalogue dimensions in centimetres, glass bottle, decals, helpers.
 - `context.js`: retains the WebGL capability-check canvas for the first scene; all 3D scene canvases use createCanvas().
 - `hero.js`: hero composition; `anatomy.js`: scroll story (`#anatomy`); `studio.js`: configurator.
+- Hero first paint: `assets/hero-poster-wide.webp` / `-tall.webp` are photographs of the 3D scene's own first
+  frame (pose 0, bottle with the red mark), shown as the stage background and kept as the no-WebGL fallback. The
+  drawn SVG plate (lettering on the bottle) is never shown. `sequence.js` holds the clock at pose 0 until the scene
+  draws, so the poster and live scene match. After changing hero.js, kit.js or sequence.js, rebuild and run
+  `node scripts/hero-poster.mjs` (instructions in the file) to reshoot both posters.
+- Chinese copy uses 您 (business register) and 茂涵 for the brand in running text; the legal company name stays in
+  English (no verified Chinese registration name). Chinese pages are set in semibold/bold (atelier.css, end).
 - `main.js` starts the hero after first paint when visible. Studio/anatomy initialise near
   the viewport or on explicit navigation/intent, independently of other pending shaders.
-  The inline hero illustration and product photos remain visible during downloads. The hero
-  keeps its illustration if WebGL fails or exceeds its eight-second startup deadline.
+  The hero poster and product photos remain visible during downloads. The hero keeps its
+  poster if WebGL fails or exceeds its eight-second startup deadline.
   Studio's hidden bottle shaders warm after its first cap frame. Scenes stop off screen.
 - Motion: the hero's "Pause motion" button and `prefers-reduced-motion` stop all animation
   (`body.motion-paused`, event `jialan:motion`).

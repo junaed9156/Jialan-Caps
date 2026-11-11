@@ -50,7 +50,9 @@ export function mountSequence(stage) {
   function tick(now) {
     frame = 0;
     if (!observed || document.hidden || document.body.classList.contains('modal-open')) { last = null; return; }
-    if (playing()) {
+    // The clock waits at its first pose until the 3D scene draws: the hero poster is that exact
+    // frame, so the photo and the live scene meet seamlessly (no drawn preview plays first).
+    if (playing() && stage.classList.contains('is-3d')) {
       // A slow frame or restored tab must not jump over the cap's assembly sequence.
       const dt = last === null ? 0 : Math.min(0.05, Math.max(0, (now - last) / 1000));
       ambient += dt;
@@ -58,7 +60,7 @@ export function mountSequence(stage) {
     }
     last = now;
     draw();
-    if (playing()) frame = requestAnimationFrame(tick);
+    if (playing() && stage.classList.contains('is-3d')) frame = requestAnimationFrame(tick);
   }
 
   function wake() {
@@ -88,7 +90,7 @@ export function mountSequence(stage) {
   } else { observed = true; }
   preference();
   return {
-    subscribe(update) { subscribers.add(update); update(assemblyPose(t), ambient); },
+    subscribe(update) { subscribers.add(update); update(assemblyPose(t), ambient); wake(); },
     unsubscribe(update) { subscribers.delete(update); draw(); },
   };
 }
