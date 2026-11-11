@@ -396,7 +396,7 @@ html.webgl .anatomy:not(.is-3d):not(.is-3d-failed) .anatomy-stage::after {
 }
 
 /* Supplied product photographs: always the whole picture at its own square proportions —
-   never cropped, padded, tinted or tilted. */
+   never cropped, padded or tinted, and never rotated inside their frame (the frame itself tilts in 3D below). */
 .product-image-button:has(> .product-photo.is-photo) { aspect-ratio: 1; }
 .product-image-button > .product-photo.is-photo { inset: 0; width: 100%; height: 100%; }
 .product-image-button:hover > .product-photo.is-photo { transform: none; }
@@ -405,3 +405,32 @@ html.webgl .anatomy:not(.is-3d):not(.is-3d-failed) .anatomy-stage::after {
 .mini-photo .product-photo.is-photo > img { padding: 0 !important; object-fit: contain; }
 .detail-visual > .product-photo.is-photo { width: 100%; max-width: 440px; height: auto; aspect-ratio: 1; }
 .swatch.thumb img { object-fit: contain; }
+
+/* 3D product cards. Only geometry and the shadow under the frame change: no filter, overlay,
+   glare or blend ever touches a photograph, so product colours stay exactly as supplied.
+   app.js sets --rx/--ry (tilt toward the pointer) and --sx/--sy (shadow offset). */
+.product-card .product-image-button {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translate3d(0, var(--lift, 0px), 0);
+  box-shadow: calc(var(--sx, 0) * 1px) calc(10px + var(--sy, 0) * 1px) 26px -16px rgba(23, 62, 59, var(--shade, .22));
+  transition: transform .55s cubic-bezier(.2, .75, .2, 1), box-shadow .55s cubic-bezier(.2, .75, .2, 1);
+  backface-visibility: hidden;
+}
+.product-card.is-tilting .product-image-button {
+  --lift: -6px; --shade: .38;
+  transition: transform .14s ease-out, box-shadow .14s ease-out;
+}
+.product-card .product-image-button:active { --lift: -2px; }
+
+/* Cards rise into place, unfolding from a slight backward tilt, as the collection scrolls into view. */
+body.animations-ready .product-card.card-rise {
+  opacity: 0; transform: perspective(1100px) rotateX(18deg) translate3d(0, 38px, -40px); transform-origin: 50% 100%;
+}
+body.animations-ready .product-card.card-rise.card-risen {
+  opacity: 1; transform: none;
+  transition: opacity .6s ease var(--rise-delay, 0ms), transform .95s cubic-bezier(.16, .8, .22, 1) var(--rise-delay, 0ms);
+}
+body.motion-paused .product-card.card-rise { opacity: 1; transform: none; transition: none; }
+body.motion-paused .product-card .product-image-button { transform: none; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .product-card .product-image-button, body.animations-ready .product-card.card-rise { transform: none; opacity: 1; }
+}

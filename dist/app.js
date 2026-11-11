@@ -120,6 +120,7 @@
     const limited=!state.expanded && state.category==='all' && !state.query && state.neck==='all';
     const shown=limited?all.slice(0,8):all;
     $('product-grid').innerHTML=shown.map(card).join('');
+    riseCards();
     $('result-count').textContent=`${all.length} ${all.length===1?'piece':'pieces'}`;
     $('shown-count').textContent=`Showing ${shown.length} of ${all.length} pieces`;
     $('show-all').hidden=!limited || all.length<=8;
@@ -301,6 +302,32 @@
   motionButton?.addEventListener('click',()=>setMotion(!document.body.classList.contains('motion-paused')));
   reducedMotion.addEventListener('change',()=>setMotion(reducedMotion.matches));
   setMotion(reducedMotion.matches);
+  // 3D product cards: the photo frame tilts toward the pointer and casts a moving shadow; cards
+  // rise into view. Geometry only — the photographs are never filtered or recoloured.
+  const still=()=>document.body.classList.contains('motion-paused')||reducedMotion.matches;
+  var riseObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;const c=entry.target;c.classList.add('card-risen');riseObserver.unobserve(c);const done=()=>c.classList.remove('card-rise','card-risen');c.addEventListener('transitionend',ev=>{if(ev.target===c&&ev.propertyName==='transform')done();});setTimeout(done,1600+(parseFloat(c.style.getPropertyValue('--rise-delay'))||0));}),{threshold:.12,rootMargin:'0px 0px -6% 0px'}):null;
+  function riseCards(){
+    if(!riseObserver||still())return;
+    const cards=[...$('product-grid').querySelectorAll('.product-card')];
+    const cols=Math.max(1,getComputedStyle($('product-grid')).gridTemplateColumns.split(' ').length);
+    cards.forEach((c,i)=>{c.classList.add('card-rise');c.style.setProperty('--rise-delay',`${(i%cols)*85}ms`);riseObserver.observe(c);});
+  }
+  riseCards();
+  (()=>{
+    const grid=$('product-grid');if(!grid||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+    let active=null,frame=0,next=null;
+    const clear=c=>{if(!c)return;c.classList.remove('is-tilting');['--rx','--ry','--sx','--sy'].forEach(k=>c.style.removeProperty(k));};
+    grid.addEventListener('pointermove',e=>{
+      const frameEl=e.target.closest('.product-image-button'),c=frameEl?.closest('.product-card')||null;
+      if(c!==active){clear(active);active=c;}
+      if(!c||still())return;
+      const r=frameEl.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      next={c,x:Math.max(-.5,Math.min(.5,x)),y:Math.max(-.5,Math.min(.5,y))};
+      if(!frame)frame=requestAnimationFrame(()=>{frame=0;const n=next;if(!n||n.c!==active)return;n.c.classList.add('is-tilting');n.c.style.setProperty('--rx',`${(-n.y*14).toFixed(2)}deg`);n.c.style.setProperty('--ry',`${(n.x*16).toFixed(2)}deg`);n.c.style.setProperty('--sx',(-n.x*22).toFixed(1));n.c.style.setProperty('--sy',(10-n.y*14).toFixed(1));});
+    });
+    grid.addEventListener('pointerleave',()=>{clear(active);active=null;});
+    document.addEventListener('jialan:motion',ev=>{if(ev.detail?.paused){clear(active);active=null;}});
+  })();
   // Hidden admin entrance: three quick clicks on the header logo open the admin login.
   (()=>{const logo=document.querySelector('.header .brand');if(!logo)return;let clicks=[];
     logo.addEventListener('click',event=>{const now=Date.now();clicks=clicks.filter(t=>now-t<1500);clicks.push(now);
