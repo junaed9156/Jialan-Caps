@@ -287,9 +287,6 @@
     if(ok){$('enquiry-result').textContent='Thank you. Your enquiry has been sent to our sales team, and we will reply by email.';form.reset();refreshLinks();notify('Enquiry sent.');}
     else $('enquiry-result').textContent='We could not send the form just now. Please email it directly or send it on WhatsApp.';
   });
-  const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM',cut:'glossy-gold'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM',cut:'glossy-black'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM',cut:'matte-silver'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD',cut:'coffee-wood'}];
-  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;const finishName=T(study.finish),fp=$('finish-photo');fp.classList.remove('is-store','is-photo');fp.classList.add('is-cutout');fp.innerHTML=`<img src="assets/finish/${study.cut}.webp" loading="lazy" alt="${escape(p.model+', '+finishName)}" decoding="async">`;fp.setAttribute('aria-label',`${p.model}, ${finishName}`);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
-  document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>chooseFinish(Number(b.dataset.finish))));
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('animations-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
   // Motion: one control pauses every animation, CSS and 3D alike.
   const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
@@ -332,5 +329,5 @@
   (()=>{const logo=document.querySelector('.header .brand');if(!logo)return;let clicks=[];
     logo.addEventListener('click',event=>{const now=Date.now();clicks=clicks.filter(t=>now-t<1500);clicks.push(now);
       if(clicks.length>=3){event.preventDefault();clicks=[];location.href='admin/';}});})();
-  renderProducts();renderShortlist();chooseFinish(0);
+  renderProducts();renderShortlist();
 })();
