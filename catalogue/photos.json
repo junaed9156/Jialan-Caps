@@ -1,0 +1,443 @@
+{
+ "_readme": "Product photographs supplied by the client (Nov 2026). When this file exists the website shows only these products, in this order, each with these photos shown uncropped at their original size; facts (name, size, neck, weight, page) come from the catalogue. Alibaba store products are left out while includeStore is false.",
+ "includeStore": false,
+ "products": [
+  {
+   "id": "wl100",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "wl100-glossy-black.jpg",
+     "original": "WL100Glossy  black.jpg",
+     "finish_zh": "WL100亮黑"
+    },
+    {
+     "finish": "Glossy black + glossy gold",
+     "file": "wl100-glossy-black-glossy-gold.jpg",
+     "original": "WL100.jpg",
+     "finish_zh": "WL100亮黑+亮金"
+    }
+   ]
+  },
+  {
+   "id": "jl30",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jl30-glossy-black.jpg",
+     "original": "JL30Glossy Black.jpg",
+     "finish_zh": "JL30亮黑"
+    },
+    {
+     "finish": "Glossy silver",
+     "file": "jl30-glossy-silver.jpg",
+     "original": "JL30Glossy Silve.jpg",
+     "finish_zh": "JL30亮银"
+    }
+   ]
+  },
+  {
+   "id": "jl30s",
+   "photos": [
+    {
+     "finish": "Glossy gold",
+     "file": "jl30s-glossy-gold.jpg",
+     "original": "JL30SGlossy Gol.jpg",
+     "finish_zh": "JL30S亮金"
+    },
+    {
+     "finish": "Matte gold",
+     "file": "jl30s-matte-gold.jpg",
+     "original": "JL30SMatt Gold.jpg",
+     "finish_zh": "JL30S雾金"
+    }
+   ]
+  },
+  {
+   "id": "jl35",
+   "photos": [
+    {
+     "finish": "Black, gold & silver",
+     "file": "jl35-black-gold-silver.jpg",
+     "original": "JL35.jpg",
+     "finish_zh": "JL35"
+    }
+   ]
+  },
+  {
+   "id": "jl52-round",
+   "photos": [
+    {
+     "finish": "Matte pink",
+     "file": "jl52-round-matte-pink.jpg",
+     "original": "JLY52Matt pink .jpg",
+     "finish_zh": "JLY52雾粉色"
+    },
+    {
+     "finish": "Round · Gold & silver",
+     "file": "jl52-round-round-gold-silver.jpg",
+     "original": "JLY52round.jpg",
+     "finish_zh": "JLY52圆形"
+    }
+   ]
+  },
+  {
+   "id": "ky100",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "ky100-glossy-black.jpg",
+     "original": "KY100Glossy  black.jpg",
+     "finish_zh": "KY100亮黑"
+    },
+    {
+     "finish": "Glossy gold",
+     "file": "ky100-glossy-gold.jpg",
+     "original": "KY100Glossy Gold.jpg",
+     "finish_zh": "KY100亮金"
+    },
+    {
+     "finish": "Glossy silver",
+     "file": "ky100-glossy-silver.jpg",
+     "original": "KY100Glossy Silve.jpg",
+     "finish_zh": "KY100亮银"
+    }
+   ]
+  },
+  {
+   "id": "jlg29",
+   "photos": [
+    {
+     "finish": "Diamond knurling · Glossy black",
+     "file": "jlg29-diamond-knurling-glossy-black.jpg",
+     "original": "Diamond Knurling Process.jpg",
+     "finish_zh": "JLG29 滚花工艺"
+    }
+   ]
+  },
+  {
+   "id": "wl100-rolled",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "wl100-rolled-glossy-black.jpg",
+     "original": "WL100olliing Process Glossy Black.jpg",
+     "finish_zh": "WL100滚外筋亮黑"
+    },
+    {
+     "finish": "Glossy gold",
+     "file": "wl100-rolled-glossy-gold.jpg",
+     "original": "WL100olliing Process Glossy Gol.jpg",
+     "finish_zh": "WL100滚外筋亮金"
+    }
+   ]
+  },
+  {
+   "id": "jl30-rolled",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jl30-rolled-glossy-black.jpg",
+     "original": "JL30olliing Process Glossy Black.jpg",
+     "finish_zh": "JL30滚外筋亮黑"
+    },
+    {
+     "finish": "Glossy gold",
+     "file": "jl30-rolled-glossy-gold.jpg",
+     "original": "JL30olliing ProcessGlossy Gold.jpg",
+     "finish_zh": "JL30滚外筋亮金"
+    }
+   ]
+  },
+  {
+   "id": "finishes",
+   "photos": [
+    {
+     "finish": "JL30 · Brushed process, pink",
+     "file": "finishes-jl30-brushed-process-pink.jpg",
+     "original": "Brushed Process PINK.jpg",
+     "finish_zh": "JL30 拉丝工艺粉色"
+    },
+    {
+     "finish": "WL100 · Brushed process",
+     "file": "finishes-wl100-brushed-process.jpg",
+     "original": "WL100Brushed Process.jpg",
+     "finish_zh": "WL100拉丝工艺"
+    },
+    {
+     "finish": "JL30 · Sandblasting process, gold",
+     "file": "finishes-jl30-sandblasting-process-gold.jpg",
+     "original": "SandblastingProcess.jpg",
+     "finish_zh": "JL30 喷砂金工艺"
+    },
+    {
+     "finish": "WL100 & JL30 · Hydrographics",
+     "file": "finishes-wl100-jl30-hydrographics.jpg",
+     "original": "Hydrographics.jpg",
+     "finish_zh": "WL100 & JL30 水转印"
+    },
+    {
+     "finish": "WL100 · Coating process",
+     "file": "finishes-wl100-coating-process.jpg",
+     "original": "coting process .jpg",
+     "finish_zh": "WL100 喷涂工艺"
+    }
+   ]
+  },
+  {
+   "id": "jlq36",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jlq36-glossy-black.jpg",
+     "original": "JLQ36Glossy Black.jpg",
+     "finish_zh": "JLQ36亮黑"
+    },
+    {
+     "finish": "Glossy gold",
+     "file": "jlq36-glossy-gold.jpg",
+     "original": "JLQ36亮金.jpg",
+     "finish_zh": "JLQ36亮金"
+    },
+    {
+     "finish": "Glossy silver",
+     "file": "jlq36-glossy-silver.jpg",
+     "original": "JLQ36Glossy Silve.jpg",
+     "finish_zh": "JLQ36亮银"
+    },
+    {
+     "finish": "Matte black",
+     "file": "jlq36-matte-black.jpg",
+     "original": "JLQ36Matt Black.jpg",
+     "finish_zh": "JLQ36雾黑"
+    }
+   ]
+  },
+  {
+   "id": "jlw37",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jlw37-glossy-black.jpg",
+     "original": "JLQ37Glossy Black.jpg",
+     "finish_zh": "JLW37亮黑"
+    },
+    {
+     "finish": "Matte white",
+     "file": "jlw37-matte-white.jpg",
+     "original": "JLQ37Matt White.jpg",
+     "finish_zh": "JLW37雾白"
+    }
+   ]
+  },
+  {
+   "id": "jlf33",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jlf33-glossy-black.jpg",
+     "original": "JLF33Glossy Black.jpg",
+     "finish_zh": "JLF33亮黑"
+    },
+    {
+     "finish": "Glossy gold",
+     "file": "jlf33-glossy-gold.jpg",
+     "original": "JLF33 Glossy Gol.jpg",
+     "finish_zh": "JLF33亮金"
+    }
+   ]
+  },
+  {
+   "id": "jlc33",
+   "photos": [
+    {
+     "finish": "Glossy black",
+     "file": "jlc33-glossy-black.jpg",
+     "original": "JLC33 Glossy Black.jpg",
+     "finish_zh": "JLC33亮黑"
+    }
+   ]
+  },
+  {
+   "id": "jlf52",
+   "photos": [
+    {
+     "finish": "Glossy gold",
+     "file": "jlf52-glossy-gold.jpg",
+     "original": "JLF52 Glossy Gol.jpg",
+     "finish_zh": "JLF52"
+    },
+    {
+     "finish": "Square · Gold, green, red & black",
+     "file": "jlf52-square-gold-green-red-black.jpg",
+     "original": "JLF52square.jpg",
+     "finish_zh": "JLF52方形"
+    }
+   ]
+  },
+  {
+   "id": "jlm31",
+   "photos": [
+    {
+     "finish": "Cylindrical wood · Black",
+     "file": "jlm31-cylindrical-wood-black.jpg",
+     "original": "JLM31Hardwood black.jpg",
+     "finish_zh": "JLM31圆柱木黑色"
+    },
+    {
+     "finish": "Cylindrical wood · Coffee",
+     "file": "jlm31-cylindrical-wood-coffee.jpg",
+     "original": "JLM31Hardwood coffee.jpg",
+     "finish_zh": "JLM31圆柱木咖色"
+    },
+    {
+     "finish": "Cylindrical wood · White",
+     "file": "jlm31-cylindrical-wood-white.jpg",
+     "original": "JLM31Hardwood white.jpg",
+     "finish_zh": "JLM31圆柱木"
+    }
+   ]
+  },
+  {
+   "id": "jlq40",
+   "photos": [
+    {
+     "finish": "White",
+     "file": "jlq40-white.jpg",
+     "original": "JLQ40 White.jpg",
+     "finish_zh": "JLQ40白色"
+    },
+    {
+     "finish": "Coffee",
+     "file": "jlq40-coffee.jpg",
+     "original": "JLQ40coffee.jpg",
+     "finish_zh": "JLQ40咖啡色"
+    }
+   ]
+  },
+  {
+   "id": "jlm36",
+   "photos": [
+    {
+     "finish": "Black wood",
+     "file": "jlm36-black-wood.jpg",
+     "original": "JLM36 Hardwood.jpg",
+     "finish_zh": "JLM36"
+    }
+   ]
+  },
+  {
+   "id": "jlm42",
+   "photos": [
+    {
+     "finish": "Black wood",
+     "file": "jlm42-black-wood.jpg",
+     "original": "JLM42 Hardwood.jpg",
+     "finish_zh": "JLM42"
+    }
+   ]
+  },
+  {
+   "id": "cosmetic-caps",
+   "photos": [
+    {
+     "finish": "Cream cap",
+     "file": "cosmetic-caps-cream-cap.jpg",
+     "original": "Cap of face crea.jpg",
+     "finish_zh": "乳霜盖"
+    }
+   ]
+  },
+  {
+   "id": "collars",
+   "photos": [
+    {
+     "finish": "WL100 glossy black shoulder collar",
+     "file": "collars-wl100-glossy-black-shoulder-collar.jpg",
+     "original": "Single-stepShoulderCollar.jpg",
+     "finish_zh": "WL100亮黑肩套"
+    },
+    {
+     "finish": "KY100 double-step shoulder collar",
+     "file": "collars-ky100-double-step-shoulder-collar.jpg",
+     "original": "KY100 shoulderCollar.jpg",
+     "finish_zh": "KY100双台阶肩套"
+    },
+    {
+     "finish": "WL100 shoulder collar",
+     "file": "collars-wl100-shoulder-collar.jpg",
+     "original": "WL100square.jpg",
+     "finish_zh": "WL100肩套"
+    }
+   ]
+  },
+  {
+   "id": "jl30-collars",
+   "photos": [
+    {
+     "finish": "JL30 shoulder collar",
+     "file": "jl30-collars-jl30-shoulder-collar.jpg",
+     "original": "JL30 shoulderColla.jpg",
+     "finish_zh": "JL30肩套"
+    }
+   ]
+  },
+  {
+   "id": "square-collars",
+   "photos": [
+    {
+     "finish": "Square shoulder collar",
+     "file": "square-collars-square-shoulder-collar.jpg",
+     "original": "squareShoulderCollar.jpg",
+     "finish_zh": "方形肩套"
+    },
+    {
+     "finish": "Glossy gold middle collar",
+     "file": "square-collars-glossy-gold-middle-collar.jpg",
+     "original": "Middle Collar gold.jpg",
+     "finish_zh": "中圈亮金"
+    },
+    {
+     "finish": "Glossy silver middle collar",
+     "file": "square-collars-glossy-silver-middle-collar.jpg",
+     "original": "Middle Collar Silve.jpg",
+     "finish_zh": "中圈亮银"
+    },
+    {
+     "finish": "Middle collar",
+     "file": "square-collars-middle-collar.jpg",
+     "original": "Middle Collar blue.jpg",
+     "finish_zh": "中圈"
+    }
+   ]
+  },
+  {
+   "id": "pumps",
+   "photos": [
+    {
+     "finish": "Anodized pumps",
+     "file": "pumps-anodized-pumps.jpg",
+     "original": "Anodized pumps.jpg",
+     "finish_zh": "阳极氧化泵头"
+    },
+    {
+     "finish": "Plastic pumps",
+     "file": "pumps-plastic-pumps.jpg",
+     "original": "plastic pumps.jpg",
+     "finish_zh": "塑料泵头"
+    }
+   ]
+  },
+  {
+   "id": "lipstick",
+   "photos": [
+    {
+     "finish": "Lipstick tube",
+     "file": "lipstick-lipstick-tube.jpg",
+     "original": "Lipstick Tub.jpg",
+     "finish_zh": "口红管"
+    }
+   ]
+  }
+ ]
+}

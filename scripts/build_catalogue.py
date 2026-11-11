@@ -13,6 +13,10 @@ How it works
      Real-ESRGAN (scripts/hd_photos.py, cached) and saved as 400 px and 800 px WebP.
   4. dist/products.js is written with catalogue products followed by the Alibaba store
      products from catalogue/store.json, and a report lists anything new or missing.
+  5. Photo mode: when catalogue/photos.json exists, only the products it lists are written, in its
+     order, each showing the client's own photographs from catalogue/photos/ uncropped at their
+     original size (no cleaning or enlargement). Names, sizes, neck, weight and the spec-sheet page
+     still come from the catalogue; store products are included only if "includeStore" is true.
 """
 from __future__ import annotations
 
@@ -36,6 +40,8 @@ PHOTOS = ASSETS / 'p'
 CONFIG = ROOT / 'catalogue' / 'catalogue.json'
 STORE = ROOT / 'catalogue' / 'store.json'
 REPORT = ROOT / 'catalogue' / 'last-build.json'
+PHOTO_CFG = ROOT / 'catalogue' / 'photos.json'
+PHOTO_DIR = ROOT / 'catalogue' / 'photos'
 
 PROCESS = re.compile(r'brush|sandblast|hydrograph', re.I)
 SIZE = re.compile(r'Cover\s*size\s*[:：]?\s*([\d.]+\s*[*×xX]\s*[\d.]+(?:\s*[*×xX]\s*[\d.]+)?)\s*/\s*(FEA\s*\d+)', re.I)
@@ -234,16 +240,34 @@ def write_photo(im, hd=True, single=False, erase=None):
     return f'assets/p/{key}'
 
 
+def write_original(path: Path) -> str:
+    """Save a supplied photograph exactly as it is (whole frame, never cropped, cleaned or enlarged)."""
+    im = Image.open(path)
+    im.load()
+    im = im.convert('RGB')
+    key = hp.content_hash(im)
+    hp.save_sizes(im, PHOTOS / key, sizes=(400, max(im.size)), quality=92)
+    return f'assets/p/{key}'
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('pdf', type=Path)
     ap.add_argument('--report', action='store_true', help='only report; write nothing')
     ap.add_argument('--fast', action='store_true', help='skip AI enlargement (Lanczos only)')
+    ap.add_argument('--skip-editorial', action='store_true', help='keep the current hero/editorial photographs')
     args = ap.parse_args()
     if args.fast:
         hp._net = False
 
     cfg = json.loads(CONFIG.read_text())
+    photo_cfg = json.loads(PHOTO_CFG.read_text()) if PHOTO_CFG.exists() else None
+    photo_map = {p['id']: p['photos'] for p in photo_cfg['products']} if photo_cfg else None
+    if photo_map:
+        unknown = [pid for pid in photo_map if pid not in {p['id'] for p in cfg['products']}]
+        missing = [x['file'] for ph in photo_map.values() for x in ph if not (PHOTO_DIR / x['file']).exists()]
+        if unknown or missing:
+            sys.exit(f'photos.json: unknown product ids {unknown}, missing files {missing}')
     store = json.loads(STORE.read_text()) if STORE.exists() else {'products': []}
     doc = fitz.open(args.pdf)
     cards = read_cards(doc)
@@ -288,8 +312,26 @@ def main():
     PHOTOS.mkdir(parents=True, exist_ok=True)
     used = set()
     out = []
+    def use_photos(item):
+        """Photo mode: replace the catalogue photographs with the client's own, in the listed order."""
+        shots = photo_map[item['id']]
+        item['finishes'] = [x['finish'] for x in shots]
+        item['images'] = [write_original(PHOTO_DIR / x['file']) for x in shots]
+        item['source'] = 'photo'
+        item.pop('defaultVariant', None)
+        used.update(Path(u).name for u in item['images'])
+        print(f"  {item['id']:<16} {len(shots):>2} photos (supplied)")
+        return item
+
     for e in products:
         c = e['_cfg']
+        if photo_map is not None and e['id'] not in photo_map:
+            continue
+        if 'special' in c and photo_map is not None:
+            item = {k: v for k, v in e.items() if not k.startswith('_')}
+            item['page'] = c['special']['page']
+            out.append(use_photos(item))
+            continue
         if 'special' in c:
             s = c['special']
             im = page_image(doc, s['page'], s['image'])
@@ -307,6 +349,19 @@ def main():
         if not e['_cards']:
             report['empty_products'].append(e['id'])
             print(f"  ! {e['id']}: no matching cards in this PDF (left out)")
+            continue
+        if photo_map is not None:
+            first = e['_cards'][0]
+            item = {
+                'id': e['id'], 'model': e.get('model', first['model']), 'name': e['name'], 'category': e['category'],
+                'material': e.get('material') or (first.get('material', 'Anodized').replace('Anodized', 'Anodized aluminium') if first.get('material') else 'Anodized aluminium'),
+                'size': e.get('size') or pretty_size(first.get('size', '')), 'neck': e.get('neck') or first.get('neck', 'FEA15'),
+                'weight': e.get('weight') or first.get('weight', '').replace('g', ' g'), 'page': first['page'],
+            }
+            for k in ('badge', 'description', 'note'):
+                if e.get(k):
+                    item[k] = e[k]
+            out.append(use_photos(item))
             continue
         variants, seen_photos, seen_labels = [], set(), set()
         for card in e['_cards']:
@@ -343,7 +398,7 @@ def main():
         print(f"  {e['id']:<16} {len(images):>2} finishes  p.{first['page']}" + ('  NEW' if e.get('_new') else ''))
 
     # Editorial photographs used by the hero, collection and fallbacks.
-    for ed in cfg.get('editorial', []):
+    for ed in ([] if args.skip_editorial else cfg.get('editorial', [])):
         im = page_image(doc, ed['page'], ed['image'])
         if ed.get('box'):
             im = hp.photograph(im, tuple(ed['box']), margin=60)
@@ -356,6 +411,11 @@ def main():
             im.save(ASSETS / f"{ed['name']}.webp", 'WEBP', quality=88, method=6)
 
     # Extra range products from catalogue/store.json (images stay on their CDN).
+    if photo_cfg is not None and not photo_cfg.get('includeStore'):
+        store = {**store, 'products': []}
+    if photo_map is not None:
+        order = list(photo_map)
+        out.sort(key=lambda p: order.index(p['id']) if p['id'] in order else len(order))
     for s in store.get('products', []):
         out.append({
             'id': f"store-{s['id']}", 'source': 'store', 'model': s.get('model') or s['name'], 'name': s['detail'],

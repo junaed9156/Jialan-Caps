@@ -44,10 +44,15 @@
   } catch { /* Browsing and enquiries continue when browser storage is unavailable. */ }
 
   $('total-products').textContent = products.length;
+  // Hide shape filters that have no products in the current range.
+  $('category-filters').querySelectorAll('[data-category]').forEach(b => { if (b.dataset.category !== 'all' && !products.some(p => p.category === b.dataset.category)) b.hidden = true; });
   $('year').textContent = new Date().getFullYear();
 
   // HD photographs: catalogue photos are 400/800 px WebP; extra range photos come from an image CDN.
   const isStore = p => p.source === 'store';
+  // Supplied photographs are shown whole, uncropped, at their own proportions.
+  const isPhoto = p => p.source === 'photo';
+  const photoClass = p => isStore(p) ? ' is-store' : isPhoto(p) ? ' is-photo' : '';
   function photoSources(p, variant) {
     const img = p.images[variant] ?? p.images[0];
     if (isStore(p)) {
@@ -69,6 +74,7 @@
   }, true);
   function paintPhoto(element, p, variant = 0, sizes) {
     element.classList.toggle('is-store', isStore(p));
+    element.classList.toggle('is-photo', isPhoto(p));
     element.innerHTML = photoHTML(p, variant, sizes, true);
     element.setAttribute('aria-label', `${p.model}, ${p.finishes[variant]}`);
   }
@@ -95,7 +101,7 @@
     return 'linear-gradient(115deg,#b6a467,#e1cf9b,#92b1ad)';
   }
   function swatch(p,i,active=false,detail=false) {
-    if (isStore(p)) {
+    if (isStore(p) || isPhoto(p)) {
       const s = photoSources(p, i);
       return `<button class="swatch thumb" type="button" data-${detail?'detail-variant':'variant'}="${i}" ${detail?'':`data-id="${p.id}"`} aria-label="${escape(p.model+' · '+p.finishes[i])}" title="${escape(p.finishes[i])}" aria-pressed="${active}"><img src="${s.src}" alt="" loading="lazy" decoding="async"></button>`;
     }
@@ -103,7 +109,7 @@
   }
   function card(p) {
     const v=variantOf(p),selected=isSelected(p.id,v);
-    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" tabindex="-1" aria-hidden="true">${p.badge?`<span class="card-badge">${escape(p.badge)}</span>`:''}<span class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">Price on request</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
+    return `<article class="product-card" data-product="${p.id}"><button class="product-image-button" data-open="${p.id}" tabindex="-1" aria-hidden="true">${p.badge?`<span class="card-badge">${escape(p.badge)}</span>`:''}<span class="product-photo${photoClass(p)}" role="img" aria-label="${escape(p.model+', '+p.finishes[v])}">${photoHTML(p,v)}</span><span class="card-expand" aria-hidden="true">↗</span></button><div class="card-info"><div class="card-topline"><button class="card-name" data-open="${p.id}"><strong>${escape(p.model)}</strong><span>${escape(p.name)}</span></button><button class="add-piece${selected?' added':''}" data-add="${p.id}" aria-label="${selected?'Remove':'Add'} ${escape(p.model+' · '+p.finishes[v])} ${selected?'from':'to'} enquiry" aria-pressed="${selected}">${selected?'✓':'+'}</button></div><div class="card-bottom">${isStore(p)?`${window.JIALAN.showPrices!==false?`<span class="card-price"><strong>${escape(p.price)}</strong> / piece</span>`:'<span class="card-price">Price on request</span>'}<span class="card-neck">${moqText(p)}</span>`:`<div class="swatches">${p.finishes.slice(0,5).map((_,i)=>swatch(p,i,i===v)).join('')}${p.finishes.length>5?`<span class="more-finishes">+${p.finishes.length-5}</span>`:''}</div><span class="card-neck">${escape(p.neck)}</span>`}</div></div></article>`;
   }
   function filteredProducts() {
     const q=state.query.trim().toLowerCase();
@@ -153,7 +159,7 @@
       const p=byId.get(item.id);return `<li><span>${escape(p.model)} · ${escape(p.finishes[item.variant])}</span><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
     }).join('');
     $('shortlist-items').innerHTML=shortlist.map(item=>{
-      const p=byId.get(item.id);return `<li><div class="mini-photo"><div class="product-photo${isStore(p)?' is-store':''}" role="img" aria-label="${escape(p.model)}">${photoHTML(p,item.variant,'70px')}</div></div><div class="mini-info"><strong>${escape(p.model)}</strong><span>${escape(p.finishes[item.variant])} · ${escape(p.neck)}</span></div><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
+      const p=byId.get(item.id);return `<li><div class="mini-photo"><div class="product-photo${photoClass(p)}" role="img" aria-label="${escape(p.model)}">${photoHTML(p,item.variant,'70px')}</div></div><div class="mini-info"><strong>${escape(p.model)}</strong><span>${escape(p.finishes[item.variant])} · ${escape(p.neck)}</span></div><button type="button" data-remove="${keyOf(item.id,item.variant)}" aria-label="Remove ${escape(p.model+' · '+p.finishes[item.variant])}">×</button></li>`;
     }).join('');
     $('enquiry-fallback').hidden=true;
   }
@@ -281,7 +287,7 @@
     else $('enquiry-result').textContent='We could not send the form just now. Please email it directly or send it on WhatsApp.';
   });
   const finishStudies=[{id:'wl100',finish:'Glossy gold',material:'ANODIZED ALUMINIUM',cut:'glossy-gold'},{id:'wl100',finish:'Glossy black',material:'ANODIZED ALUMINIUM',cut:'glossy-black'},{id:'wl100',finish:'Matte silver',material:'ANODIZED ALUMINIUM',cut:'matte-silver'},{id:'jlm31',finish:'Coffee wood',material:'HARDWOOD',cut:'coffee-wood'}];
-  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;const v=Math.max(0,enFinishes(p).indexOf(study.finish)),fp=$('finish-photo');fp.classList.remove('is-store');fp.classList.add('is-cutout');fp.innerHTML=`<img src="assets/finish/${study.cut}.webp" loading="lazy" alt="${escape(p.model+', '+p.finishes[v])}" decoding="async">`;fp.setAttribute('aria-label',`${p.model}, ${p.finishes[v]}`);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
+  function chooseFinish(index){const study=finishStudies[index],p=byId.get(study.id);if(!p)return;const finishName=T(study.finish),fp=$('finish-photo');fp.classList.remove('is-store','is-photo');fp.classList.add('is-cutout');fp.innerHTML=`<img src="assets/finish/${study.cut}.webp" loading="lazy" alt="${escape(p.model+', '+finishName)}" decoding="async">`;fp.setAttribute('aria-label',`${p.model}, ${finishName}`);$('finish-code').textContent=p.model;$('finish-material').textContent=study.material;document.querySelectorAll('[data-finish]').forEach(b=>{const active=Number(b.dataset.finish)===index;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',active);});}
   document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>chooseFinish(Number(b.dataset.finish))));
   if('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.classList.add('animations-ready');const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
   // Motion: one control pauses every animation, CSS and 3D alike.

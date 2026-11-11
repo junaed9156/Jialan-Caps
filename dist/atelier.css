@@ -394,3 +394,14 @@ html.webgl .anatomy:not(.is-3d):not(.is-3d-failed) .anatomy-stage::after {
   content: ''; position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px;
   border: 1px solid #8a7b5f66; border-top-color: #c9a35e; border-radius: 50%; animation: study-loading 1s linear infinite; pointer-events: none;
 }
+
+/* Supplied product photographs: always the whole picture at its own square proportions —
+   never cropped, padded, tinted or tilted. */
+.product-image-button:has(> .product-photo.is-photo) { aspect-ratio: 1; }
+.product-image-button > .product-photo.is-photo { inset: 0; width: 100%; height: 100%; }
+.product-image-button:hover > .product-photo.is-photo { transform: none; }
+.product-image-button > .product-photo.is-photo > img,
+.detail-visual > .product-photo.is-photo > img,
+.mini-photo .product-photo.is-photo > img { padding: 0 !important; object-fit: contain; }
+.detail-visual > .product-photo.is-photo { width: 100%; max-width: 440px; height: auto; aspect-ratio: 1; }
+.swatch.thumb img { object-fit: contain; }

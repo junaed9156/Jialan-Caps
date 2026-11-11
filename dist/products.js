@@ -29,86 +29,96 @@ window.JIALAN = {
    "description": "A cylindrical magnetic cap assembly with matched shoulder collar. Explore polished, matte and coated finishes.",
    "finishes": [
     "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "Glossy dark grey",
-    "Glossy red",
-    "White coating",
-    "Blue coating"
+    "Glossy black + glossy gold"
    ],
    "images": [
-    "assets/p/172643629eca7752",
-    "assets/p/459bb3f4c52092d6",
-    "assets/p/bb94dd245608d6e8",
-    "assets/p/a216c253079cfdd9",
-    "assets/p/54b44811e86bde17",
-    "assets/p/fe70de8dbe99000e",
-    "assets/p/61504f23d8a09e1d",
-    "assets/p/cc3f36ef8ebf84d3",
-    "assets/p/95904ee69b542ebd",
-    "assets/p/cdc1708a4c6b44a9"
+    "assets/p/463b322ffdd9758e",
+    "assets/p/8a20c7415de2a7a8"
    ],
-   "defaultVariant": 1
+   "source": "photo"
   },
   {
-   "id": "jlq36",
-   "model": "JLQ36",
-   "name": "The statement sphere",
-   "category": "sculptural",
-   "material": "ABS",
-   "size": "35.8 × 33",
-   "neck": "FEA15",
-   "weight": "32 g",
-   "page": 26,
-   "badge": "SCULPTURAL",
-   "description": "A spherical magnetic cap with a rounded silhouette and coordinated shoulder collar. Available in metallic and coloured finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "Glossy white",
-    "Matte blue"
-   ],
-   "images": [
-    "assets/p/52a8136af3c326d5",
-    "assets/p/83ea9fb9da702ca8",
-    "assets/p/7c1e76c132020185",
-    "assets/p/16da311db5f2faa8",
-    "assets/p/8f7a8b8943212067",
-    "assets/p/efdb2a84d522760a",
-    "assets/p/44cd82866cb3118b",
-    "assets/p/deb9ec4156229627"
-   ],
-   "defaultVariant": 1
-  },
-  {
-   "id": "jlm31",
-   "model": "JLM31",
-   "name": "The natural cylinder",
-   "category": "wood",
-   "material": "Hardwood",
-   "size": "30.5 × 32.5",
+   "id": "jl30",
+   "model": "JL30",
+   "name": "The balanced cylinder",
+   "category": "cylinder",
+   "material": "Anodized aluminium",
+   "size": "30 × 31",
    "neck": "FEA15",
    "weight": "28 g",
-   "page": 34,
-   "badge": "NATURAL MATERIAL",
-   "description": "A hardwood magnetic cap with a cylindrical profile. The catalogue lists ash, beech and black walnut wood options.",
+   "page": 17,
+   "description": "A cylindrical magnetic cap assembly from the JL30 series, with matching black, gold or silver collar finishes.",
    "finishes": [
-    "Coffee wood",
-    "White wood",
-    "Black wood"
+    "Glossy black",
+    "Glossy silver"
    ],
    "images": [
-    "assets/p/5ee3aa9ee10d0557",
-    "assets/p/363c724fb623b03b",
-    "assets/p/4cece47e01f9b521"
-   ]
+    "assets/p/1843b0fcfe7d8112",
+    "assets/p/556e0cd6c22ebd7b"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jl30s",
+   "model": "JL30S",
+   "name": "The refined cylinder",
+   "category": "cylinder",
+   "material": "Anodized aluminium",
+   "size": "30 × 30",
+   "neck": "FEA15",
+   "weight": "27.2 g",
+   "page": 20,
+   "description": "A 30 mm cylindrical magnetic cap assembly, available with matching metallic or matte shoulder collars.",
+   "finishes": [
+    "Glossy gold",
+    "Matte gold"
+   ],
+   "images": [
+    "assets/p/deb6f2cfa31ad79b",
+    "assets/p/28b5be0a270782cd"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jl35",
+   "model": "JL35",
+   "name": "The wide silhouette",
+   "category": "cylinder",
+   "material": "Anodized aluminium",
+   "size": "35 × 28",
+   "neck": "FEA15",
+   "weight": "38 g",
+   "page": 22,
+   "description": "A wider 35 mm magnetic cap assembly, with polished or matte black, gold and silver options.",
+   "finishes": [
+    "Black, gold & silver"
+   ],
+   "images": [
+    "assets/p/1ba61eee80f8393f"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jl52-round",
+   "model": "JLY52",
+   "name": "The tall round form",
+   "category": "cylinder",
+   "material": "Anodized aluminium",
+   "size": "35 × 41",
+   "neck": "FEA15",
+   "weight": "51 g",
+   "page": 24,
+   "description": "A taller cylindrical cap from the JL52 family, with black, gold and silver finishes.",
+   "note": "The product photograph identifies this round variant as JLY52; the page heading groups it within the JL52 range.",
+   "finishes": [
+    "Matte pink",
+    "Round · Gold & silver"
+   ],
+   "images": [
+    "assets/p/852d922be5e05473",
+    "assets/p/77c46831dcbc2981"
+   ],
+   "source": "photo"
   },
   {
    "id": "ky100",
@@ -125,76 +135,14 @@ window.JIALAN = {
    "finishes": [
     "Glossy black",
     "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "Glossy dark grey",
-    "Matte purple",
-    "Matte dark grey",
-    "White coating"
+    "Glossy silver"
    ],
    "images": [
-    "assets/p/1dc8e4450ca9043b",
-    "assets/p/54957cad21de9497",
-    "assets/p/681cd3ff04bb478d",
-    "assets/p/4e0ff726c0470915",
-    "assets/p/2d5babd74debef8a",
-    "assets/p/c641192e94a7d8a8",
-    "assets/p/a4aaf9b050025460",
-    "assets/p/d1cda35e210d0f31",
-    "assets/p/d2f9c00d1349bfdc",
-    "assets/p/97d09112ffff71b7"
+    "assets/p/2fc3d297a0a218e1",
+    "assets/p/b036d0780dc0de74",
+    "assets/p/6ff7ae9767d7b4e3"
    ],
-   "defaultVariant": 1
-  },
-  {
-   "id": "jlf33",
-   "model": "JLF33",
-   "name": "The soft square",
-   "category": "sculptural",
-   "material": "Aluminium cap assembly",
-   "size": "33 × 33 × 27.6",
-   "neck": "FEA15",
-   "weight": "30.6 g",
-   "badge": "SQUARE FORM",
-   "finishes": [
-    "Black & gold presentation"
-   ],
-   "description": "A square magnetic cap with rounded edges, shown in black and gold in the catalogue’s new-product presentation.",
-   "note": "Enquire to confirm individual finish options and the matching shoulder collar.",
-   "images": [
-    "assets/p/7798a50a50cd9071"
-   ],
-   "page": 30
-  },
-  {
-   "id": "jl30s",
-   "model": "JL30S",
-   "name": "The refined cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "30 × 30",
-   "neck": "FEA15",
-   "weight": "27.2 g",
-   "page": 20,
-   "description": "A 30 mm cylindrical magnetic cap assembly, available with matching metallic or matte shoulder collars.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver"
-   ],
-   "images": [
-    "assets/p/8bc5d9ba429476d3",
-    "assets/p/ff7edef2d6970fac",
-    "assets/p/9b9e0079bc060085",
-    "assets/p/fe108ad909b593ae",
-    "assets/p/b4acd24a3e85610b",
-    "assets/p/4479d668168408b9"
-   ]
+   "source": "photo"
   },
   {
    "id": "jlg29",
@@ -208,558 +156,12 @@ window.JIALAN = {
    "page": 32,
    "description": "A magnetic cap from the diamond-knurling section, offered in glossy black, gold and silver.",
    "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver"
+    "Diamond knurling · Glossy black"
    ],
    "images": [
-    "assets/p/3adde1e15e6d89e7",
-    "assets/p/7ad83ab38d732da0",
-    "assets/p/d7992f9fa4bb623f"
+    "assets/p/7d60d5010f8bef18"
    ],
-   "defaultVariant": 1
-  },
-  {
-   "id": "jlw37",
-   "model": "JLW37",
-   "name": "The rounded silhouette",
-   "category": "sculptural",
-   "material": "ABS",
-   "size": "36.8 × 30",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 27,
-   "description": "A softly rounded magnetic cap assembly, offered in black, gold and white with glossy or matte finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Matte black",
-    "Matte gold",
-    "Glossy white",
-    "Matte white"
-   ],
-   "images": [
-    "assets/p/dea5603247602859",
-    "assets/p/83820f6ac7b4246a",
-    "assets/p/c8ed338e70733337",
-    "assets/p/aec8e3f451708aed",
-    "assets/p/12fbe72c5cfb555b",
-    "assets/p/767f664967a25caf"
-   ]
-  },
-  {
-   "id": "wll100",
-   "model": "WLL100",
-   "name": "The extended cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "27.5 × 35",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 5,
-   "description": "The elongated member of the WL100 family, with additional height and a wide selection of metallic and coloured finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "Glossy dark grey",
-    "Glossy red",
-    "Matte red",
-    "Matte dark grey"
-   ],
-   "images": [
-    "assets/p/345a20226af38ffc",
-    "assets/p/c6fcc811a804e381",
-    "assets/p/e621c55bc42baf89",
-    "assets/p/3908ddb0ef6210ab",
-    "assets/p/78b12c0fc7485d92",
-    "assets/p/d364c8d22842c070",
-    "assets/p/25120c2d9fff0684",
-    "assets/p/cd336e0ec7dd33e5",
-    "assets/p/3b7490d0796086f8",
-    "assets/p/ca54ae97afc6617e"
-   ]
-  },
-  {
-   "id": "wls100",
-   "model": "WLS100",
-   "name": "The tall detail",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "27.5 × 30.9",
-   "neck": "FEA15",
-   "weight": "27.2 g",
-   "page": 6,
-   "description": "An alternative WL-series magnetic cap profile with black, silver and red options.",
-   "finishes": [
-    "Glossy black",
-    "Glossy silver",
-    "Matte red"
-   ],
-   "images": [
-    "assets/p/29a854b63868b1d1",
-    "assets/p/ce71d45de5461793",
-    "assets/p/7f00f49abe9a0349"
-   ]
-  },
-  {
-   "id": "wl50",
-   "model": "WL50",
-   "name": "The compact cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "25 × 26.3",
-   "neck": "FEA13",
-   "weight": "23 g",
-   "page": 8,
-   "description": "A compact magnetic cap assembly for FEA13 fittings. Choose from metallic, matte, coated and coffee-coloured finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "Glossy dark grey",
-    "Glossy red",
-    "Glossy coffee",
-    "White coating"
-   ],
-   "images": [
-    "assets/p/21931ad2ec73540f",
-    "assets/p/40cc5bdeb30c1a3f",
-    "assets/p/f20ff29da2fdd088",
-    "assets/p/babffc0cdbbbdcff",
-    "assets/p/45a5fc3087615744",
-    "assets/p/95aeca61e301cdf5",
-    "assets/p/697cf90a84d79dbb",
-    "assets/p/c1129bab6fb8e8b6",
-    "assets/p/f383248d91b5f784",
-    "assets/p/e778f45da2462ac6"
-   ]
-  },
-  {
-   "id": "ky100s",
-   "model": "KY100S",
-   "name": "The clean profile",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "31 × 31.6",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 11,
-   "description": "A smooth-profile KY-series cap, paired with a matching black shoulder collar.",
-   "finishes": [
-    "Glossy black",
-    "Matte black"
-   ],
-   "images": [
-    "assets/p/3c89e573375a7da5",
-    "assets/p/f0a316961a6af43c"
-   ]
-  },
-  {
-   "id": "ky100z",
-   "model": "KY100Z",
-   "name": "The smooth classic",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "31 × 32.8",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 11,
-   "description": "A 31 mm KY-series magnetic cap assembly in glossy or matte black.",
-   "finishes": [
-    "Glossy black",
-    "Matte black"
-   ],
-   "images": [
-    "assets/p/cd7155b17ae7c028",
-    "assets/p/8d5916ad7daa7903"
-   ]
-  },
-  {
-   "id": "ky60",
-   "model": "KY60",
-   "name": "The compact texture",
-   "category": "ribbed",
-   "material": "Anodized aluminium",
-   "size": "29.2 × 31.6",
-   "neck": "FEA13",
-   "weight": "28 g",
-   "page": 12,
-   "description": "A textured magnetic cap assembly for FEA13 bottle fittings, with matched metallic or coloured collars.",
-   "finishes": [
-    "Glossy black",
-    "Glossy silver",
-    "Matte black",
-    "Matte silver",
-    "Glossy dark grey",
-    "Matte red",
-    "Matte purple",
-    "Matte dark grey"
-   ],
-   "images": [
-    "assets/p/1dc8e4450ca9043b",
-    "assets/p/681cd3ff04bb478d",
-    "assets/p/4e0ff726c0470915",
-    "assets/p/c641192e94a7d8a8",
-    "assets/p/a4aaf9b050025460",
-    "assets/p/fd4910089ced3cda",
-    "assets/p/d1cda35e210d0f31",
-    "assets/p/d2f9c00d1349bfdc"
-   ]
-  },
-  {
-   "id": "ky32",
-   "model": "KY32",
-   "name": "The broad cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "32.5 × 35",
-   "neck": "FEA15",
-   "weight": "32 g",
-   "page": 14,
-   "description": "A broad cylindrical magnetic cap assembly in glossy black, gold and silver.",
-   "note": "The specification page also lists a shorter 32.5 × 29.6 mm, 29 g version. Confirm the required height when enquiring.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver"
-   ],
-   "images": [
-    "assets/p/0b6eedfc9267111c",
-    "assets/p/111422302b4b660c",
-    "assets/p/34fcd840304f43e8"
-   ]
-  },
-  {
-   "id": "ky32-rolled",
-   "model": "KY32 · Bead rolled",
-   "name": "The broad texture",
-   "category": "ribbed",
-   "material": "Anodized aluminium",
-   "size": "32.5 × 35",
-   "neck": "FEA15",
-   "weight": "32 g",
-   "page": 13,
-   "description": "A bead-rolled KY32 magnetic cap assembly, available in glossy and matte metallic finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver"
-   ],
-   "images": [
-    "assets/p/957fc4f9d12acc09",
-    "assets/p/e30b45ce0a8adf9e",
-    "assets/p/7963b54a1454954d",
-    "assets/p/93e7d8f4ae91e5c8",
-    "assets/p/a39fe0dcb1a1f42c",
-    "assets/p/c5df149438540e80"
-   ]
-  },
-  {
-   "id": "ky28",
-   "model": "KY28",
-   "name": "The compact statement",
-   "category": "ribbed",
-   "material": "Anodized aluminium",
-   "size": "28.5 × 30",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 15,
-   "description": "A textured magnetic cap with coordinated shoulder collars, including a coated white and matte coffee combination.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver",
-    "White coating",
-    "Coffee coating"
-   ],
-   "images": [
-    "assets/p/c14524c0e2a0cc56",
-    "assets/p/54957cad21de9497",
-    "assets/p/681cd3ff04bb478d",
-    "assets/p/4e01233f6e221abc",
-    "assets/p/2d5babd74debef8a",
-    "assets/p/c641192e94a7d8a8",
-    "assets/p/045c8d0a47ace944",
-    "assets/p/9ba1e3d52be8136a"
-   ]
-  },
-  {
-   "id": "jl30",
-   "model": "JL30",
-   "name": "The balanced cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "30 × 31",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 17,
-   "description": "A cylindrical magnetic cap assembly from the JL30 series, with matching black, gold or silver collar finishes.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver"
-   ],
-   "images": [
-    "assets/p/f8b9d7ae06fec0f6",
-    "assets/p/6d57923305fb3cb0",
-    "assets/p/a7a1c1902b1109b7",
-    "assets/p/f5274d8e18516ec3",
-    "assets/p/027e6c2b2ac70ff6",
-    "assets/p/4596f49edbd4c8df"
-   ]
-  },
-  {
-   "id": "jl30-short",
-   "model": "JL30 · Short",
-   "name": "The low cylinder",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "30 × 28.5",
-   "neck": "FEA15",
-   "weight": "27 g",
-   "page": 18,
-   "description": "The lower-profile JL30 assembly, retaining the 30 mm diameter in a shorter form.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold"
-   ],
-   "images": [
-    "assets/p/3436cff050df2003",
-    "assets/p/5923afab81789217",
-    "assets/p/258327c73d4611a0",
-    "assets/p/8ab24edd8627a79a",
-    "assets/p/17d4230c290ac049"
-   ]
-  },
-  {
-   "id": "jl35",
-   "model": "JL35",
-   "name": "The wide silhouette",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "35 × 28",
-   "neck": "FEA15",
-   "weight": "38 g",
-   "page": 22,
-   "description": "A wider 35 mm magnetic cap assembly, with polished or matte black, gold and silver options.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver",
-    "Matte black",
-    "Matte gold",
-    "Matte silver"
-   ],
-   "images": [
-    "assets/p/78446a6f3394849c",
-    "assets/p/a00c7e9e1a584ef1",
-    "assets/p/d69c8bc7056796f7",
-    "assets/p/9bd9e9e391740264",
-    "assets/p/cd78f63a9001e6ee",
-    "assets/p/c81ed2f2901aa020"
-   ]
-  },
-  {
-   "id": "jl52-round",
-   "model": "JLY52",
-   "name": "The tall round form",
-   "category": "cylinder",
-   "material": "Anodized aluminium",
-   "size": "35 × 41",
-   "neck": "FEA15",
-   "weight": "51 g",
-   "page": 24,
-   "description": "A taller cylindrical cap from the JL52 family, with black, gold and silver finishes.",
-   "note": "The product photograph identifies this round variant as JLY52; the page heading groups it within the JL52 range.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy silver"
-   ],
-   "images": [
-    "assets/p/382802a42e79220f",
-    "assets/p/4c89aab591331b01",
-    "assets/p/f3dcf32e9e43ffd1"
-   ]
-  },
-  {
-   "id": "jlf52",
-   "model": "JLF52",
-   "name": "The architectural square",
-   "category": "sculptural",
-   "material": "Anodized aluminium",
-   "size": "35 × 41",
-   "neck": "FEA15",
-   "weight": "51 g",
-   "page": 24,
-   "description": "An angular magnetic cap profile shown alongside the JL52 family, in glossy black, gold and coffee.",
-   "note": "The catalogue lists the family size as 35 × 41 mm. Confirm square-profile dimensions and collar fit when enquiring.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold",
-    "Glossy coffee"
-   ],
-   "images": [
-    "assets/p/4da4df9446acf3a6",
-    "assets/p/e859bd84c6c5900d",
-    "assets/p/05cb4e6631c18902"
-   ]
-  },
-  {
-   "id": "jlq32",
-   "model": "JLQ32",
-   "name": "The metallic dome",
-   "category": "sculptural",
-   "material": "Anodized aluminium",
-   "size": "32.5 × 35",
-   "neck": "FEA15",
-   "weight": "30 g assembly",
-   "finishes": [
-    "Glossy gold presentation"
-   ],
-   "description": "A domed electro-aluminium magnetic cap shown in glossy gold and silver.",
-   "note": "The specification image lists a 26.5 g cap and a 3.5 g shoulder collar (30 g total). Enquire for the silver finish.",
-   "images": [
-    "assets/p/2691f413ef31c652"
-   ],
-   "page": 28
-  },
-  {
-   "id": "jlc33",
-   "model": "JLC33",
-   "name": "The geometric accent",
-   "category": "sculptural",
-   "material": "Aluminium cap assembly",
-   "size": "31 × 33.6 × 29",
-   "neck": "FEA15",
-   "weight": "36.8 g assembly",
-   "finishes": [
-    "Glossy black presentation"
-   ],
-   "description": "A rectangular magnetic cap in glossy black with shoulder collar options in gold, black or silver.",
-   "note": "The image lists 33 g for the cap and 3.8 g for the collar (36.8 g total). Confirm dimensions against the technical drawing.",
-   "images": [
-    "assets/p/d33fd09e7f4d11a6"
-   ],
-   "page": 29
-  },
-  {
-   "id": "jlq40",
-   "model": "JLQ40",
-   "name": "The wooden sphere",
-   "category": "wood",
-   "material": "Hardwood",
-   "size": "40 × 35",
-   "neck": "FEA15",
-   "weight": "32 g",
-   "page": 34,
-   "description": "A spherical hardwood magnetic cap with visible natural character. The catalogue lists ash, beech and black walnut options.",
-   "finishes": [
-    "Coffee wood",
-    "White wood",
-    "Black wood"
-   ],
-   "images": [
-    "assets/p/eec51d7644137ccc",
-    "assets/p/c3187b826af9f5f1",
-    "assets/p/f5a43a18bb3a4421"
-   ]
-  },
-  {
-   "id": "jlm36",
-   "model": "JLM36",
-   "name": "The wooden dome",
-   "category": "wood",
-   "material": "Hardwood",
-   "size": "36 × 34",
-   "neck": "FEA15",
-   "weight": "34.2 g",
-   "page": 34,
-   "description": "A rounded hardwood magnetic cap in black, paired with a gold shoulder collar.",
-   "note": "Model name follows the JLM36 label printed on the product photograph.",
-   "finishes": [
-    "Black wood"
-   ],
-   "images": [
-    "assets/p/71ebce77c7535180"
-   ]
-  },
-  {
-   "id": "jlm42",
-   "model": "JLM42",
-   "name": "The wooden bowl",
-   "category": "wood",
-   "material": "Hardwood",
-   "size": "41.6 × 33.5",
-   "neck": "FEA15",
-   "weight": "40 g",
-   "page": 34,
-   "description": "A broad, gently curved hardwood magnetic cap shown in black with a silver shoulder collar.",
-   "finishes": [
-    "Black wood"
-   ],
-   "images": [
-    "assets/p/b233a221f567dc62"
-   ]
-  },
-  {
-   "id": "jl30-rolled",
-   "model": "JL30 · Bead rolled",
-   "name": "The rolled cylinder",
-   "category": "ribbed",
-   "material": "Anodized aluminium",
-   "size": "30 × 30.7",
-   "neck": "FEA15",
-   "weight": "28 g",
-   "page": 7,
-   "description": "The bead-rolling version of the JL30 cap assembly, shown in glossy black and gold.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold"
-   ],
-   "images": [
-    "assets/p/4d6200754d0a0cb7",
-    "assets/p/37c807273dc4226e"
-   ]
-  },
-  {
-   "id": "jl30s-rolled",
-   "model": "JL30S · Bead rolled",
-   "name": "The rolled compact",
-   "category": "ribbed",
-   "material": "Anodized aluminium",
-   "size": "30 × 29.7",
-   "neck": "FEA15",
-   "weight": "27 g",
-   "page": 7,
-   "description": "The bead-rolling version of the JL30S magnetic cap assembly.",
-   "finishes": [
-    "Glossy black",
-    "Glossy gold"
-   ],
-   "images": [
-    "assets/p/5cc4c284d77d133a",
-    "assets/p/caf122d80a5ca654"
-   ]
+   "source": "photo"
   },
   {
    "id": "wl100-rolled",
@@ -777,9 +179,31 @@ window.JIALAN = {
     "Glossy gold"
    ],
    "images": [
-    "assets/p/8df2940ab79e39a5",
-    "assets/p/b29f9980a8e5d104"
-   ]
+    "assets/p/6eaff4231655f387",
+    "assets/p/d3ad15033bca60f4"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jl30-rolled",
+   "model": "JL30 · Bead rolled",
+   "name": "The rolled cylinder",
+   "category": "ribbed",
+   "material": "Anodized aluminium",
+   "size": "30 × 30.7",
+   "neck": "FEA15",
+   "weight": "28 g",
+   "page": 7,
+   "description": "The bead-rolling version of the JL30 cap assembly, shown in glossy black and gold.",
+   "finishes": [
+    "Glossy black",
+    "Glossy gold"
+   ],
+   "images": [
+    "assets/p/b362ad67fdc7deb9",
+    "assets/p/31c2d7ee114c8be9"
+   ],
+   "source": "photo"
   },
   {
    "id": "finishes",
@@ -791,106 +215,219 @@ window.JIALAN = {
    "neck": "FEA15",
    "weight": "Varies by model",
    "page": 33,
-   "description": "Brushed, sandblasted and hydrographic treatments for selected WL, KY and JL cap models. Choose a treatment and confirm the model specification.",
+   "description": "Brushed, sandblasted, hydrographic and coated treatments for selected WL, KY and JL cap models. Choose a treatment and confirm the model specification.",
    "note": "Fitting, dimensions and weight vary by selected model. The WL50 special-finish page lists FEA15; the standard WL50 page lists FEA13. Confirm the required fitting with the supplier.",
    "finishes": [
-    "KY100 · Sandblasted gold",
-    "WL100 · Sandblasted silver",
-    "KY100 · Brushed red",
-    "JL30 · Brushed rose",
-    "WL100 · Brushed gold",
-    "JL30 · Sandblasted gold",
-    "WL50 · Sandblasted silver",
-    "WL50 · Brushed gold",
-    "WL100 · Hydrographics",
-    "JL30 · Hydrographics"
+    "JL30 · Brushed process, pink",
+    "WL100 · Brushed process",
+    "JL30 · Sandblasting process, gold",
+    "WL100 & JL30 · Hydrographics",
+    "WL100 · Coating process"
    ],
    "images": [
-    "assets/p/2b2da25dbc5f7423",
-    "assets/p/033c3eb930879488",
-    "assets/p/6a6927b21586f9e4",
-    "assets/p/0bb66ed06d28f92b",
-    "assets/p/760fbe5bc86577aa",
-    "assets/p/9fcc123c22a961e5",
-    "assets/p/50495545a7c3f681",
-    "assets/p/492a505af9e505df",
-    "assets/p/c3e4be97c8e50a86",
-    "assets/p/a9a4640cf95e1c10"
-   ]
+    "assets/p/2543540bc1e2d7c5",
+    "assets/p/b1107937a2a21588",
+    "assets/p/e73ba7fcdbdf5d3e",
+    "assets/p/43ae1df19bd3203b",
+    "assets/p/3f59b7f38b991b1b"
+   ],
+   "source": "photo"
   },
   {
-   "id": "collars",
-   "model": "Shoulder collars",
-   "name": "The connecting detail",
-   "category": "accessories",
-   "material": "Metal collar components",
-   "size": "Multiple profiles",
-   "neck": "FEA13 / FEA15",
-   "weight": "Confirm selection",
-   "finishes": [
-    "Assorted finishes"
-   ],
-   "description": "Single-step and double-step shoulder collars in metallic and coloured finishes, with FEA13 and FEA15 options shown in the catalogue.",
-   "note": "Choose the collar height and profile to suit the matching cap and bottle. See pages 38–39 for the full range.",
-   "images": [
-    "assets/p/884bb972dd55bb75"
-   ],
-   "page": 38
-  },
-  {
-   "id": "jl30-collars",
-   "model": "JL30 collars",
-   "name": "The matched collar",
-   "category": "accessories",
-   "material": "Metal collar components",
-   "size": "See technical drawing",
+   "id": "jlq36",
+   "model": "JLQ36",
+   "name": "The statement sphere",
+   "category": "sculptural",
+   "material": "ABS",
+   "size": "35.8 × 33",
    "neck": "FEA15",
-   "weight": "Confirm selection",
+   "weight": "32 g",
+   "page": 26,
+   "badge": "SCULPTURAL",
+   "description": "A spherical magnetic cap with a rounded silhouette and coordinated shoulder collar. Available in metallic and coloured finishes.",
    "finishes": [
-    "Assorted metallic finishes"
+    "Glossy black",
+    "Glossy gold",
+    "Glossy silver",
+    "Matte black"
    ],
-   "description": "JL30 shoulder collar profiles, plus multi-step and special-shaped collars for different cap assemblies.",
    "images": [
-    "assets/p/7d903accc0bfe15c"
+    "assets/p/6ba9bc58bbfb3032",
+    "assets/p/a06e1e92eb9a480b",
+    "assets/p/567b3c60a68d2480",
+    "assets/p/ea7fe01d171f7726"
    ],
-   "page": 39
+   "source": "photo"
   },
   {
-   "id": "square-collars",
-   "model": "Square & middle collars",
-   "name": "The supporting form",
-   "category": "accessories",
-   "material": "Metal collar components",
-   "size": "See technical drawing",
+   "id": "jlw37",
+   "model": "JLW37",
+   "name": "The rounded silhouette",
+   "category": "sculptural",
+   "material": "ABS",
+   "size": "36.8 × 30",
    "neck": "FEA15",
-   "weight": "Confirm selection",
+   "weight": "28 g",
+   "page": 27,
+   "description": "A softly rounded magnetic cap assembly, offered in black, gold and white with glossy or matte finishes.",
    "finishes": [
-    "Gold & coloured assortment"
+    "Glossy black",
+    "Matte white"
    ],
-   "description": "Square shoulder collars and middle collars, shown alongside circular collar options in the catalogue.",
    "images": [
-    "assets/p/dc09ee17b06228b2"
+    "assets/p/1e70ba397d573b30",
+    "assets/p/2058e2b5777e212d"
    ],
-   "page": 39
+   "source": "photo"
   },
   {
-   "id": "pumps",
-   "model": "Perfume pumps",
-   "name": "The finishing system",
-   "category": "accessories",
-   "material": "Anodized pump components",
-   "size": "Multiple assemblies",
-   "neck": "FEA13 / FEA15",
-   "weight": "Confirm selection",
+   "id": "jlf33",
+   "model": "JLF33",
+   "name": "The soft square",
+   "category": "sculptural",
+   "material": "Aluminium cap assembly",
+   "size": "33 × 33 × 27.6",
+   "neck": "FEA15",
+   "weight": "30.6 g",
+   "badge": "SQUARE FORM",
    "finishes": [
-    "Gold pump presentation"
+    "Glossy black",
+    "Glossy gold"
    ],
-   "description": "Anodized perfume pumps in black, gold and silver, with FEA13 and FEA15 fitting options.",
-   "note": "Contact us to confirm the pump assembly, finish, dosage and bottle compatibility.",
+   "description": "A square magnetic cap with rounded edges, shown in black and gold in the catalogue’s new-product presentation.",
+   "note": "Enquire to confirm individual finish options and the matching shoulder collar.",
+   "page": 30,
    "images": [
-    "assets/p/f398d807c6268825"
+    "assets/p/67c8e3f1ea2fb9c4",
+    "assets/p/cb1ce210f0ecbbb3"
    ],
-   "page": 40
+   "source": "photo"
+  },
+  {
+   "id": "jlc33",
+   "model": "JLC33",
+   "name": "The geometric accent",
+   "category": "sculptural",
+   "material": "Aluminium cap assembly",
+   "size": "31 × 33.6 × 29",
+   "neck": "FEA15",
+   "weight": "36.8 g assembly",
+   "finishes": [
+    "Glossy black"
+   ],
+   "description": "A rectangular magnetic cap in glossy black with shoulder collar options in gold, black or silver.",
+   "note": "The image lists 33 g for the cap and 3.8 g for the collar (36.8 g total). Confirm dimensions against the technical drawing.",
+   "page": 29,
+   "images": [
+    "assets/p/0b0a8558f677d9a3"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jlf52",
+   "model": "JLF52",
+   "name": "The architectural square",
+   "category": "sculptural",
+   "material": "Anodized aluminium",
+   "size": "35 × 41",
+   "neck": "FEA15",
+   "weight": "51 g",
+   "page": 24,
+   "description": "An angular magnetic cap profile shown alongside the JL52 family, in glossy black, gold and coffee.",
+   "note": "The catalogue lists the family size as 35 × 41 mm. Confirm square-profile dimensions and collar fit when enquiring.",
+   "finishes": [
+    "Glossy gold",
+    "Square · Gold, green, red & black"
+   ],
+   "images": [
+    "assets/p/e2bf4a0883ed0bff",
+    "assets/p/2267a2b14505e6e8"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jlm31",
+   "model": "JLM31",
+   "name": "The natural cylinder",
+   "category": "wood",
+   "material": "Hardwood",
+   "size": "30.5 × 32.5",
+   "neck": "FEA15",
+   "weight": "28 g",
+   "page": 34,
+   "badge": "NATURAL MATERIAL",
+   "description": "A hardwood magnetic cap with a cylindrical profile. The catalogue lists ash, beech and black walnut wood options.",
+   "finishes": [
+    "Cylindrical wood · Black",
+    "Cylindrical wood · Coffee",
+    "Cylindrical wood · White"
+   ],
+   "images": [
+    "assets/p/9798d3ab62c30774",
+    "assets/p/70a2834d9d373c6b",
+    "assets/p/3a8830f48fb67515"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jlq40",
+   "model": "JLQ40",
+   "name": "The wooden sphere",
+   "category": "wood",
+   "material": "Hardwood",
+   "size": "40 × 35",
+   "neck": "FEA15",
+   "weight": "32 g",
+   "page": 34,
+   "description": "A spherical hardwood magnetic cap with visible natural character. The catalogue lists ash, beech and black walnut options.",
+   "finishes": [
+    "White",
+    "Coffee"
+   ],
+   "images": [
+    "assets/p/8378fe91af13b6d5",
+    "assets/p/d3e1669e32be5729"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jlm36",
+   "model": "JLM36",
+   "name": "The wooden dome",
+   "category": "wood",
+   "material": "Hardwood",
+   "size": "36 × 34",
+   "neck": "FEA15",
+   "weight": "34.2 g",
+   "page": 34,
+   "description": "A rounded hardwood magnetic cap in black, paired with a gold shoulder collar.",
+   "note": "Model name follows the JLM36 label printed on the product photograph.",
+   "finishes": [
+    "Black wood"
+   ],
+   "images": [
+    "assets/p/ced04a49a799e3ca"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jlm42",
+   "model": "JLM42",
+   "name": "The wooden bowl",
+   "category": "wood",
+   "material": "Hardwood",
+   "size": "41.6 × 33.5",
+   "neck": "FEA15",
+   "weight": "40 g",
+   "page": 34,
+   "description": "A broad, gently curved hardwood magnetic cap shown in black with a silver shoulder collar.",
+   "finishes": [
+    "Black wood"
+   ],
+   "images": [
+    "assets/p/93a77349bcb62f3a"
+   ],
+   "source": "photo"
   },
   {
    "id": "cosmetic-caps",
@@ -902,14 +439,105 @@ window.JIALAN = {
    "neck": "Custom",
    "weight": "Confirm selection",
    "finishes": [
-    "Glossy gold assortment"
+    "Cream cap"
    ],
    "description": "Closures for healthcare, facial cream, essential oil and lotion packaging. The catalogue includes 45 × 12.5, 30 × 12.5 and 63.5 × 19.1 mm examples.",
    "note": "Specify the container and required closure dimensions in your enquiry.",
+   "page": 36,
    "images": [
-    "assets/p/3fa47c1278c08f00"
+    "assets/p/742d90345914f5da"
    ],
-   "page": 36
+   "source": "photo"
+  },
+  {
+   "id": "collars",
+   "model": "Shoulder collars",
+   "name": "The connecting detail",
+   "category": "accessories",
+   "material": "Metal collar components",
+   "size": "Multiple profiles",
+   "neck": "FEA13 / FEA15",
+   "weight": "Confirm selection",
+   "finishes": [
+    "WL100 glossy black shoulder collar",
+    "KY100 double-step shoulder collar",
+    "WL100 shoulder collar"
+   ],
+   "description": "Single-step and double-step shoulder collars in metallic and coloured finishes, with FEA13 and FEA15 options shown in the catalogue.",
+   "note": "Choose the collar height and profile to suit the matching cap and bottle. See pages 38–39 for the full range.",
+   "page": 38,
+   "images": [
+    "assets/p/502f3bdf75608388",
+    "assets/p/2fa30ebfab4c7c37",
+    "assets/p/892f45236cdb04a7"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "jl30-collars",
+   "model": "JL30 collars",
+   "name": "The matched collar",
+   "category": "accessories",
+   "material": "Metal collar components",
+   "size": "See technical drawing",
+   "neck": "FEA15",
+   "weight": "Confirm selection",
+   "finishes": [
+    "JL30 shoulder collar"
+   ],
+   "description": "JL30 shoulder collar profiles, plus multi-step and special-shaped collars for different cap assemblies.",
+   "page": 39,
+   "images": [
+    "assets/p/a326ac39cd7f403a"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "square-collars",
+   "model": "Square & middle collars",
+   "name": "The supporting form",
+   "category": "accessories",
+   "material": "Metal collar components",
+   "size": "See technical drawing",
+   "neck": "FEA15",
+   "weight": "Confirm selection",
+   "finishes": [
+    "Square shoulder collar",
+    "Glossy gold middle collar",
+    "Glossy silver middle collar",
+    "Middle collar"
+   ],
+   "description": "Square shoulder collars and middle collars, shown alongside circular collar options in the catalogue.",
+   "page": 39,
+   "images": [
+    "assets/p/bbec0f667aa01117",
+    "assets/p/f2bd36d63d84f7d2",
+    "assets/p/985262803a7d4028",
+    "assets/p/484e6dbb9f67d9bd"
+   ],
+   "source": "photo"
+  },
+  {
+   "id": "pumps",
+   "model": "Perfume pumps",
+   "name": "The finishing system",
+   "category": "accessories",
+   "material": "Anodized pump components",
+   "size": "Multiple assemblies",
+   "neck": "FEA13 / FEA15",
+   "weight": "Confirm selection",
+   "finishes": [
+    "Anodized pumps",
+    "Plastic pumps"
+   ],
+   "description": "Anodized and plastic perfume pumps in gold, silver and black, with FEA13 and FEA15 fitting options.",
+   "note": "Contact us to confirm the pump assembly, finish, dosage and bottle compatibility.",
+   "page": 40,
+   "images": [
+    "assets/p/7249dad5f08a2ffc",
+    "assets/p/18b7f031422a4ddf"
+   ],
+   "source": "photo"
   },
   {
    "id": "lipstick",
@@ -921,1542 +549,15 @@ window.JIALAN = {
    "neck": "Custom",
    "weight": "Confirm selection",
    "finishes": [
-    "Assorted coloured tubes"
+    "Lipstick tube"
    ],
    "description": "Lipstick tubes and lipstick bundles are available for customisation, alongside the catalogue’s cosmetic closure range.",
    "note": "Enquire with your required dimensions, mechanism and decoration.",
+   "page": 36,
    "images": [
-    "assets/p/c040bf0594303a69"
+    "assets/p/85c5a3305159d6f9"
    ],
-   "page": 36
-  },
-  {
-   "id": "store-1601080781366",
-   "source": "store",
-   "model": "Round luxury perfume bottle",
-   "name": "30 / 50 / 100 ml glass with pump sprayer, custom colour and logo",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.63–0.65",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H789cc10a01934dc4a964642936e0b97fU.jpg",
-    "Hd7462b3d1fd04db19247d15ac767bab1K.jpg",
-    "H0f2cfefdcc914f398426e2c100bd181am.jpg",
-    "H1ff42b101cb84ae1bb251943fb1f544fr.png"
-   ]
-  },
-  {
-   "id": "store-1601082169506",
-   "source": "store",
-   "model": "Refillable round spray bottle",
-   "name": "30 / 50 / 100 ml round glass with aluminium pump and magnetic cap",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.26–0.28",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H9340aaf8f62740c2aa0aacf9895d3b25Y.jpg",
-    "H00d0f764b71742cea8567836bbef36b4w.jpg",
-    "Hc8a186b3a10a4f70a698702f5bc09036x.jpg",
-    "Haa7ceab5700a4599a0a5d4bcc1f4246dh.jpg"
-   ]
-  },
-  {
-   "id": "store-1601082154667",
-   "source": "store",
-   "model": "Round fine-mist bottle",
-   "name": "20 / 30 / 60 ml round glass with fine-mist spray cap",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.32",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H231e112490464974b3ef28c06f41705dj.jpg",
-    "Hbad7816d32684c7f999c5b0ba154b9b4d.jpg",
-    "H0e3d0b86cad54edea76143b3b6f8f719L.jpg",
-    "H0f86dd8a229a454d832d818d953a0743T.jpg"
-   ]
-  },
-  {
-   "id": "store-1601087167924",
-   "source": "store",
-   "model": "Flat circle perfume bottle",
-   "name": "30 / 50 / 100 ml flat round glass with pump sprayer",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.29",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hbe7b1fbb5890413fac8f16b2b75125085.jpg",
-    "Hf0082835056446bbbcec9462a264f9b0n.jpg",
-    "H0e8003af58154c60b08a5ff8c6829fc7z.jpg",
-    "Hbc35f9ffe7a0490fa7fea98d4f533c09M.jpg"
-   ]
-  },
-  {
-   "id": "store-1601101880210",
-   "source": "store",
-   "model": "Mini sample atomizers",
-   "name": "2 – 15 ml clear glass testers with pump sprayer",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.13",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H84fbfdea711d4b6084258b77f67dde32e.png",
-    "Hdf5c3e753dec40f3ab48b51e783f1b43W.png",
-    "H7dd502a377cf45068382e524261439cfg.png",
-    "Hdb1adf07695344b7ba9bc76d19946f539.png"
-   ]
-  },
-  {
-   "id": "store-1601109280821",
-   "source": "store",
-   "model": "Spherical glass bottle",
-   "name": "30 / 50 / 75 ml sphere with 15 mm bayonet pump",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.33",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H16c836c4fc5346c980be239a19c8c034W.png",
-    "Hcd99ee03c62d406b999ceace069cf6102.png",
-    "H37a2508fd65d4093baa2fdcdf31a41596.png",
-    "H2b0132501c9e4c43838cf49112f88f87g.png"
-   ]
-  },
-  {
-   "id": "store-1601114622052",
-   "source": "store",
-   "model": "Travel atomizer bottle",
-   "name": "30 / 50 ml clear glass, refillable and sealed",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.70–0.72",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H48054d6660144622b67e231f0bd84e6aT.png",
-    "Hfabc533f70ff4a27ba39be685dcd957fx.png",
-    "Ha805dfdcc24247c0a30c79d019997bc8i.png",
-    "H5fbe0e8fa3ee45aa9d6aa617cbb17bb2s.png"
-   ]
-  },
-  {
-   "id": "store-1601170746762",
-   "source": "store",
-   "model": "Clear travel spray bottle",
-   "name": "50 ml clear glass for perfume or essential oils",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.78",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hf6b98e39cadb4855a5247eceb1ca6700M.jpg",
-    "He4cf0d4459814299a706d402760b2c6e2.jpg",
-    "H6104fbde93794ccb8fee367b11978f82m.png",
-    "H1d797f15c9ed411493a723cbfbdc3423f.png"
-   ]
-  },
-  {
-   "id": "store-1601175253810",
-   "source": "store",
-   "model": "Fancy square mini bottle",
-   "name": "18 ml square glass spray bottle, refillable",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H95dc526828e74e3fb137ae46cd7faf34i.png",
-    "H0d19ee9af561425183b19c529b2c28f2B.png",
-    "H38dfda6622c149dd9e98e54158a7718d6.png",
-    "Ha287dd4f1b884bc2b45ff74d0ca08528S.png"
-   ]
-  },
-  {
-   "id": "store-1601175445403",
-   "source": "store",
-   "model": "Heavy square bottle, leather cap",
-   "name": "100 ml thick-base square glass with leather-finish cap",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.58–0.74",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hab493a7b75664d50b9aeca30fc3fc110x.jpg",
-    "Hd02d230f3b70417987b3971e7a710746b.jpg",
-    "H3bc9092c592d47e6ba969eeb9c80c28cH.jpg",
-    "Hbc28cf19a273447ebe73ac32df9443c02.jpg"
-   ]
-  },
-  {
-   "id": "store-1601175338720",
-   "source": "store",
-   "model": "Acid-etched bottle, magnetic cap",
-   "name": "50 ml frosted glass atomizer with magnetic cap",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.43–0.63",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Heebc96015c114061820bb505c39a2b9eE.png",
-    "H1340ab4fb00b4952973c150d6a1a0cd6O.png",
-    "Hc8de8ec436ba48eeb424af80e45f39cfy.png",
-    "H9e44ae2d1b6843268d47c984a3402d98E.png"
-   ]
-  },
-  {
-   "id": "store-1601196750750",
-   "source": "store",
-   "model": "Frosted pocket sprayer",
-   "name": "2 – 5 ml plastic sample bottles with pump",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.04–0.08",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H7088c8cee937482c9e6bd08403de7cc4A.jpg",
-    "H9e94e112bdb44969bc92ed922c818cd8z.jpg",
-    "Hf852efdd15804b198c8d6bf6d464fce33.jpg",
-    "H3cd7397868c24af6ace65f59e75f47efX.jpg"
-   ]
-  },
-  {
-   "id": "store-1601347819571",
-   "source": "store",
-   "model": "Portable glass perfume bottle",
-   "name": "30 / 50 ml glass with sealed pump sprayer",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hfe7167b2761c43dfba253793e021b614X.jpg",
-    "H3f1e1f7da6f6474684fc73f165f0c8e1v.jpg",
-    "H89ad84223b874f1a8c225ca7ac2eb3f8S.jpg",
-    "H0282cbd5aa0941bca0382bfc7bf96548N.jpg"
-   ]
-  },
-  {
-   "id": "store-1601347918413",
-   "source": "store",
-   "model": "Etched bottle with engraved cap",
-   "name": "Acid-etched glass, magnetic cap assembly, engraved logo",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hc7529cd678bf4db190cd4f745b21e92dG.jpg",
-    "H721b64cf01054431a5b687a3f213f3816.jpg",
-    "H1ed73d9fb3554dff9417642f8924282dT.jpg",
-    "Ha1cd42f2ca48411f984a6ce217f47b1eY.jpg"
-   ]
-  },
-  {
-   "id": "store-1601348072199",
-   "source": "store",
-   "model": "Walnut-shaped spray bottle",
-   "name": "30 / 50 ml large-capacity glass with pump",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.70–0.72",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hf6a816c44c434ad4acb2b97fb6f01203W.jpg",
-    "H4a7d5ed3e5134ab083ecf4b38e7676f7G.jpg",
-    "Hbe3d0f3a2ec54f1aa76ec5dcd52bb3b1w.jpg",
-    "H76fde8a7d0304c20baa9f3b6a5634892f.jpg"
-   ]
-  },
-  {
-   "id": "store-1601351947551",
-   "source": "store",
-   "model": "Blue gradient flat bottle",
-   "name": "50 / 100 ml flat glass with acid-etched surface",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.62",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H8a0d62c0fff242b585f49cf894abf863i.jpg",
-    "H2e49e5ca5b9547719fbb8c2c1cdc0ce5n.jpg",
-    "H61a4c2472ad74b609f679ec5cb84fa2e4.jpg",
-    "Hb6d5b6a909c2484f942cefae82df3a68R.jpg"
-   ]
-  },
-  {
-   "id": "store-1601353339886",
-   "source": "store",
-   "model": "Press-type travel bottle",
-   "name": "30 ml large-capacity glass with pump sprayer",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.52",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hf385baf71cf44c08be1bfb8c6b3270c5u.jpg",
-    "Hff7e13d1aa2146da8b67ce1b102ada313.jpg",
-    "H339f402a2993477688ddf2e86178dd9al.jpg",
-    "H1d5a396733ba4191a4c3c171f502090fn.jpg"
-   ]
-  },
-  {
-   "id": "store-1601353948803",
-   "source": "store",
-   "model": "Black frosted square bottle",
-   "name": "50 ml bayonet bottle with pump",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H30d1abef519a4dbc92c7a42bba3ff272R.jpg",
-    "H1020b2ae23b54b77b067578c3dd95938Y.jpg",
-    "H75f46750c8614cdb86435746b674ca67u.jpg",
-    "H6ca008777c8840cabd77fd5896827f5b6.jpg"
-   ]
-  },
-  {
-   "id": "store-1601354051263",
-   "source": "store",
-   "model": "Crystal white bottle",
-   "name": "Bayonet glass bottle with magnetic cap, custom colour",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H5ecc1d4d4d0e4b508da160dddb527cb5S.jpg",
-    "Hebaa4c0b20bc4b29b3aac8d5bd5b5af8f.jpg",
-    "H10d0a1dfd1e84248ab529f76c43c6164I.jpg",
-    "Hcebb6e668a9948fe8545ea37fb2afb2do.jpg"
-   ]
-  },
-  {
-   "id": "store-1601364260272",
-   "source": "store",
-   "model": "Petal hexagonal bottle",
-   "name": "100 ml hexagonal glass, 15 mm pump",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.61–0.65",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H87a004f219664d05b6564978e2cb546dI.jpg",
-    "Hc90a940fee014f24a3957008095ffd18B.jpg",
-    "Hb6fca512c0fa457ca960e1925d2eacdd5.jpg",
-    "H01e64de5e6b847cdb3f2309f68f90aa9G.jpg"
-   ]
-  },
-  {
-   "id": "store-1601570257728",
-   "source": "store",
-   "model": "Essential oil dropper bottles",
-   "name": "5 – 100 ml glass with screw caps and droppers",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.01",
-   "moq": 5000,
-   "badge": "BESTSELLER",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H1a6ee664e989432eb1ea3234c3e02a8aD.png",
-    "Hc0dc4b45e3664f8eb0fb23555817a056l.png",
-    "H0829410295c8401eb2d5e6ddf3f340bcH.jpg",
-    "H4399151faa4740cf96bf8fef12c289ace.jpg"
-   ]
-  },
-  {
-   "id": "store-1601570490417",
-   "source": "store",
-   "model": "Bottle set with magnetic cap",
-   "name": "Glass bottle, magnetic cap and mist-blocking spray head",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.94",
-   "moq": 5000,
-   "badge": "COMPLETE SET",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hd8056bfb722640ba86ac9b10bff009a6L.jpg",
-    "Hbb54f4e562444244b0254a36611091abt.jpg",
-    "Hd968ee72b8d140739fee933468307661A.jpg",
-    "Hac28626ea3aa47f091cf7a6d41447e96k.jpg"
-   ]
-  },
-  {
-   "id": "store-1601575406729",
-   "source": "store",
-   "model": "Magnetic glass bottle set",
-   "name": "Bottle, cap and mist-blocking spray head together",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.91–0.94",
-   "moq": 5000,
-   "badge": "COMPLETE SET",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H890df221aaca4328a72d4de8b33a82d87.jpg",
-    "H7c1d8eef0c8e41f49541321f477106f0C.jpg",
-    "H2e0b043fea1a4de58c23347d79015e07h.jpg",
-    "H56e0ca7a456748eb83b55fe743d56ce29.jpg"
-   ]
-  },
-  {
-   "id": "store-1601575376783",
-   "source": "store",
-   "model": "BC-3",
-   "name": "Magnetic glass bottle set, custom colour, shape and size",
-   "category": "bottles",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.94",
-   "moq": 5000,
-   "badge": "COMPLETE SET",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H09db992e1c9543b3b30ac718d692979d1.jpg",
-    "Hdac456d43929422b915bf4ec580d4c55x.jpg",
-    "Hf0ccf719848946f388e0e0b5f1717680j.jpg",
-    "Hd2b8cbcf2e5344afb78a812533d36f016.jpg"
-   ]
-  },
-  {
-   "id": "store-1601205996050",
-   "source": "store",
-   "model": "Crown zinc-alloy cap",
-   "name": "Decorative crown design for 50 ml bottles",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.24",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H9388b23333d943ae86d9ea35a7eb3bdbD.jpg",
-    "H98a498b7f5454f1797b085be5252349dm.jpg",
-    "H580bda50c84d46e3bceae9b2e9eddb0dK.jpg",
-    "Ha123b992b3904819998c5e40d1577272L.jpg"
-   ]
-  },
-  {
-   "id": "store-1601203461083",
-   "source": "store",
-   "model": "Cylinder cap with logo",
-   "name": "Plastic perfume cap with custom logo",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.14–0.24",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H81e5dc1961864330aa4c96518aa2ccb5J.jpg",
-    "Hf08864b679d14cb98db56b6284b3d727S.jpg",
-    "H17926b59c0ed43b58eabe9d2134e6562z.jpg",
-    "H758dce95d938476f92a74af5c6731759z.jpg"
-   ]
-  },
-  {
-   "id": "store-1601207402639",
-   "source": "store",
-   "model": "Black plastic caps",
-   "name": "Perfume caps in various shapes and sizes",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.20",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hdb1f7fa0a4564e8e99ec27dcf74b4e02r.jpg",
-    "H3b4449ce0ab24a179eb3ed6a34f69188j.jpg",
-    "H205ddd21bbba401080bd002334e13201W.jpg",
-    "H1ea05260cb2d4921992d80528b2d254aq.jpg"
-   ]
-  },
-  {
-   "id": "store-1601202751632",
-   "source": "store",
-   "model": "Leak-proof 15 mm cap",
-   "name": "Aluminium-plastic fragrance cap, silver or gold",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.08",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hbf19129e6305461c972c3b6a4caba25f3.jpg",
-    "H3d2c2098a45641a8aa83e684b688c2784.jpg",
-    "Hecf08458c7724c7795fad9e96b82fedfc.jpg",
-    "Hc9b8058d30c24562b48c4bd4832298dfL.jpg"
-   ]
-  },
-  {
-   "id": "store-1601147083269",
-   "source": "store",
-   "model": "Scribe-thread screw cap",
-   "name": "Aluminium screw lid in gold, black or silver",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.09",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H6bbcc10f49544da8bba87a5537e1b9e8N.jpg",
-    "H2cfbc69fbaec4eff92a30ad82d399123J.jpg",
-    "H82ba54f4e4b8420699073a223cf2df67V.jpg",
-    "H982433affb374a7ba24db9d18dad5badh.jpg"
-   ]
-  },
-  {
-   "id": "store-1601451949761",
-   "source": "store",
-   "model": "Brushed aluminium lid",
-   "name": "Scribe metal lid in gold, black or silver",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.10",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H4198ad901e1741edbfbd2777128f28e1y.jpg",
-    "Heb8c08bbbf04465794b3a10d943c8b76h.jpg",
-    "Hf8a83f644c574ac6a87408d82081acc4X.jpg",
-    "H2dc1894aed0641428d8fafa32ca9618bO.jpg"
-   ]
-  },
-  {
-   "id": "store-1601453596462",
-   "source": "store",
-   "model": "Brushed lid for cream jars",
-   "name": "Gold and black scribe metal lid for face cream",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.10",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H50c23d99dfdd459999e10eabdad87febp.jpg",
-    "H70130d2c49b2434789ee38a74781936cA.jpg",
-    "H8ebfc7c93ff149098a696fa1838cdce8k.jpg",
-    "Hb349a2c763cf4744be53d10b22f85f0b4.jpg"
-   ]
-  },
-  {
-   "id": "store-1601365395825",
-   "source": "store",
-   "model": "Aluminium cosmetic cover",
-   "name": "Bottle cover in custom colour and shape",
-   "category": "closures",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.16",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hbd90360449334e3586b46d087c3ec84aR.jpg",
-    "Hdd0e9833803144da9f10b38976be361eW.jpg",
-    "Hb1160705d29645b1b05b3ce874cb7ae6j.jpg",
-    "H2054d316dcc548bf95cbde6e8ecd646aq.jpg"
-   ]
-  },
-  {
-   "id": "store-1601094587451",
-   "source": "store",
-   "model": "Magnetic cap and crimp collar",
-   "name": "FEA13 / 15 / 18 mm, gold or silver",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13 / FEA15",
-   "weight": "—",
-   "price": "US$0.02–0.04",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H29810d00a1e647aba3e59702ec66a569m.jpg",
-    "H91c39e3d7d4549e7b1a19bb1ea8a118eS.jpg",
-    "H7f360d57056a417b982fbef1d916abe6b.jpg",
-    "Hff2d045a954045d2833996097d973361Y.jpg"
-   ]
-  },
-  {
-   "id": "store-1601147041398",
-   "source": "store",
-   "model": "13 mm crimp collar",
-   "name": "Aluminium collar for fine-mist pumps, golden or silver",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13",
-   "weight": "—",
-   "price": "US$0.04",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "He7fe73c0ec044e85a1f2ba1dd31b72eb3.jpg",
-    "H91cc6622ccd745d78ee71903021e6e41B.jpg",
-    "H82c5e903a463446991f099d488c5220bm.jpg",
-    "H92c1aa6c6b584ba8bb3679ea791c007dP.jpg"
-   ]
-  },
-  {
-   "id": "store-1601146965680",
-   "source": "store",
-   "model": "BC-3",
-   "name": "Aluminium magnetic pump crimp, golden or silver",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.03",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H8f3c170bb3734bec89bddd1e9cb80280W.jpg",
-    "H440a9fa364d94f25a0147d2e3d8a8da6e.jpg",
-    "H6ab118c5c3154cd5876e20af80918683O.jpg",
-    "Hefe8b5ff883a49deafd07b140fd1387dz.jpg"
-   ]
-  },
-  {
-   "id": "store-1601153670084",
-   "source": "store",
-   "model": "Bayonet nozzle collar",
-   "name": "FEA13 / 15 / 18 customised collar for glass bottles",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13 / FEA15",
-   "weight": "—",
-   "price": "US$0.05",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hf69762b98075482b91647610496c9948r.jpg",
-    "Hc037099a7f634923b5f4f08d8eaae86ew.jpg",
-    "H1f1e53d2f8de4007b173497ea4d58d33v.jpg",
-    "H971721518bf044d9a7b67915bb50d5c7R.jpg"
-   ]
-  },
-  {
-   "id": "store-1601205993076",
-   "source": "store",
-   "model": "Metal magnetic collar",
-   "name": "13 / 15 / 18 mm aluminium pump crimp, golden or silver",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13 / FEA15",
-   "weight": "—",
-   "price": "US$0.05",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "He0975b7f722140a59fc078f3ab6200a0v.jpg",
-    "Hfa16aae001d1482d84a0a6709790c8339.jpg",
-    "Hd2839f4d8eab41978b320e9c47ac7273r.jpg",
-    "H9470e0a3d7c241e3b539e1f6d15a851bJ.jpg"
-   ]
-  },
-  {
-   "id": "store-1601392484237",
-   "source": "store",
-   "model": "Aluminium shoulder collar",
-   "name": "Bottle cap ring for spray bottles",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.08",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1"
-   ],
-   "images": [
-    "H2d8accf190064192b66d2580856ae7f0s.jpg"
-   ]
-  },
-  {
-   "id": "store-1601146941829",
-   "source": "store",
-   "model": "Aluminium-plastic collar",
-   "name": "Shoulder collar ring for cosmetic crimp sprayers",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.10",
-   "moq": 1000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hb4efd8e5a23b4725abcbcf7f1a080f9dR.jpg",
-    "H1954e0d860284c06a499b9b457a33470a.jpg",
-    "H56f1a2393e3d4545b4e0533f742eaaf6l.jpg",
-    "H9481c5067fa94563987d6d5ab67ee668w.jpg"
-   ]
-  },
-  {
-   "id": "store-1601175520157",
-   "source": "store",
-   "model": "Leak-proof pump collar",
-   "name": "FEA13 / 15 cylinder collar, silver, gold or black, custom logo",
-   "category": "accessories",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13 / FEA15",
-   "weight": "—",
-   "price": "US$0.11",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hce86f35b1fc04f86b866e841ec700182m.png",
-    "Hd0c1201484524f5e8065df611ddf197fq.jpg",
-    "Hca3e5e7475d3454598b680c82f2e3c1cn.png",
-    "H49b722cbcbf343d9874e3c8d154bff80F.png"
-   ]
-  },
-  {
-   "id": "store-1601452198173",
-   "source": "store",
-   "model": "Leak-proof magnetic cap set",
-   "name": "FEA15 aluminium magnetic cap with collar",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA15",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H292c2005766c4bfb9f18131a966a612eN.jpg",
-    "H58cc3af252c842f9882e7fb0e9b79b13w.jpg",
-    "H4d30269198fc4d16a8bdaf4929d5b061y.jpg",
-    "H1723943263814fd7944b1fd9ad451b19h.jpg"
-   ]
-  },
-  {
-   "id": "store-1601295650462",
-   "source": "store",
-   "model": "Single-step magnetic cover",
-   "name": "Anodized cap with single-step shoulder and middle sleeve",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": "BESTSELLER",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H7cae970c385c48ebb1c2d9e4d02a92bdx.jpg",
-    "Hd0f2c3ba85854841af64a15a7ab3ef51N.jpg",
-    "H5e70a855517c45b88e64497311e502c09.jpg",
-    "H776e7b1b92f94748822e1eb2e2420b2et.jpg"
-   ]
-  },
-  {
-   "id": "store-1601295931698",
-   "source": "store",
-   "model": "27.5 × 28 straight magnetic cap",
-   "name": "Aluminium-plastic magnetic cap, customisable logo",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": "BESTSELLER",
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hfc84abea05694edebc1c69f4d8486f1aw.jpg",
-    "H900379fd7c10494895392a4e2c8a702eH.jpg",
-    "Hf63289faa1a24e26b9fda06df2115aeab.jpg",
-    "H96556fc76def4cbf922ba00ddb4807a1K.jpg"
-   ]
-  },
-  {
-   "id": "store-1601000868320",
-   "source": "store",
-   "model": "27.5 × 28 magnetic ring assembly",
-   "name": "Aluminium-plastic magnetic lid with anodized cap",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.50",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H9deb29984fe74732bf9d330334597e23H.jpg",
-    "Ha59e7cb7efda46dd9ea8d1f9f6f3f8a9d.jpg",
-    "H28b221be5cdf4b838471d173f77f1038C.jpg",
-    "H5ad3bc5c3122437eae346bbbe0ed4aabo.jpg"
-   ]
-  },
-  {
-   "id": "store-1601452048346",
-   "source": "store",
-   "model": "31 × 31 magnetic cap assembly",
-   "name": "Aluminium-plastic lid with magnetic ring",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.55",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Heda1ef57bd164adaa00e7f5ad2d12fdeJ.jpg",
-    "H6831091896b94fd8b933bfe71600f564a.jpg",
-    "H302593c9a23249f59893271563332e56i.jpg",
-    "H6988207cbddf4189912086ba63ed701cN.jpg"
-   ]
-  },
-  {
-   "id": "store-1601012307809",
-   "source": "store",
-   "model": "25 × 25 magnetic cap assembly",
-   "name": "Straight round magnetic cap for pump sprayers",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.50",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hfad39a6711084d5c8a49586ec4d98edcI.jpg",
-    "H7278230b5307490a99ace274b9725c40l.jpg",
-    "H58d0b40c96b24d6a8d618083b3deb32fF.jpg",
-    "Hd45b0475c86d4fd9b517200e3d158613Y.jpg"
-   ]
-  },
-  {
-   "id": "store-1601536084592",
-   "source": "store",
-   "model": "Big-side sphere cap",
-   "name": "Electro-aluminium magnetic sphere with middle sleeve",
-   "category": "sculptural",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H345b2843f23b4d6a916707a7abb482e5o.jpg",
-    "Hd84dec25a74e4666b6cccd47f56ad4ab8.jpg",
-    "Ha39752ce56b8487781b57dc74290298ay.jpg",
-    "H0361ff91cf1d421a848347ca877b2aa9a.jpg"
-   ]
-  },
-  {
-   "id": "store-1601580193742",
-   "source": "store",
-   "model": "Spherical middle-sleeve cap",
-   "name": "Electro-aluminium magnetic sphere, big side",
-   "category": "sculptural",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hbe636765dba74a3092b63269365a0779k.jpg",
-    "H1cb9e1fc923d478ea20379829a04afc8J.jpg",
-    "H3ca1f397feb4465493a9ba1fc6acdce7d.jpg",
-    "H561a818cf5804e17a36dfac24796d9ael.jpg"
-   ]
-  },
-  {
-   "id": "store-1601584877312",
-   "source": "store",
-   "model": "Big-side magnetic closure",
-   "name": "Electro-aluminium lid with middle sleeve",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H760bcee71f9742f38dab74e82864549aL.jpg",
-    "H3eccd12e82244400a59b3391b2a897bfH.jpg",
-    "H2a45bdad80b34e9982cfe52bbc325b7fw.jpg",
-    "H1b391215161c4ef2b0c08de99ac42cf01.jpg"
-   ]
-  },
-  {
-   "id": "store-1601565562868",
-   "source": "store",
-   "model": "Raw hardwood magnetic cap",
-   "name": "Customisable solid wood perfume cap",
-   "category": "wood",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.70",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H441a58bfade84fdf8082ab32f7b18e8an.jpg",
-    "H8d8c2eacfd244b30a0cdde3008e5dd093.jpg",
-    "Hb147b19bcb1d4f878251d3e22494f03dd.jpg",
-    "Hb7fa43e4bbd44086904eab8f67bea7bbI.jpg"
-   ]
-  },
-  {
-   "id": "store-1601536766018",
-   "source": "store",
-   "model": "Wooden spherical cap",
-   "name": "Spherical magnetic cap in natural wood",
-   "category": "wood",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.70–0.72",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H046966c4c15240a88b1d943a7e49caa1n.jpg",
-    "Haad7d6941c704d47b1cf998ff4e3c3d6R.jpg",
-    "H840206227048453da4ae7f4572b84f40k.jpg",
-    "Hcc984a8d089c4dd9ac3d681048cbed12Y.jpg"
-   ]
-  },
-  {
-   "id": "store-1601362605356",
-   "source": "store",
-   "model": "Large-edge bright black cap",
-   "name": "Electro-aluminium magnetic cap with shoulder",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H3d06f6e0dd5b4a8a9c53dd18eed8fc83u.jpg",
-    "H051a7133de4f4fe1b81aa8f90f4e4250T.jpg",
-    "H4b373bcf4df34830980b4ac642a28439q.jpg",
-    "H90dcca80d74e4648add24b9b1e4b5aefk.jpg"
-   ]
-  },
-  {
-   "id": "store-1601561057419",
-   "source": "store",
-   "model": "Large-edge magnetic cap",
-   "name": "In stock for 15 / 13 mm necks, customisable",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA13 / FEA15",
-   "weight": "—",
-   "price": "US$0.53–0.55",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H33b580dd5d5c411e963a1fbc84099b6fj.jpg",
-    "He6b0a3d8803b487297768c6c25046bffZ.jpg",
-    "Hafd720ed394f486bb0d35677e6e594a8y.jpg",
-    "H91a603a11ca548129ef009587e82f671F.jpg"
-   ]
-  },
-  {
-   "id": "store-1601988296838",
-   "source": "store",
-   "model": "Square black anodized cap",
-   "name": "Square magnetic cap with anodized shoulder collar",
-   "category": "sculptural",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.78",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H9a27a2714c194b08a84b9a791a23dd87C.jpg",
-    "H91bfe2a5b2874629ba05553837c0b332L.jpg",
-    "Ha8fb4ec514f546ec8e86f515e3fd49ceZ.jpg",
-    "H583c507a6aa346449e79337d64b8a7658.jpg"
-   ]
-  },
-  {
-   "id": "store-1601569205597",
-   "source": "store",
-   "model": "White aluminium magnetic ring",
-   "name": "Custom-made magnetic ring cap component",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.63–0.65",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H64bab3b671b9478cb1a929ee3faeee12z.png",
-    "H1cc826b86f8f40a5b21e9be4ee12c732O.jpg",
-    "H199b9d96d1df4016b18f8dcaa4735fa6e.jpg",
-    "Ha8ac60f96b4843aaa7d4bb32d5e19fcdi.jpg"
-   ]
-  },
-  {
-   "id": "store-1601723006809",
-   "source": "store",
-   "model": "MHQ36",
-   "name": "Electro-aluminium sphere with glass, custom colour and logo",
-   "category": "sculptural",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.56–0.58",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hb89e825c303447e68e73388f4ed0d91bS.jpg",
-    "H6bfcaa38e09a4d6c836dbcc4bf77eec20.jpg",
-    "H5031faaaed6648aa8063cded5df5a9daO.jpg",
-    "Hbcbb742434ce4a7089d84675f97742f12.jpg"
-   ]
-  },
-  {
-   "id": "store-1601425561228",
-   "source": "store",
-   "model": "WRQ",
-   "name": "Electro-aluminium cover with middle sleeve",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "—",
-   "weight": "—",
-   "price": "US$0.63–0.65",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H76c5fa85a2374c3493ed338c680915398.jpg",
-    "H718e85fbf6ae4f5c9583b0f17f963dd6a.jpg",
-    "Hb01b4b2465484e6f968cdffe2360ead8D.jpg",
-    "H6dbfb3c7b9fc4fd9957dd09b84e27c5ar.jpg"
-   ]
-  },
-  {
-   "id": "store-1601900262058",
-   "source": "store",
-   "model": "WL100",
-   "name": "Brushed aluminium for FEA15 spray atomizers",
-   "category": "cylinder",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA15",
-   "weight": "—",
-   "price": "US$0.63–0.65",
-   "moq": 10000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "Hf78515bfe94e4a77928b7bd0a6effc1aL.jpg",
-    "H49d3bb2a37c2437ab929788de3b5a08fJ.jpg",
-    "H20c076cc3c324899aaa27a27935a2d07w.jpg",
-    "H3bd5557f6a2b4bda9fc36754d34eb750T.jpg"
-   ]
-  },
-  {
-   "id": "store-1601521989489",
-   "source": "store",
-   "model": "Spherical cap with logo printing",
-   "name": "Electro-aluminium sphere, 15 mm, custom logo",
-   "category": "sculptural",
-   "material": "On request",
-   "size": "On request",
-   "neck": "FEA15",
-   "weight": "—",
-   "price": "US$0.58",
-   "moq": 5000,
-   "badge": null,
-   "finishes": [
-    "Photo 1",
-    "Photo 2",
-    "Photo 3",
-    "Photo 4"
-   ],
-   "images": [
-    "H0b582bb3d2564de4bc6a56a1ff38ee37C.jpg",
-    "H5765532c652648b89864ccfca9763accT.jpg",
-    "H3128826de8f54bb49dc485e3786f0b19R.jpg",
-    "Hb7c09ed914d84e898672cdc82a5a5c33w.jpg"
-   ]
+   "source": "photo"
   }
  ]
 };

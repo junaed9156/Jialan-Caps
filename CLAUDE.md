@@ -29,6 +29,18 @@ scripts/build_catalogue.py   PDF → products.js + HD photos (+ report)
 scripts/hd_photos.py         crop, isolate and 4x Real-ESRGAN enlargement (cached)
 ```
 
+## Client product photographs (photo mode, Nov 2026)
+
+`catalogue/photos.json` + `catalogue/photos/` hold the client's own product photos (from 茂涵图片.rar and a separate
+JLC33 photo). While photos.json exists the build writes ONLY the products it lists, in its order, each with these photos
+saved uncropped at their original 800 px size (no cleaning/enlargement; class `is-photo`, shown with object-fit: contain
+in square boxes). Facts (name, size, neck, weight, page) still come from the PDF + catalogue.json. Finish labels follow the
+client's Chinese file names (`finish_zh`), with Chinese in i18n.js. Alibaba store items are hidden (`includeStore: false`).
+Notes: the client's files say JLQ37, but the catalogue page is JLW37 (used). Unnamed photos were matched to catalogue
+models: knurling → JLG29, brushed pink & sandblasted gold → JL30, hydrographics → WL100 & JL30, coating → WL100.
+Rebuild: `python3 scripts/build_catalogue.py <pdf> --skip-editorial` (editorial/hero images unchanged). Empty category
+filters are hidden automatically.
+
 ## When the user gives a new catalogue PDF
 
 1. Install tools once: `pip install --break-system-packages pymupdf pillow numpy scipy ncnn`
