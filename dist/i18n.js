@@ -495,7 +495,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     [/^View enquiry shortlist, (\d+) pieces?$/, '查看询价清单，$1 件'],
     [/^MOQ ([\d,]+)$/, '起订量 $1'],
     [/^Photo (\d+)$/, '图片 $1'],
-    [/^WeChat ID copied: (\d+)$/, '微信号已复制：$1'],
+    [/^WeChat ID copied: ([\w-]+)$/, '微信号已复制：$1'],
     [/^View (\S+) specifications$/, '查看 $1 规格'],
     [/^(.+) per piece$/, '$1 / 件'],
     [/^Quantity: (.+) pieces$/, '数量：$1 件'],
@@ -548,6 +548,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
       if (p.description_zh) p.description = p.description_zh; else if (p.description) p.description = tr(p.description);
       p.model = p.model_zh || tr(p.model);
       for (const k of ['material', 'size', 'weight', 'note', 'badge']) if (p[k]) p[k] = tr(p[k]);
+      if (p.badge_zh) p.badge = p.badge_zh;
       if (p.finishes) p.finishes = p.finishes.map(tr);
     }
   }

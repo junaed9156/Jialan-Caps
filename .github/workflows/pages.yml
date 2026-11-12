@@ -1,4 +1,4 @@
-# Publishes dist/ to GitHub Pages on every push to main.
+# Publishes dist/ (with the admin's website edits applied) to GitHub Pages on every push to main.
 # One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
 name: Deploy website
 
@@ -31,9 +31,11 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run build:3d
       - run: npm test
+      # The admin's edits (dist/site-content.json) are applied to a copy; dist/ stays the pristine source.
+      - run: node scripts/apply-content.mjs --from dist --to _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

@@ -53,8 +53,100 @@
       <p class="muted small"><button type="button" class="link" id="back-login">← Back to login · 返回登录</button></p>
     </section>
 
-    <!-- Products -->
+    <!-- Signed in: one tab per kind of edit -->
     <section id="admin-view" hidden>
+      <nav class="tabs" id="tabs" aria-label="Admin sections">
+        <button type="button" data-tab="tab-contact" aria-selected="true">Contact &amp; catalogue <span>联系方式与目录</span></button>
+        <button type="button" data-tab="tab-text">Website text <span>网站文字</span></button>
+        <button type="button" data-tab="tab-catalogue">Catalogue products <span>目录产品</span></button>
+        <button type="button" data-tab="tab-products">Add products <span>添加产品</span></button>
+        <button type="button" data-tab="tab-pictures">Pictures <span>图片</span></button>
+        <button type="button" data-tab="tab-account">Account <span>账号</span></button>
+      </nav>
+      <p class="status" id="content-status" role="status"></p>
+
+      <!-- Contact details and the catalogue PDF -->
+      <div class="tab" id="tab-contact">
+        <div class="panel">
+          <h1>Contact details <span>联系方式</span></h1>
+          <p class="muted small">Shown in the contact section, footer, WhatsApp button, enquiry form and search results, on the English and Chinese pages. · 显示在联系区、页脚、WhatsApp 按钮、询价表单和搜索结果中（中英文页面）。</p>
+          <form id="contact-form" autocomplete="off" novalidate>
+            <div class="grid">
+              <label>Email · 邮箱<input id="c-email" type="email" maxlength="120" spellcheck="false"></label>
+              <label>WhatsApp number · WhatsApp 号码<input id="c-whatsapp" maxlength="30" placeholder="+86 138 1295 0775" spellcheck="false"></label>
+              <label>WeChat ID · 微信号<input id="c-wechat" maxlength="40" spellcheck="false"></label>
+              <span></span>
+              <label>Company name (English) · 公司名称（英文）<input id="c-company_en" maxlength="200"></label>
+              <label>Company name (Chinese) · 公司名称（中文）<input id="c-company_zh" maxlength="200" placeholder="Leave empty to show the English name · 留空则显示英文名称"></label>
+              <label class="wide">Address (English) · 地址（英文）<input id="c-address_en" maxlength="200"></label>
+              <label class="wide">Address (Chinese) · 地址（中文）<input id="c-address_zh" maxlength="200"></label>
+            </div>
+            <p class="note small" id="email-note" hidden>The enquiry form emails through FormSubmit. After changing the email, the first enquiry sent from the website makes FormSubmit send a confirmation email to the new address: open it and click <b>Activate</b> once, or form enquiries will not arrive. WhatsApp and direct email work immediately. · 询价表单通过 FormSubmit 发送邮件。更换邮箱后，网站收到的第一条询价会让 FormSubmit 向新邮箱发送确认邮件，请点击其中的 <b>Activate</b> 激活一次，否则收不到表单询价。WhatsApp 和直接邮件立即生效。</p>
+            <div class="row">
+              <button class="primary" type="submit" id="save-contact">Save to website · 保存到网站</button>
+              <button type="button" id="reset-contact">Restore original details · 恢复原始信息</button>
+            </div>
+            <p class="status" id="contact-status" role="status"></p>
+          </form>
+        </div>
+        <div class="panel">
+          <h2>Catalogue PDF <span>产品目录 PDF</span></h2>
+          <p class="small">Current file · 当前文件: <a id="pdf-current" href="#" target="_blank" rel="noopener">—</a></p>
+          <p class="muted small">Every “catalogue” link on the website opens this file. Product “specification sheet” links open it at the page number printed in the original catalogue, so keep the same page order if you can. Up to 80 MB. · 网站上所有“目录”链接都会打开此文件。产品“规格表”链接按原目录页码打开，请尽量保持相同页序。最大 80 MB。</p>
+          <input type="file" id="pdf-file" accept="application/pdf,.pdf">
+          <div class="row">
+            <button class="primary" type="button" id="save-pdf" disabled>Upload and publish · 上传并发布</button>
+            <button type="button" id="reset-pdf">Use the original PDF · 使用原始 PDF</button>
+          </div>
+          <p class="status" id="pdf-status" role="status"></p>
+        </div>
+      </div>
+
+      <!-- Every text on the page, English and Chinese -->
+      <div class="tab" id="tab-text" hidden>
+        <div class="panel">
+          <h1>Website text <span>网站文字</span></h1>
+          <p class="muted small">Every heading, paragraph, button and label on the website, with its Chinese version. Change what you need, then press Save. Contact details are edited under “Contact &amp; catalogue”. · 网站上的每个标题、段落、按钮和标签及其中文版本。修改后点击保存。联系方式请在“联系方式与目录”中修改。</p>
+          <div class="filters">
+            <input type="search" id="text-search" placeholder="Search English or Chinese… · 搜索中英文…">
+            <select id="text-group"><option value="">All sections · 全部区域</option></select>
+            <label class="check"><input type="checkbox" id="text-edited"> Only changed · 仅显示已修改</label>
+          </div>
+          <div id="text-list" class="text-list"></div>
+          <div class="savebar">
+            <span id="text-count" class="muted small"></span>
+            <button class="primary" type="button" id="save-text">Save text to website · 保存文字到网站</button>
+          </div>
+          <p class="status" id="text-status" role="status"></p>
+        </div>
+      </div>
+
+      <!-- Catalogue products: wording, order, visibility -->
+      <div class="tab" id="tab-catalogue" hidden>
+        <div class="panel">
+          <h1>Catalogue products <span>目录产品</span></h1>
+          <p class="muted small">Change names, descriptions and labels, hide a product, or move it up or down the collection. Products added under “Add products” always come first. · 修改名称、描述和标签，隐藏产品，或调整排序。“添加产品”中新增的产品始终排在最前。</p>
+          <ul id="catalogue-list" class="catalogue-list"></ul>
+          <div class="savebar">
+            <span id="catalogue-count" class="muted small"></span>
+            <button class="primary" type="button" id="save-catalogue">Save products to website · 保存产品到网站</button>
+          </div>
+          <p class="status" id="catalogue-status" role="status"></p>
+        </div>
+      </div>
+
+      <!-- Pictures -->
+      <div class="tab" id="tab-pictures" hidden>
+        <div class="panel">
+          <h1>Pictures <span>图片</span></h1>
+          <p class="muted small">Replace a picture: it is resized to the same size as the current one (photos are cropped to fill, logos are fitted whole). Product photos are managed under “Add products”. The 3D scenes and their preview images are not replaceable here. · 替换图片：自动调整为与当前图片相同尺寸（照片裁切填满，Logo 完整缩放）。产品图片请在“添加产品”中管理。3D 场景及其预览图不可在此替换。</p>
+          <ul id="picture-list" class="picture-list"></ul>
+          <p class="status" id="picture-status" role="status"></p>
+        </div>
+      </div>
+
+      <!-- Products added on this page -->
+      <div class="tab" id="tab-products" hidden>
       <div class="panel">
         <h1>Add a product <span>添加产品</span></h1>
         <form id="product-form" autocomplete="off" novalidate>
@@ -89,6 +181,9 @@
         <p class="muted" id="empty-list" hidden>No products added yet. · 还没有添加产品。</p>
       </div>
 
+      </div>
+
+      <div class="tab" id="tab-account" hidden>
       <div class="panel narrow">
         <h2>Change ID and password <span>修改账号和密码</span></h2>
         <form id="password-form" autocomplete="off">
@@ -98,6 +193,7 @@
           <button type="submit">Save ID and password · 保存账号和密码</button>
           <p class="status" id="password-status" role="status"></p>
         </form>
+      </div>
       </div>
     </section>
   </main>

@@ -5,3 +5,4 @@ __pycache__/
 tmp/
 catalogue/.cache/
 catalogue/last-build.json
+_site/

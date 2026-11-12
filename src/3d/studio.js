@@ -111,7 +111,7 @@ export async function mount(view) {
     $('studio-caption').textContent = def.name;
     $('studio-finish-name').textContent = FINISHES[state.finish].label;
     $('studio-specs').innerHTML = `View ${def.model} specifications <span aria-hidden="true">↗</span>`;
-    $('studio-specs').href = `assets/maohan-catalogue-2026.pdf#page=${page}`;
+    $('studio-specs').href = `${(window.JIALAN && window.JIALAN.pdf) || 'assets/maohan-catalogue-2026.pdf'}#page=${page}`;   // the admin can replace the PDF
     $('studio-specs').dataset.product = pid;
     canvas.setAttribute('aria-label', `3D preview: ${def.model} ${def.name.toLowerCase()} in ${FINISHES[state.finish].label.toLowerCase()}${state.logo ? `, with “${state.logo}” ${LOGO_STYLES[state.logoStyle].label.toLowerCase()}` : ''}.`);
     $('studio-status').textContent = canvas.getAttribute('aria-label');

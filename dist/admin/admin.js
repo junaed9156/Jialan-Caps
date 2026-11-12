@@ -1,8 +1,10 @@
-/* Mao Han admin: add or remove products on the website.
+/* Mao Han admin: edit the website and add or remove products.
    The site is static (GitHub Pages). A fine-grained GitHub token with "Contents: read and write" on this one
    repository is stored in admin/key.json, encrypted with AES-GCM under a key derived from the admin ID and
    password together (PBKDF2-SHA256). After login the token lives only in this tab's memory. Saving writes the photos and
-   dist/admin-products.js to the repository in one commit; the Pages workflow then publishes the site. */
+   dist/admin-products.js, or dist/site-content.json (contact details, every text, catalogue products, pictures, the
+   catalogue PDF) plus any uploaded file, to the repository in one commit. The Pages workflow then publishes the site,
+   applying site-content.json with scripts/apply-content.mjs. */
 'use strict';
 (() => {
   if (window.top !== window.self) { document.documentElement.textContent = ''; return; }   // never inside a frame
@@ -14,6 +16,8 @@
   const enc = new TextEncoder(), dec = new TextDecoder();
   let token = null;
   let photos = [];   // {file, url, finish, finishZh}
+  let base = null;      // admin/content-base.json (published with the site): the original of every editable item
+  let content = null;   // site-content.json as last read from the repository: the admin's edits
 
   // ---------- small helpers ----------
   function status(id, text, kind) { const el = $(id); el.textContent = text || ''; el.className = 'status' + (kind ? ' ' + kind : ''); }
@@ -184,7 +188,7 @@
       token = t; failures = 0; try { sessionStorage.removeItem('admin-failures'); } catch { /* ignore */ }
       $('login-password').value = '';
       status('login-status', '');
-      show('admin-view'); refreshList();
+      show('admin-view'); refreshList(); loadContent();
       if (!(key.v >= 2)) {   // older key locked by the password alone: lock it with the ID typed now as well
         status('save-status', 'Saving your admin ID… · 正在保存管理员账号…');
         try {
@@ -198,7 +202,7 @@
   });
   $('show-setup').addEventListener('click', () => { show('setup-view'); status('setup-status', ''); });
   $('back-login').addEventListener('click', () => show('login-view'));
-  $('logout').addEventListener('click', () => { token = null; photos = []; renderPhotos(); show('login-view'); });
+  $('logout').addEventListener('click', () => { token = null; photos = []; renderPhotos(); base = null; content = null; show('login-view'); });
 
   // Setup: check the token can write to this repository, then store it encrypted.
   $('setup-form').addEventListener('submit', async e => {
@@ -219,7 +223,7 @@
       await commit('Admin: set up encrypted access key', async () => [{ path: KEY_FILE, base64: textB64(JSON.stringify(box, null, 1) + '\n') }]);
       ['setup-token', 'setup-id', 'setup-password', 'setup-password2'].forEach(id => { $(id).value = ''; });
       status('setup-status', '');
-      show('admin-view'); refreshList();
+      show('admin-view'); refreshList(); loadContent();
       status('save-status', 'Setup saved. You are logged in. · 设置已保存，已登录。', 'good');
     } catch (err) { token = null; status('setup-status', err.message, 'bad'); }
     finally { btn.disabled = false; }
@@ -369,6 +373,396 @@
         const text = await (await fetch(`../${DATA_FILE}?ts=${Date.now()}`, { cache: 'no-store' })).text();
         if (text.includes(`"${id}"`) === present) { status('save-status', present ? 'Live on the website now. · 已在网站上线。' : 'Removed from the website. · 已从网站移除。', 'good'); refreshList(); return; }
       } catch { /* keep waiting */ }
+    }
+  }
+
+  // =====================================================================================
+  // Website content: contact details, catalogue PDF, every text, catalogue products, pictures.
+  // Edits live in dist/site-content.json; only differences from the original are stored, so
+  // "restore" simply removes an edit. The deploy applies them (scripts/apply-content.mjs).
+  // =====================================================================================
+  const CONTENT_FILE = 'site-content.json';
+  const CONTACT = ['email', 'whatsapp', 'wechat', 'company_en', 'company_zh', 'address_en', 'address_zh'];
+  const PRODUCT_FIELDS = ['name', 'name_zh', 'description', 'description_zh', 'badge', 'badge_zh'];
+  const GROUPS = {
+    head: 'Page title & search engines · 页面标题与搜索引擎', announcement: 'Top bar · 顶部栏', header: 'Header · 页头',
+    'desktop-nav': 'Menu · 菜单', 'mobile-nav': 'Phone menu · 手机菜单', hero: 'Top of the page · 首屏', collection: 'Collection · 产品系列',
+    'product-dialog': 'Product window · 产品详情窗口', studio: '3D studio · 3D 工作室', anatomy: 'Scroll story · 滚动展示',
+    personalise: 'Made personal & About · 专属定制与关于我们', contact: 'Contact · 联系我们', 'enquiry-form': 'Enquiry form · 询价表单',
+    'shortlist-dialog': 'Shortlist window · 收藏清单窗口', footer: 'Footer · 页脚', aside: 'Other · 其他',
+  };
+  const KINDS = { placeholder: 'Input hint · 输入提示', 'aria-label': 'Screen-reader label · 读屏标签', alt: 'Picture description · 图片说明', content: 'Search-engine text · 搜索引擎文字', title: 'Tooltip · 提示' };
+  const groupName = g => GROUPS[g] || g;
+  const emptyContent = () => ({ v: 1, contact: {}, text: {}, images: {}, products: { order: [], edits: {} } });
+  function parseContent(text) {
+    let c = {};
+    try { c = JSON.parse(text || '{}') || {}; } catch { c = {}; }
+    const e = emptyContent();
+    return {
+      ...e, ...c,
+      contact: c.contact && typeof c.contact === 'object' ? c.contact : {},
+      text: c.text && typeof c.text === 'object' ? c.text : {},
+      images: c.images && typeof c.images === 'object' ? c.images : {},
+      products: { order: Array.isArray(c.products?.order) ? c.products.order : [], edits: c.products?.edits && typeof c.products.edits === 'object' ? c.products.edits : {} },
+    };
+  }
+  const stampName = () => new Date().toISOString().replace(/\D/g, '').slice(0, 14);
+  const unsafe = v => /[<>"\\]/.test(v);
+  async function repoHas(path, ref) {
+    try { await gh(`/repos/${REPO}/contents/${ROOT}${path}?ref=${encodeURIComponent(ref)}`); return true; }
+    catch (e) { if (e.status === 404) return false; throw e; }
+  }
+  // An earlier admin upload that is no longer used is removed in the same commit.
+  async function dropUpload(path, ref) {
+    return typeof path === 'string' && /^assets\/site\/[\w-]+\.\w+$/.test(path) && await repoHas(path, ref) ? [{ path, delete: true }] : [];
+  }
+  // Read the latest edits, change them, and commit (with any uploaded files) in one go.
+  async function saveContent(message, mutate, extra) {
+    const saved = new Date().toISOString();
+    let next;
+    await commit(message, async head => {
+      const cur = parseContent(await readRepoFile(CONTENT_FILE, head));
+      const files = extra ? await extra(cur, head) : [];
+      mutate(cur);
+      cur.saved = saved;
+      next = cur;
+      return [...files, { path: CONTENT_FILE, base64: textB64(JSON.stringify(cur, null, 1) + '\n') }];
+    });
+    content = next;
+    watchContent(saved);
+  }
+  let watching = 0;
+  async function watchContent(saved) {
+    const run = ++watching;
+    status('content-status', 'Publishing… the website updates in about 2 minutes. · 发布中，约 2 分钟后网站更新。');
+    for (let i = 0; i < 60 && run === watching; i++) {
+      await sleep(10000);
+      try {
+        const live = await (await fetch(`../${CONTENT_FILE}?ts=${Date.now()}`, { cache: 'no-store' })).json();
+        if (live.saved === saved && run === watching) {
+          status('content-status', 'Live on the website now. Refresh the website to see it. · 已在网站上线，刷新网站即可查看。', 'good');
+          return;
+        }
+      } catch { /* not published yet */ }
+    }
+    if (run === watching) status('content-status', 'Saved, but the website has not updated yet. Check again in a few minutes. · 已保存，网站尚未更新，请几分钟后再查看。', 'bad');
+  }
+  const guarded = (button, statusId, fn) => async () => {
+    button.disabled = true;
+    try { await fn(); } catch (err) { status(statusId, err.message, 'bad'); } finally { button.disabled = false; }
+  };
+
+  async function loadContent() {
+    status('content-status', 'Loading the website content… · 正在加载网站内容…');
+    base = null;
+    try {
+      const r = await fetch(`content-base.json?ts=${Date.now()}`, { cache: 'no-store' });
+      if (r.ok) base = await r.json();
+    } catch { /* not published yet */ }
+    try { content = parseContent(await readRepoFile(CONTENT_FILE)); }
+    catch (err) { status('content-status', err.message, 'bad'); return; }
+    if (!base) {
+      status('content-status', 'The list of editable items appears after the next website update (about 2 minutes). Reload this page then. · 可编辑内容列表将在下次网站更新后出现（约 2 分钟），届时请刷新本页。', 'bad');
+      document.querySelectorAll('#tab-contact button, #tab-text button, #tab-catalogue button').forEach(b => { b.disabled = true; });
+      return;
+    }
+    status('content-status', '');
+    renderContact(); renderText(); renderCatalogue(); renderPictures();
+  }
+
+  // ---------- tabs ----------
+  $('tabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-tab]');
+    if (!b) return;
+    document.querySelectorAll('#tabs [data-tab]').forEach(t => t.setAttribute('aria-selected', String(t === b)));
+    document.querySelectorAll('#admin-view > .tab').forEach(t => { t.hidden = t.id !== b.dataset.tab; });
+  });
+
+  // ---------- contact details ----------
+  const contactValue = f => (typeof content.contact[f] === 'string' ? content.contact[f] : base.defaults[f]);
+  function renderContact() {
+    for (const f of CONTACT) $('c-' + f).value = contactValue(f);
+    $('email-note').hidden = true;
+    const pdf = content.catalogue || base.defaults.catalogue;
+    $('pdf-current').href = '../' + pdf; $('pdf-current').textContent = pdf.split('/').pop();
+    $('reset-pdf').disabled = !content.catalogue;
+  }
+  $('c-email').addEventListener('input', () => { $('email-note').hidden = $('c-email').value.trim() === contactValue('email'); });
+  $('contact-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const v = {}; for (const f of CONTACT) v[f] = clean($('c-' + f).value, f.startsWith('address') || f.startsWith('company') ? 200 : 120);
+    if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v.email)) return status('contact-status', 'Enter a valid email address. · 请输入有效的邮箱。', 'bad');
+    if (!/^\+?[0-9][0-9 ()-]{5,24}$/.test(v.whatsapp) || v.whatsapp.replace(/\D/g, '').length < 7) return status('contact-status', 'Enter the WhatsApp number with its country code, e.g. +86 138 1295 0775. · 请输入带国家代码的 WhatsApp 号码。', 'bad');
+    if (!/^[A-Za-z0-9_-]{3,40}$/.test(v.wechat)) return status('contact-status', 'The WeChat ID may use letters, numbers, - and _ only. · 微信号只能包含字母、数字、- 和 _。', 'bad');
+    if (!v.company_en || !v.address_en || !v.address_zh) return status('contact-status', 'Company name (English) and both addresses are required. · 请填写英文公司名称和中英文地址。', 'bad');
+    if (CONTACT.some(f => unsafe(v[f]))) return status('contact-status', 'Please do not use < > " or \\ in these fields. · 请勿使用 < > " 或 \\。', 'bad');
+    const btn = $('save-contact'); btn.disabled = true;
+    try {
+      status('contact-status', 'Saving… · 正在保存…');
+      await saveContent('Admin: update contact details', cur => {
+        cur.contact = {};
+        for (const f of CONTACT) if (v[f] !== base.defaults[f]) cur.contact[f] = v[f];
+      });
+      renderContact();
+      status('contact-status', 'Saved. Live in about 2 minutes. · 已保存，约 2 分钟后上线。', 'good');
+    } catch (err) { status('contact-status', err.message, 'bad'); }
+    finally { btn.disabled = false; }
+  });
+  $('reset-contact').addEventListener('click', guarded($('reset-contact'), 'contact-status', async () => {
+    if (!confirm('Restore the original contact details? · 恢复原始联系方式？')) return;
+    status('contact-status', 'Saving… · 正在保存…');
+    await saveContent('Admin: restore original contact details', cur => { cur.contact = {}; });
+    renderContact();
+    status('contact-status', 'Original details restored. Live in about 2 minutes. · 已恢复，约 2 分钟后上线。', 'good');
+  }));
+
+  // ---------- catalogue PDF ----------
+  const MAX_PDF = 80e6;
+  $('pdf-file').addEventListener('change', () => {
+    const f = $('pdf-file').files[0];
+    const ok = f && /\.pdf$/i.test(f.name) && f.size <= MAX_PDF;
+    $('save-pdf').disabled = !ok;
+    status('pdf-status', f && !ok ? 'Choose a PDF file up to 80 MB. · 请选择 80 MB 以内的 PDF 文件。' : f ? `${f.name} · ${(f.size / 1e6).toFixed(1)} MB` : '', f && !ok ? 'bad' : '');
+  });
+  $('save-pdf').addEventListener('click', guarded($('save-pdf'), 'pdf-status', async () => {
+    const f = $('pdf-file').files[0];
+    if (!f) return;
+    status('pdf-status', 'Reading the PDF… · 正在读取 PDF…');
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    if (dec.decode(bytes.subarray(0, 5)) !== '%PDF-') throw new Error('This file is not a PDF. · 该文件不是 PDF。');
+    const upload = { path: `assets/site/catalogue-${stampName()}.pdf`, base64: toB64(bytes) };   // kept across commit retries
+    status('pdf-status', `Uploading ${(f.size / 1e6).toFixed(1)} MB… this can take a minute. · 正在上传，可能需要一分钟…`);
+    await saveContent('Admin: replace the catalogue PDF', cur => { cur.catalogue = upload.path; }, async (cur, head) => [upload, ...await dropUpload(cur.catalogue, head)]);
+    $('pdf-file').value = ''; $('save-pdf').disabled = true; renderContact();
+    status('pdf-status', 'Uploaded. Every catalogue link opens the new PDF in about 2 minutes. · 已上传，约 2 分钟后所有目录链接将打开新 PDF。', 'good');
+  }));
+  $('reset-pdf').addEventListener('click', guarded($('reset-pdf'), 'pdf-status', async () => {
+    if (!confirm('Go back to the original catalogue PDF? · 恢复原始目录 PDF？')) return;
+    status('pdf-status', 'Saving… · 正在保存…');
+    await saveContent('Admin: restore the original catalogue PDF', cur => { delete cur.catalogue; }, async (cur, head) => dropUpload(cur.catalogue, head));
+    renderContact();
+    status('pdf-status', 'The original PDF is back in about 2 minutes. · 约 2 分钟后恢复原始 PDF。', 'good');
+  }));
+
+  // ---------- website text ----------
+  let textDraft = new Map();
+  const textRows = new Map();
+  function renderText() {
+    textDraft = new Map(base.texts.map(t => {
+      const e = content.text[t.key] || {};
+      return [t.key, { en: typeof e.en === 'string' ? e.en : t.key, zh: typeof e.zh === 'string' ? e.zh : t.zh }];
+    }));
+    const groupSel = $('text-group');
+    groupSel.length = 1;
+    for (const g of [...new Set(base.texts.map(t => t.group))]) { const o = document.createElement('option'); o.value = g; o.textContent = groupName(g); groupSel.append(o); }
+    const list = $('text-list'); list.textContent = ''; textRows.clear();
+    let lastGroup = null;
+    for (const t of base.texts) {
+      if (t.group !== lastGroup) {
+        const h = document.createElement('h3'); h.className = 'group'; h.dataset.group = t.group; h.textContent = groupName(t.group); list.append(h); lastGroup = t.group;
+      }
+      const row = document.createElement('div'); row.className = 'text-row'; row.dataset.group = t.group;
+      const meta = document.createElement('div'); meta.className = 'meta';
+      meta.textContent = [KINDS[t.kind], t.count > 1 ? `appears ${t.count}× · 出现 ${t.count} 次` : '', t.keep ? 'brand name · 品牌名称' : ''].filter(Boolean).join(' · ');
+      const d = textDraft.get(t.key);
+      const area = (label, value, lang) => {
+        const l = document.createElement('label'); l.textContent = label;
+        const a = document.createElement('textarea'); a.value = value; a.lang = lang; a.rows = Math.min(6, Math.max(1, Math.ceil(value.length / 60)));
+        a.maxLength = 2000; l.append(a); return [l, a];
+      };
+      const [l1, en] = area('English', d.en, 'en'), [l2, zh] = area('中文', d.zh, 'zh');
+      if (t.zh === t.key) zh.placeholder = 'Same as English · 与英文相同';
+      const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'reset'; reset.textContent = 'Original · 原文';
+      const sync = () => {
+        d.en = en.value; d.zh = zh.value;
+        row.classList.toggle('changed', d.en !== t.key || d.zh !== t.zh);
+        reset.hidden = !row.classList.contains('changed');
+        countText();
+      };
+      en.addEventListener('input', sync); zh.addEventListener('input', sync);
+      reset.addEventListener('click', () => { en.value = t.key; zh.value = t.zh; sync(); });
+      row.append(meta, l1, l2, reset); list.append(row);
+      textRows.set(t.key, { row, t, d });
+      sync();
+    }
+    filterText();
+  }
+  function countText() {
+    const n = [...textRows.values()].filter(r => r.row.classList.contains('changed')).length;
+    $('text-count').textContent = `${n} changed · 已修改 ${n} 处`;
+  }
+  function filterText() {
+    const q = $('text-search').value.trim().toLowerCase(), g = $('text-group').value, onlyChanged = $('text-edited').checked;
+    const visibleGroups = new Set();
+    for (const { row, t, d } of textRows.values()) {
+      const hay = `${t.key}\n${t.zh}\n${d.en}\n${d.zh}`.toLowerCase();
+      const show = (!q || hay.includes(q)) && (!g || t.group === g) && (!onlyChanged || row.classList.contains('changed'));
+      row.hidden = !show;
+      if (show) visibleGroups.add(t.group);
+    }
+    $('text-list').querySelectorAll('h3.group').forEach(h => { h.hidden = !visibleGroups.has(h.dataset.group); });
+  }
+  ['text-search', 'text-group', 'text-edited'].forEach(id => $(id).addEventListener(id === 'text-search' ? 'input' : 'change', filterText));
+  $('save-text').addEventListener('click', guarded($('save-text'), 'text-status', async () => {
+    const text = {};
+    for (const { t, d } of textRows.values()) {
+      const en = clean(d.en, 2000), zh = clean(d.zh, 2000), entry = {};
+      if (en && en !== t.key) entry.en = en;
+      if (zh && zh !== t.zh) entry.zh = zh;
+      if (Object.keys(entry).length) text[t.key] = entry;
+    }
+    status('text-status', 'Saving… · 正在保存…');
+    await saveContent(`Admin: update website text (${Object.keys(text).length} edits)`, cur => { cur.text = text; });
+    status('text-status', 'Saved. Live in about 2 minutes. · 已保存，约 2 分钟后上线。', 'good');
+  }));
+
+  // ---------- catalogue products ----------
+  let catOrder = [], catDraft = new Map();
+  function renderCatalogue() {
+    const byId = new Map(base.products.map(p => [p.id, p]));
+    const saved = content.products.order.filter(id => byId.has(id));
+    catOrder = [...saved, ...base.products.map(p => p.id).filter(id => !saved.includes(id))];
+    catDraft = new Map(base.products.map(p => {
+      const e = content.products.edits[p.id] || {}, d = { hidden: e.hidden === true };
+      for (const f of PRODUCT_FIELDS) d[f] = typeof e[f] === 'string' ? e[f] : p[f] || '';
+      return [p.id, d];
+    }));
+    drawCatalogue();
+  }
+  function drawCatalogue() {
+    const byId = new Map(base.products.map(p => [p.id, p]));
+    const list = $('catalogue-list'); list.textContent = '';
+    catOrder.forEach((id, i) => {
+      const p = byId.get(id), d = catDraft.get(id);
+      const li = document.createElement('li'); li.classList.toggle('is-hidden', d.hidden);
+      const img = document.createElement('img'); img.alt = ''; img.loading = 'lazy'; img.src = `../${p.image}-400.webp`;
+      const body = document.createElement('div'); body.className = 'body';
+      const head = document.createElement('div'); head.className = 'head';
+      const title = document.createElement('strong'); title.textContent = `${i + 1}. ${p.model}`;
+      const hide = document.createElement('label'); hide.className = 'check';
+      const hb = document.createElement('input'); hb.type = 'checkbox'; hb.checked = d.hidden;
+      hb.addEventListener('change', () => { d.hidden = hb.checked; li.classList.toggle('is-hidden', d.hidden); countCatalogue(); });
+      hide.append(hb, ' Hide from website · 在网站隐藏');
+      const move = document.createElement('span'); move.className = 'move';
+      const up = document.createElement('button'); up.type = 'button'; up.textContent = '↑'; up.title = 'Move up · 上移'; up.disabled = i === 0;
+      const down = document.createElement('button'); down.type = 'button'; down.textContent = '↓'; down.title = 'Move down · 下移'; down.disabled = i === catOrder.length - 1;
+      up.addEventListener('click', () => { [catOrder[i - 1], catOrder[i]] = [catOrder[i], catOrder[i - 1]]; drawCatalogue(); });
+      down.addEventListener('click', () => { [catOrder[i + 1], catOrder[i]] = [catOrder[i], catOrder[i + 1]]; drawCatalogue(); });
+      move.append(up, down);
+      head.append(title, hide, move);
+      const grid = document.createElement('div'); grid.className = 'grid';
+      const field = (label, f, max, multi) => {
+        const l = document.createElement('label'); l.textContent = label;
+        const el = document.createElement(multi ? 'textarea' : 'input'); el.maxLength = max; el.value = d[f]; if (multi) el.rows = 3;
+        el.addEventListener('input', () => { d[f] = el.value; countCatalogue(); });
+        l.append(el); grid.append(l);
+      };
+      field('Name · 英文名称', 'name', 80); field('中文名称', 'name_zh', 80);
+      field('Description · 英文描述', 'description', 600, true); field('中文描述', 'description_zh', 600, true);
+      field('Label (e.g. NEW) · 英文标签', 'badge', 24); field('中文标签', 'badge_zh', 24);
+      body.append(head, grid);
+      li.append(img, body); list.append(li);
+    });
+    countCatalogue();
+  }
+  function catalogueEdits() {
+    const edits = {};
+    for (const p of base.products) {
+      const d = catDraft.get(p.id), e = {};
+      if (d.hidden) e.hidden = true;
+      for (const [enF, zhF] of [['name', 'name_zh'], ['description', 'description_zh'], ['badge', 'badge_zh']]) {
+        const en = clean(d[enF], 600), zh = clean(d[zhF], 600);
+        const enChanged = en !== (p[enF] || ''), zhChanged = zh !== (p[zhF] || '');
+        if (enChanged && en) e[enF] = en;
+        // A changed English text keeps its Chinese explicitly, so the Chinese page never falls back to English.
+        if ((zhChanged || enChanged) && zh) e[zhF] = zh;
+      }
+      if (Object.keys(e).length) edits[p.id] = e;
+    }
+    return edits;
+  }
+  function countCatalogue() {
+    const n = Object.keys(catalogueEdits()).length, moved = catOrder.join() !== base.products.map(p => p.id).join();
+    $('catalogue-count').textContent = `${n} product${n === 1 ? '' : 's'} changed${moved ? ', order changed' : ''} · 已修改 ${n} 个产品${moved ? '，排序已调整' : ''}`;
+  }
+  $('save-catalogue').addEventListener('click', guarded($('save-catalogue'), 'catalogue-status', async () => {
+    const edits = catalogueEdits(), moved = catOrder.join() !== base.products.map(p => p.id).join();
+    status('catalogue-status', 'Saving… · 正在保存…');
+    await saveContent('Admin: update catalogue products', cur => { cur.products = { order: moved ? catOrder.slice() : [], edits }; });
+    status('catalogue-status', 'Saved. Live in about 2 minutes. · 已保存，约 2 分钟后上线。', 'good');
+  }));
+
+  // ---------- pictures ----------
+  function loadImage(src) {
+    return new Promise((resolve, reject) => { const i = new Image(); i.onload = () => resolve(i); i.onerror = () => reject(new Error('Could not open the picture. · 无法打开图片。')); i.src = src; });
+  }
+  async function fitPicture(file, target, fit, type) {
+    const img = await decode(file);
+    const W = target.naturalWidth, H = target.naturalHeight;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
+    if (type !== 'image/png') { g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); }
+    const s = (fit === 'cover' ? Math.max : Math.min)(W / img.naturalWidth, H / img.naturalHeight);
+    const w = img.naturalWidth * s, h = img.naturalHeight * s;
+    g.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+    const blob = await new Promise(r => c.toBlob(r, type, 0.88));
+    if (!blob) throw new Error('This browser could not save the picture. · 浏览器无法保存图片。');
+    return blob;
+  }
+  const justSaved = new Map();   // picture path → local preview, until the website has published it
+  function renderPictures() {
+    const list = $('picture-list'); list.textContent = '';
+    for (const item of base.images) {
+      const current = content.images[item.src] || item.src;
+      const li = document.createElement('li');
+      const fig = document.createElement('div'); fig.className = 'pic';
+      const img = document.createElement('img'); img.alt = ''; img.src = justSaved.get(current) || '../' + current; fig.append(img);
+      const body = document.createElement('div'); body.className = 'body';
+      const title = document.createElement('strong'); title.textContent = item.label;
+      const info = document.createElement('span'); info.className = 'muted small';
+      const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/jpeg,image/png,image/webp';
+      const row = document.createElement('div'); row.className = 'row';
+      const save = document.createElement('button'); save.type = 'button'; save.className = 'primary'; save.textContent = 'Save picture · 保存图片'; save.hidden = true;
+      const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = 'Cancel · 取消'; cancel.hidden = true;
+      const reset = document.createElement('button'); reset.type = 'button'; reset.textContent = 'Use the original · 恢复原图'; reset.hidden = !content.images[item.src];
+      row.append(save, cancel, reset);
+      body.append(title, info, input, row);
+      li.append(fig, body); list.append(li);
+      let original, pending = null;
+      loadImage('../' + item.src).then(o => { original = o; info.textContent = `${o.naturalWidth} × ${o.naturalHeight} px${current !== item.src ? ' · replaced · 已替换' : ''}`; }).catch(() => { info.textContent = ''; });
+      const ext = /\.png$/.test(item.src) ? 'png' : 'webp';
+      input.addEventListener('change', async () => {
+        const f = input.files[0];
+        if (!f) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size > 20e6) { status('picture-status', 'Use a JPEG, PNG or WebP under 20 MB. · 请使用 20MB 以内的 JPG/PNG/WebP。', 'bad'); input.value = ''; return; }
+        try {
+          if (!original) original = await loadImage('../' + item.src);
+          let type = ext === 'png' ? 'image/png' : 'image/webp';
+          if (type === 'image/webp' && !(await webpSupported())) type = 'image/jpeg';
+          const blob = await fitPicture(f, original, item.fit, type);
+          if (pending) URL.revokeObjectURL(pending.url);
+          pending = { blob, type, url: URL.createObjectURL(blob) };
+          img.src = pending.url; save.hidden = cancel.hidden = false;
+          status('picture-status', 'Preview ready. Press “Save picture” to publish it. · 预览已生成，点击“保存图片”发布。');
+        } catch (err) { status('picture-status', err.message, 'bad'); }
+      });
+      cancel.addEventListener('click', () => { if (pending) URL.revokeObjectURL(pending.url); pending = null; input.value = ''; img.src = justSaved.get(current) || '../' + current; save.hidden = cancel.hidden = true; });
+      save.addEventListener('click', guarded(save, 'picture-status', async () => {
+        if (!pending) return;
+        const slug = item.src.split('/').pop().replace(/\.\w+$/, '').replace(/[^\w-]/g, '');
+        const upload = { path: `assets/site/${slug}-${stampName()}.${pending.type === 'image/png' ? 'png' : pending.type === 'image/webp' ? 'webp' : 'jpg'}`, base64: toB64(await pending.blob.arrayBuffer()) };
+        status('picture-status', 'Saving… · 正在保存…');
+        await saveContent(`Admin: replace picture ${item.src}`, cur => { cur.images[item.src] = upload.path; }, async (cur, head) => [upload, ...await dropUpload(cur.images[item.src], head)]);
+        justSaved.set(upload.path, pending.url); pending = null; renderPictures();
+        status('picture-status', 'Saved. Live in about 2 minutes. · 已保存，约 2 分钟后上线。', 'good');
+      }));
+      reset.addEventListener('click', guarded(reset, 'picture-status', async () => {
+        if (!confirm('Use the original picture again? · 恢复原图？')) return;
+        status('picture-status', 'Saving… · 正在保存…');
+        await saveContent(`Admin: restore picture ${item.src}`, cur => { delete cur.images[item.src]; }, async (cur, head) => dropUpload(cur.images[item.src], head));
+        renderPictures();
+        status('picture-status', 'The original is back in about 2 minutes. · 约 2 分钟后恢复原图。', 'good');
+      }));
     }
   }
 

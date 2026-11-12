@@ -6,8 +6,10 @@
   "scripts": {
     "build:3d": "node scripts/build-3d.mjs",
     "watch:3d": "npm run build:3d -- --watch",
-    "test": "node --test scripts/performance.test.js",
-    "serve": "python3 -m http.server 8000 --directory dist"
+    "test": "node --test scripts/performance.test.js scripts/content.test.js",
+    "serve": "python3 -m http.server 8000 --directory dist",
+    "content": "node scripts/apply-content.mjs --from dist --to _site",
+    "preview": "node scripts/apply-content.mjs --from dist --to _site && python3 -m http.server 8000 --directory _site"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",

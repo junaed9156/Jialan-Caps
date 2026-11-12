@@ -15,6 +15,8 @@ dist/                     the website (commit everything here, including built f
   lang-boot.js            language boot code bundled in the deferred site.js (never hide the hero)
   i18n.js                 English / 中文 (/ is English, /zh is Chinese; an old ?lang=zh link moves to /zh); dictionary + patterns
   admin-products.js       WRITTEN BY THE ADMIN PAGE — products added on admin/ (do not edit by hand)
+  site-content.json       WRITTEN BY THE ADMIN PAGE — website edits (contact, texts, catalogue products, pictures, PDF)
+  assets/site/            pictures and catalogue PDFs uploaded on the admin page
   admin/                  admin page: password login, add/delete products, change password;
                           uploads are auto-cropped and centred on white like the catalogue photos
   admin/key.json          GitHub token encrypted with the admin password (PBKDF2-SHA256 600k + AES-256-GCM)
@@ -30,7 +32,24 @@ catalogue/catalogue.json  editorial layer for PDF products (names, categories, m
 catalogue/store.json      products from the Alibaba storefront (not in the PDF)
 scripts/build_catalogue.py   PDF → products.js + HD photos (+ report)
 scripts/hd_photos.py         crop, isolate and 4x Real-ESRGAN enlargement (cached)
+scripts/apply-content.mjs    applies site-content.json to a copy of dist/ (_site/) at deploy; writes admin/content-base.json
+scripts/page-text.mjs        text walker shared by the /zh pre-render and apply-content
 ```
+
+## Admin website edits (site-content.json)
+
+The admin page edits contact details, every visible text (English + 中文), catalogue products (wording, label,
+hidden, order), pictures and the catalogue PDF. It commits only differences from the original to
+`dist/site-content.json` (+ uploads in `dist/assets/site/`). The Pages workflow runs build → test →
+`node scripts/apply-content.mjs --from dist --to _site` and publishes `_site/`. **dist/ stays the pristine source**:
+never commit apply-content output into dist/. Local preview with edits: `npm run preview` (serves `_site/`).
+- Texts are keyed by their original English (whitespace collapsed), so rewording a string in index.html makes an
+  admin edit of the old wording stop applying — tell the user if you change texts they may have edited.
+- `DEFAULTS` in apply-content.mjs must match the contact details written in index.html (content.test.js checks);
+  if you change them in index.html, update DEFAULTS too. `IMAGES` lists the replaceable pictures.
+- Product edits are applied to products.js at deploy; i18n.js uses `name_zh`, `description_zh`, `badge_zh`.
+- A new email only receives form enquiries after its FormSubmit activation email is confirmed once.
+
 
 ## Client product photographs (photo mode, Nov 2026)
 
@@ -133,5 +152,5 @@ Run `npm test` for payload, language, frame-budget and scene lifecycle regressio
 
 - Product facts come from the catalogue or the Alibaba listing; do not invent certifications,
   factory statistics or testimonials. Notes in `catalogue.json` explain catalogue inconsistencies.
-- Contact: WhatsApp +86 13812950775, WeChat 13812950775 (from the catalogue). Enquiries open a
-  WhatsApp draft; nothing is sent or stored by the site.
+- Contact: WhatsApp +86 13812950775, WeChat 13812950775 (from the catalogue) unless the admin changed them in
+  site-content.json. Enquiries open a WhatsApp draft or email through FormSubmit; nothing is stored by the site.
